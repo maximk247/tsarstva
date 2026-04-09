@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-alegreya), Georgia, serif;
+}
+
+:root {
+  --background:        #FAF9F7;
+  --card:              #FFFFFF;
+  --sidebar:           #F1EEE9;
+  --hover:             #F5F2F1;
+  --muted:             #F1EEE9;
+  --foreground:        #1C1917;
+  --muted-foreground:  #A8A29E;
+  --text-secondary:    #57534E;
+  --border:            #E1DDD8;
+  --accent:            #78350F;
+  --accent-medium:     #92400E;
+  --accent-subtle:     #DA8107;
+  --active-verse:        #FEF3CC;
+  --active-verse-border: transparent;
+}
+
+.dark {
+  --background:        #1C1917;
+  --card:              #292524;
+  --sidebar:           #161412;
+  --hover:             #2A2827;
+  --muted:             #292524;
+  --foreground:        #FAFAF7;
+  --muted-foreground:  #A8A29E;
+  --text-secondary:    #78716C;
+  --border:            #44403C;
+  --accent:            #D97706;
+  --accent-medium:     #B45309;
+  --accent-subtle:     #F59E0B;
+  --active-verse:        #451A03;
+  --active-verse-border: #92400E;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+.bible-text {
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  line-height: 1.85;
+  letter-spacing: 0.01em;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; transition: background 0.2s; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted-foreground); }
+* { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
