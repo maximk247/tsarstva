@@ -5,5 +5,8 @@
   "workspaces": [
     "data",
     "frontend"
-  ]
+  ],
+  "scripts": {
+    "dev": "bun run --filter frontend dev"
+  }
 }
