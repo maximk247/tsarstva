@@ -3,7 +3,7 @@ import { readFileSync } from "fs";
 import { join } from "path";
 import { bible } from "./bible-meta";
 
-const BOOKS_DIR = join(__dirname, "../json/bible/books");
+const BOOKS_DIR = join(process.cwd(), "..", "data", "json", "bible", "books");
 
 function psalmLxxToHebrew(lxx: number): number {
   if (lxx <= 8) return lxx;
