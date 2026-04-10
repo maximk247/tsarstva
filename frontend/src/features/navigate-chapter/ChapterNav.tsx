@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/shared/lib/cn";
 import { useState, useRef, useEffect, useMemo } from "react";
@@ -19,7 +18,6 @@ export default function ChapterNav({ book, chapter, totalChapters, bookName }: P
   const nextChapter = chapter < totalChapters ? chapter + 1 : null;
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const router = useRouter();
 
   useEffect(() => {
     if (!open) return;
@@ -69,12 +67,10 @@ export default function ChapterNav({ book, chapter, totalChapters, bookName }: P
             </p>
             <div className="grid grid-cols-6 gap-1.5">
               {chapters.map((ch) => (
-                <button
+                <Link
                   key={ch}
-                  onClick={() => {
-                    setOpen(false);
-                    router.push(`/read/${book}/${ch}`);
-                  }}
+                  href={`/read/${book}/${ch}`}
+                  onClick={() => setOpen(false)}
                   className={cn(
                     "flex flex-col items-center justify-center w-8 h-9 text-sm font-sans rounded-md transition-colors",
                     ch === chapter
@@ -91,7 +87,7 @@ export default function ChapterNav({ book, chapter, totalChapters, bookName }: P
                   ) : (
                     <span className="w-1 h-1" />
                   )}
-                </button>
+                </Link>
               ))}
             </div>
           </div>
