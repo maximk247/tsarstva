@@ -7,6 +7,6 @@
     "frontend"
   ],
   "scripts": {
-    "dev": "bun run --filter frontend dev"
+    "dev": "bun run --filter @tsarstva/frontend dev"
   }
 }
