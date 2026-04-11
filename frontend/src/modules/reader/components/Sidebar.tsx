@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { cn } from "@/shared/lib/cn";
 import { KINGS_BOOKS, KINGS_NAMES, type KingsBook, getChaptersWithParallels, getChapterCount } from "@tsarstva/data";
 import { ThemeToggle } from "@/features/theme-toggle";
+import { FontSizeControl } from "@/features/font-size";
 
 interface Props {
   currentBook: string;
@@ -28,7 +29,10 @@ export default function Sidebar({ currentBook, currentChapter }: Props) {
         <p className="font-sans text-sm font-semibold text-stone-800 dark:text-stone-200 tracking-wide">
           Чтение Царств
         </p>
-        <ThemeToggle />
+        <div className="flex items-center gap-1">
+          <FontSizeControl />
+          <ThemeToggle />
+        </div>
       </div>
 
       <div className="px-3 py-3 border-b border-[#E1DDD8] dark:border-stone-700 shrink-0">
