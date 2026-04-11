@@ -2,6 +2,8 @@ import Link from "next/link";
 import { cn } from "@/shared/lib/cn";
 import type { PrecomputedParallel, CrossRefTheme } from "@tsarstva/data";
 
+const NAVIGABLE_BOOKS = new Set(["1sm", "2sm", "1kgs", "2kgs"]);
+
 const THEME_LABELS: Record<CrossRefTheme, string> = {
   same_event: "тот же нарратив",
   prophecy: "пророчество",
@@ -24,17 +26,24 @@ interface Props {
 
 export default function ParallelCard({ ref_ }: Props) {
   const { text, label } = ref_;
+  const isNavigable = NAVIGABLE_BOOKS.has(ref_.book);
   const href = `/read/${ref_.book}/${ref_.chapter}#v${ref_.verse}`;
 
   return (
     <div className="rounded-lg border border-[#E1DDD8] dark:border-stone-700 bg-white dark:bg-stone-900 p-3.5 shadow-sm hover:shadow-md hover:border-[#A8A29E] dark:hover:border-stone-600 transition-all">
       <div className="flex items-start justify-between gap-2 mb-2">
-        <Link
-          href={href}
-          className="font-sans font-semibold text-sm text-stone-900 dark:text-stone-200 hover:text-[#92400E] dark:hover:text-amber-400 transition-colors"
-        >
-          {label}
-        </Link>
+        {isNavigable ? (
+          <Link
+            href={href}
+            className="font-sans font-semibold text-sm text-stone-900 dark:text-stone-200 hover:text-[#92400E] dark:hover:text-amber-400 transition-colors"
+          >
+            {label}
+          </Link>
+        ) : (
+          <span className="font-sans font-semibold text-sm text-stone-900 dark:text-stone-200">
+            {label}
+          </span>
+        )}
         <span
           className={cn(
             "shrink-0 text-xs font-medium font-sans px-1.5 py-0.5 rounded-full",
