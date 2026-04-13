@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import MainText from "./MainText";
 import ParallelPanel from "./ParallelPanel";
 import type { PrecomputedParallel } from "@tsarstva/data";
+import { cn } from "@/shared/lib/cn";
 
 interface Props {
   book: string;
@@ -18,9 +19,11 @@ export default function ReaderLayout({ book, chapter, verses, bookName, parallel
   const [activeVerse, setActiveVerse] = useState<number | null>(null);
   const [selectedVerses, setSelectedVerses] = useState<Set<number>>(new Set());
   const [copied, setCopied] = useState(false);
-  const [tooltipPos, setTooltipPos] = useState<{ y: number; left: number } | null>(null);
+  const [tooltipPos, setTooltipPos] = useState<{ y: number; left: number } | "bottom" | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [panelHeight, setPanelHeight] = useState<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => setMounted(true), []);
 
@@ -109,19 +112,49 @@ export default function ReaderLayout({ book, chapter, verses, bookName, parallel
       const el = document.getElementById(`v${lastVerse}`);
       const container = scrollRef.current;
       if (el && container) {
-        const elRect = el.getBoundingClientRect();
-        const containerRect = container.getBoundingClientRect();
-        setTooltipPos({
-          y: elRect.top + elRect.height / 2,
-          left: containerRect.right + 8,
-        });
+        if (window.innerWidth < 1024) {
+          setTooltipPos("bottom");
+        } else {
+          const elRect = el.getBoundingClientRect();
+          const containerRect = container.getBoundingClientRect();
+          setTooltipPos({
+            y: elRect.top + elRect.height / 2,
+            left: containerRect.right + 8,
+          });
+        }
       }
     };
     updatePos();
+    window.addEventListener("resize", updatePos, { passive: true });
     const container = scrollRef.current;
     container?.addEventListener("scroll", updatePos, { passive: true });
-    return () => container?.removeEventListener("scroll", updatePos);
+    return () => {
+      window.removeEventListener("resize", updatePos);
+      container?.removeEventListener("scroll", updatePos);
+    };
   }, [selectedVerses]);
+
+  useEffect(() => {
+    if (activeVerse === null) setPanelHeight(null);
+  }, [activeVerse]);
+
+  const handleResizeStart = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.currentTarget.setPointerCapture(e.pointerId);
+    const startY = e.clientY;
+    const startHeight = panelRef.current?.getBoundingClientRect().height ?? 300;
+    const handle = e.currentTarget;
+
+    const onMove = (moveE: PointerEvent) => {
+      const dy = startY - moveE.clientY;
+      const containerH = panelRef.current?.parentElement?.getBoundingClientRect().height ?? window.innerHeight;
+      setPanelHeight(Math.max(80, Math.min(startHeight + dy, containerH - 80)));
+    };
+    const onUp = () => handle.removeEventListener("pointermove", onMove);
+    handle.addEventListener("pointermove", onMove);
+    handle.addEventListener("pointerup", onUp, { once: true });
+    handle.addEventListener("pointercancel", onUp, { once: true });
+  }, []);
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -151,19 +184,41 @@ export default function ReaderLayout({ book, chapter, verses, bookName, parallel
 
       <div className="hidden lg:block w-px bg-[#E1DDD8] dark:bg-stone-700 shrink-0" />
 
-      <div className="lg:w-96 xl:w-[440px] shrink-0 overflow-y-auto px-4 sm:px-6 py-6 border-t border-[#E1DDD8] dark:border-stone-700 lg:border-t-0 bg-[#F1EEE9] dark:bg-stone-950/50">
-        <ParallelPanel
-          refs={activeParallels}
-          activeVerse={activeVerse}
-          bookName={bookName}
-          chapter={chapter}
-        />
+      <div
+        ref={panelRef}
+        className={cn(
+          "shrink-0 overflow-y-auto border-t border-[#E1DDD8] dark:border-stone-700 lg:border-t-0 bg-[#F1EEE9] dark:bg-stone-950/50",
+          "lg:w-96 xl:w-[440px]",
+          activeVerse === null && "hidden lg:block"
+        )}
+        style={panelHeight !== null ? { height: panelHeight } : undefined}
+      >
+        {/* Ручка перетаскивания — только на мобиле */}
+        <div
+          className="lg:hidden sticky top-0 z-10 flex justify-center pt-3 pb-2 bg-[#F1EEE9] dark:bg-stone-950/50 cursor-ns-resize touch-none select-none"
+          onPointerDown={handleResizeStart}
+        >
+          <div className="w-10 h-1 rounded-full bg-stone-300 dark:bg-stone-600" />
+        </div>
+
+        <div className="px-4 sm:px-6 pb-6 lg:py-6">
+          <ParallelPanel
+            refs={activeParallels}
+            activeVerse={activeVerse}
+            bookName={bookName}
+            chapter={chapter}
+          />
+        </div>
       </div>
 
       {mounted && selectedVerses.size > 0 && tooltipPos !== null && createPortal(
         <div
           className="fixed z-[9999] flex items-center gap-0.5 rounded-2xl p-1 shadow-2xl select-none bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700"
-          style={{ top: tooltipPos.y, left: tooltipPos.left, transform: "translateY(-50%)" }}
+          style={
+            tooltipPos === "bottom"
+              ? { bottom: "1.5rem", left: "50%", transform: "translateX(-50%)" }
+              : { top: tooltipPos.y, left: tooltipPos.left, transform: "translateY(-50%)" }
+          }
         >
           <span className="px-2.5 text-xs font-medium text-stone-500 dark:text-stone-400 whitespace-nowrap">
             {(() => {

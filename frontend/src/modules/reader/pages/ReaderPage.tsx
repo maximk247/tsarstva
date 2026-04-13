@@ -68,18 +68,16 @@ export default async function ReaderPage({ params }: PageProps) {
 
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
         <header className="lg:hidden shrink-0 z-10 bg-[#FAF9F7]/90 dark:bg-stone-950/90 backdrop-blur border-b border-[#E1DDD8] dark:border-stone-700">
-          <div className="px-4 sm:px-6 flex items-center h-14 gap-4">
+          <div className="px-3 flex items-center h-10 gap-2 border-b border-[#E1DDD8] dark:border-stone-700">
             <BookSelector currentBook={book} currentChapter={chapter} />
-            <div className="flex items-center gap-2 ml-auto">
-              <ChapterNav
-                book={book}
-                chapter={chapter}
-                totalChapters={totalChapters}
-                bookName={bookName}
-              />
-              <ThemeToggle />
-            </div>
+            <ThemeToggle />
           </div>
+          <ChapterNav
+            book={book}
+            chapter={chapter}
+            totalChapters={totalChapters}
+            bookName={bookName}
+          />
         </header>
 
         <main className="flex-1 flex overflow-hidden">
