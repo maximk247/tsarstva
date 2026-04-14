@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { VerseItem } from "@/entities/verse";
 
 interface Props {
@@ -11,7 +12,7 @@ interface Props {
   onCheckStart: (verse: number) => void;
 }
 
-export default function MainText({ verses, versesWithParallels, activeVerse, selectedVerses, onVerseClick, onCheckStart }: Props) {
+export default memo(function MainText({ verses, versesWithParallels, activeVerse, selectedVerses, onVerseClick, onCheckStart }: Props) {
   return (
     <div className="space-y-0.5">
       {verses.map((text, idx) => {
@@ -31,4 +32,4 @@ export default function MainText({ verses, versesWithParallels, activeVerse, sel
       })}
     </div>
   );
-}
+});

@@ -7,6 +7,8 @@ import ParallelPanel from "./ParallelPanel";
 import type { PrecomputedParallel } from "@tsarstva/data";
 import { cn } from "@/shared/lib/cn";
 
+const EMPTY_PARALLELS: PrecomputedParallel[] = [];
+
 interface Props {
   book: string;
   chapter: number;
@@ -24,6 +26,8 @@ export default function ReaderLayout({ book, chapter, verses, bookName, parallel
   const [panelHeight, setPanelHeight] = useState<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const copiedTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const updatePosRafRef = useRef<number>(undefined);
 
   useEffect(() => setMounted(true), []);
 
@@ -32,7 +36,10 @@ export default function ReaderLayout({ book, chapter, verses, bookName, parallel
     [parallelsMap]
   );
 
-  const activeParallels = activeVerse !== null ? (parallelsMap[activeVerse] ?? []) : [];
+  const activeParallels = useMemo(
+    () => activeVerse !== null ? (parallelsMap[activeVerse] ?? EMPTY_PARALLELS) : EMPTY_PARALLELS,
+    [activeVerse, parallelsMap]
+  );
 
   const handleVerseClick = useCallback((v: number) => {
     setActiveVerse((prev) => (prev === v ? null : v));
@@ -58,7 +65,7 @@ export default function ReaderLayout({ book, chapter, verses, bookName, parallel
     const onMove = (e: PointerEvent) => {
       const dv = dragValueRef.current;
       if (dv === null) return;
-      const el = document.elementFromPoint(e.clientX, e.clientY);
+      const el = e.target instanceof Element ? e.target : null;
       const verseEl = el?.closest("[id^='v']");
       if (!verseEl) return;
       const match = verseEl.id.match(/^v(\d+)$/);
@@ -97,8 +104,11 @@ export default function ReaderLayout({ book, chapter, verses, bookName, parallel
     const lines = sorted.map((v) => `${v} ${verses[v - 1]}`);
     navigator.clipboard.writeText(`${ref}\n\n${lines.join("\n")}`);
     setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+    clearTimeout(copiedTimerRef.current);
+    copiedTimerRef.current = setTimeout(() => setCopied(false), 1500);
   }, [selectedVerses, verses, bookName, chapter]);
+
+  useEffect(() => () => clearTimeout(copiedTimerRef.current), []);
 
   const clearSelection = useCallback(() => setSelectedVerses(new Set()), []);
 
@@ -109,26 +119,30 @@ export default function ReaderLayout({ book, chapter, verses, bookName, parallel
     }
     const lastVerse = Math.max(...Array.from(selectedVerses));
     const updatePos = () => {
-      const el = document.getElementById(`v${lastVerse}`);
-      const container = scrollRef.current;
-      if (el && container) {
-        if (window.innerWidth < 1024) {
-          setTooltipPos("bottom");
-        } else {
-          const elRect = el.getBoundingClientRect();
-          const containerRect = container.getBoundingClientRect();
-          setTooltipPos({
-            y: elRect.top + elRect.height / 2,
-            left: containerRect.right + 8,
-          });
+      cancelAnimationFrame(updatePosRafRef.current!);
+      updatePosRafRef.current = requestAnimationFrame(() => {
+        const el = document.getElementById(`v${lastVerse}`);
+        const container = scrollRef.current;
+        if (el && container) {
+          if (window.innerWidth < 1024) {
+            setTooltipPos("bottom");
+          } else {
+            const elRect = el.getBoundingClientRect();
+            const containerRect = container.getBoundingClientRect();
+            setTooltipPos({
+              y: elRect.top + elRect.height / 2,
+              left: containerRect.right + 8,
+            });
+          }
         }
-      }
+      });
     };
     updatePos();
     window.addEventListener("resize", updatePos, { passive: true });
     const container = scrollRef.current;
     container?.addEventListener("scroll", updatePos, { passive: true });
     return () => {
+      cancelAnimationFrame(updatePosRafRef.current!);
       window.removeEventListener("resize", updatePos);
       container?.removeEventListener("scroll", updatePos);
     };
@@ -137,6 +151,23 @@ export default function ReaderLayout({ book, chapter, verses, bookName, parallel
   useEffect(() => {
     if (activeVerse === null) setPanelHeight(null);
   }, [activeVerse]);
+
+  const tooltipLabel = useMemo(() => {
+    if (selectedVerses.size === 0) return "";
+    const sorted = Array.from(selectedVerses).sort((a, b) => a - b);
+    const ranges: string[] = [];
+    let start = sorted[0], end = sorted[0];
+    for (let i = 1; i < sorted.length; i++) {
+      if (sorted[i] === end + 1) {
+        end = sorted[i];
+      } else {
+        ranges.push(start === end ? String(start) : `${start}–${end}`);
+        start = end = sorted[i];
+      }
+    }
+    ranges.push(start === end ? String(start) : `${start}–${end}`);
+    return `${bookName} ${chapter}:${ranges.join(", ")}`;
+  }, [selectedVerses, bookName, chapter]);
 
   const handleResizeStart = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -221,21 +252,7 @@ export default function ReaderLayout({ book, chapter, verses, bookName, parallel
           }
         >
           <span className="px-2.5 text-xs font-medium text-stone-500 dark:text-stone-400 whitespace-nowrap">
-            {(() => {
-              const sorted = Array.from(selectedVerses).sort((a, b) => a - b);
-              const ranges: string[] = [];
-              let start = sorted[0], end = sorted[0];
-              for (let i = 1; i < sorted.length; i++) {
-                if (sorted[i] === end + 1) {
-                  end = sorted[i];
-                } else {
-                  ranges.push(start === end ? String(start) : `${start}–${end}`);
-                  start = end = sorted[i];
-                }
-              }
-              ranges.push(start === end ? String(start) : `${start}–${end}`);
-              return `${bookName} ${chapter}:${ranges.join(", ")}`;
-            })()}
+            {tooltipLabel}
           </span>
           <button
             onClick={handleCopy}

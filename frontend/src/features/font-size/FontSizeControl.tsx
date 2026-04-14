@@ -16,6 +16,13 @@ type SizeKey = (typeof SIZES)[number]["key"];
 
 const LS_KEY = "bible-font-size";
 
+const btnClass =
+  "w-7 h-7 flex items-center justify-center rounded-md transition-colors duration-150 " +
+  "text-stone-500 hover:text-stone-800 hover:bg-[var(--hover)] " +
+  "dark:text-stone-400 dark:hover:text-stone-100 dark:hover:bg-stone-800 " +
+  "disabled:opacity-30 disabled:cursor-default disabled:hover:bg-transparent disabled:hover:text-stone-500 " +
+  "dark:disabled:hover:bg-transparent dark:disabled:hover:text-stone-400";
+
 function applySize(key: SizeKey) {
   const size = SIZES.find((s) => s.key === key)!;
   document.documentElement.style.setProperty("--bible-font-size", size.value);
@@ -39,13 +46,6 @@ export default function FontSizeControl() {
     applySize(next.key);
     localStorage.setItem(LS_KEY, next.key);
   };
-
-  const btnClass =
-    "w-7 h-7 flex items-center justify-center rounded-md transition-colors duration-150 " +
-    "text-stone-500 hover:text-stone-800 hover:bg-[var(--hover)] " +
-    "dark:text-stone-400 dark:hover:text-stone-100 dark:hover:bg-stone-800 " +
-    "disabled:opacity-30 disabled:cursor-default disabled:hover:bg-transparent disabled:hover:text-stone-500 " +
-    "dark:disabled:hover:bg-transparent dark:disabled:hover:text-stone-400";
 
   return (
     <div className="flex items-center gap-0.5">

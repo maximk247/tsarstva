@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { ParallelCard } from "@/entities/cross-ref";
 import type { PrecomputedParallel } from "@tsarstva/data";
 
@@ -8,7 +9,7 @@ interface Props {
   chapter: number;
 }
 
-export default function ParallelPanel({ refs, activeVerse, bookName, chapter }: Props) {
+export default memo(function ParallelPanel({ refs, activeVerse, bookName, chapter }: Props) {
   if (activeVerse === null) {
     return (
       <div className="flex flex-col items-center justify-center h-64 text-center px-4">
@@ -37,11 +38,11 @@ export default function ParallelPanel({ refs, activeVerse, bookName, chapter }: 
         </p>
       ) : (
         <div className="space-y-3">
-          {refs.map((ref, i) => (
-            <ParallelCard key={i} ref_={ref} />
+          {refs.map((ref) => (
+            <ParallelCard key={`${ref.book}:${ref.chapter}:${ref.verse}`} ref_={ref} />
           ))}
         </div>
       )}
     </div>
   );
-}
+});
