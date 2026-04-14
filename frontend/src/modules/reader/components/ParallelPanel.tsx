@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { ParallelCard } from "@/entities/cross-ref";
 import type { PrecomputedParallel } from "@tsarstva/data";
+import { ReportButton } from "@/features/report-issue";
 
 interface Props {
   refs: PrecomputedParallel[];
@@ -27,9 +28,15 @@ export default memo(function ParallelPanel({ refs, activeVerse, bookName, chapte
         <p className="font-sans text-xs text-stone-400 dark:text-stone-400 uppercase tracking-wider mb-0.5">
           Параллельные места
         </p>
-        <p className="font-sans font-medium text-stone-600 dark:text-stone-200 text-sm">
-          {bookName} {chapter}:{activeVerse}
-        </p>
+        <div className="flex items-center justify-between gap-2">
+          <p className="font-sans font-medium text-stone-600 dark:text-stone-200 text-sm">
+            {bookName} {chapter}:{activeVerse}
+          </p>
+          <ReportButton
+            type="verse"
+            reference={`${bookName} ${chapter}:${activeVerse}`}
+          />
+        </div>
       </div>
 
       {refs.length === 0 ? (
@@ -39,7 +46,11 @@ export default memo(function ParallelPanel({ refs, activeVerse, bookName, chapte
       ) : (
         <div className="space-y-3">
           {refs.map((ref) => (
-            <ParallelCard key={`${ref.book}:${ref.chapter}:${ref.verse}`} ref_={ref} />
+            <ParallelCard
+              key={`${ref.book}:${ref.chapter}:${ref.verse}`}
+              ref_={ref}
+              sourceRef={`${bookName} ${chapter}:${activeVerse}`}
+            />
           ))}
         </div>
       )}

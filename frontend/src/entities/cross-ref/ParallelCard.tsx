@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { cn } from "@/shared/lib/cn";
 import type { PrecomputedParallel, CrossRefTheme } from "@tsarstva/data";
+import { ReportButton } from "@/features/report-issue";
 
 const NAVIGABLE_BOOKS = new Set(["1sm", "2sm", "1kgs", "2kgs"]);
 
@@ -22,15 +23,16 @@ const THEME_COLORS: Record<CrossRefTheme, string> = {
 
 interface Props {
   ref_: PrecomputedParallel;
+  sourceRef?: string;
 }
 
-export default function ParallelCard({ ref_ }: Props) {
+export default function ParallelCard({ ref_, sourceRef }: Props) {
   const { text, label } = ref_;
   const isNavigable = NAVIGABLE_BOOKS.has(ref_.book);
   const href = `/read/${ref_.book}/${ref_.chapter}#v${ref_.verse}`;
 
   return (
-    <div className="rounded-lg border border-[#E1DDD8] dark:border-stone-700 bg-white dark:bg-stone-900 p-3.5 shadow-sm hover:shadow-md hover:border-[#A8A29E] dark:hover:border-stone-600 transition-all">
+    <div className="group rounded-lg border border-[#E1DDD8] dark:border-stone-700 bg-white dark:bg-stone-900 p-3.5 shadow-sm hover:shadow-md hover:border-[#A8A29E] dark:hover:border-stone-600 transition-all">
       <div className="flex items-start justify-between gap-2 mb-2">
         {isNavigable ? (
           <Link
@@ -44,14 +46,24 @@ export default function ParallelCard({ ref_ }: Props) {
             {label}
           </span>
         )}
-        <span
-          className={cn(
-            "shrink-0 text-xs font-medium font-sans px-1.5 py-0.5 rounded-full",
-            THEME_COLORS[ref_.theme]
-          )}
-        >
-          {THEME_LABELS[ref_.theme]}
-        </span>
+        <div className="flex items-center gap-1 shrink-0">
+          <span
+            className={cn(
+              "text-xs font-medium font-sans px-1.5 py-0.5 rounded-full",
+              THEME_COLORS[ref_.theme]
+            )}
+          >
+            {THEME_LABELS[ref_.theme]}
+          </span>
+          <span className="opacity-0 group-hover:opacity-100 transition-opacity">
+            <ReportButton
+              type="parallel"
+              reference={sourceRef ?? "?"}
+              parallelRef={label}
+              parallelText={text}
+            />
+          </span>
+        </div>
       </div>
 
       {text && (
