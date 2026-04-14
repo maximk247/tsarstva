@@ -1,7 +1,9 @@
 import { memo } from "react";
+import dynamic from "next/dynamic";
 import { ParallelCard } from "@/entities/cross-ref";
 import type { PrecomputedParallel } from "@tsarstva/data";
-import { ReportButton } from "@/features/report-issue";
+
+const ReportButton = dynamic(() => import("@/features/report-issue/ReportButton"), { ssr: false });
 
 interface Props {
   refs: PrecomputedParallel[];

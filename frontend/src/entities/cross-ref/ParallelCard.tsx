@@ -1,7 +1,9 @@
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { cn } from "@/shared/lib/cn";
 import type { PrecomputedParallel, CrossRefTheme } from "@tsarstva/data";
-import { ReportButton } from "@/features/report-issue";
+
+const ReportButton = dynamic(() => import("@/features/report-issue/ReportButton"), { ssr: false });
 
 const NAVIGABLE_BOOKS = new Set(["1sm", "2sm", "1kgs", "2kgs"]);
 
