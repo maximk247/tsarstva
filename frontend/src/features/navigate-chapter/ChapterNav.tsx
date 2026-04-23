@@ -13,7 +13,12 @@ interface Props {
   bookName: string;
 }
 
-export default function ChapterNav({ book, chapter, totalChapters, bookName }: Props) {
+export default function ChapterNav({
+  book,
+  chapter,
+  totalChapters,
+  bookName,
+}: Props) {
   const prevChapter = chapter > 1 ? chapter - 1 : null;
   const nextChapter = chapter < totalChapters ? chapter + 1 : null;
   const [open, setOpen] = useState(false);
@@ -22,14 +27,21 @@ export default function ChapterNav({ book, chapter, totalChapters, bookName }: P
   useEffect(() => {
     if (!open) return;
     const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+      if (ref.current && !ref.current.contains(e.target as Node))
+        setOpen(false);
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, [open]);
 
-  const chapters = useMemo(() => Array.from({ length: totalChapters }, (_, i) => i + 1), [totalChapters]);
-  const chaptersWithParallels = useMemo(() => getChaptersWithParallels(book), [book]);
+  const chapters = useMemo(
+    () => Array.from({ length: totalChapters }, (_, i) => i + 1),
+    [totalChapters],
+  );
+  const chaptersWithParallels = useMemo(
+    () => getChaptersWithParallels(book),
+    [book],
+  );
 
   return (
     <div className="flex items-center justify-between py-3 px-1">
@@ -40,7 +52,7 @@ export default function ChapterNav({ book, chapter, totalChapters, bookName }: P
           "flex items-center gap-1 text-sm font-sans px-3 py-1.5 rounded-md transition-colors",
           prevChapter
             ? "text-stone-600 hover:text-stone-900 hover:bg-[#F5F2F1] dark:text-stone-300 dark:hover:text-stone-100 dark:hover:bg-stone-700/40"
-            : "text-stone-300 dark:text-stone-600 pointer-events-none"
+            : "text-stone-300 dark:text-stone-600 pointer-events-none",
         )}
       >
         <ChevronLeft size={16} />
@@ -75,15 +87,19 @@ export default function ChapterNav({ book, chapter, totalChapters, bookName }: P
                     "flex flex-col items-center justify-center w-8 h-9 text-sm font-sans rounded-md transition-colors",
                     ch === chapter
                       ? "bg-amber-900 text-[#FAF9F7] dark:bg-stone-200 dark:text-stone-900 font-semibold"
-                      : "text-stone-600 dark:text-stone-300 hover:bg-[#F5F2F1] dark:hover:bg-stone-700/40"
+                      : "text-stone-600 dark:text-stone-300 hover:bg-[#F5F2F1] dark:hover:bg-stone-700/40",
                   )}
                 >
                   {ch}
                   {chaptersWithParallels.has(ch) ? (
-                    <span className={cn(
-                      "w-1 h-1 rounded-full",
-                      ch === chapter ? "bg-[#DA8107] dark:bg-stone-600" : "bg-[#DA8107] dark:bg-amber-400"
-                    )} />
+                    <span
+                      className={cn(
+                        "w-1 h-1 rounded-full",
+                        ch === chapter
+                          ? "bg-[#DA8107] dark:bg-stone-600"
+                          : "bg-[#DA8107] dark:bg-amber-400",
+                      )}
+                    />
                   ) : (
                     <span className="w-1 h-1" />
                   )}
@@ -101,7 +117,7 @@ export default function ChapterNav({ book, chapter, totalChapters, bookName }: P
           "flex items-center gap-1 text-sm font-sans px-3 py-1.5 rounded-md transition-colors",
           nextChapter
             ? "text-stone-600 hover:text-stone-900 hover:bg-[#F5F2F1] dark:text-stone-300 dark:hover:text-stone-100 dark:hover:bg-stone-700/40"
-            : "text-stone-300 dark:text-stone-600 pointer-events-none"
+            : "text-stone-300 dark:text-stone-600 pointer-events-none",
         )}
       >
         <span>Гл. {nextChapter ?? totalChapters}</span>

@@ -2,6 +2,7 @@
 import { readFileSync } from "fs";
 import { join } from "path";
 import { bible } from "./bible-meta";
+import type { Chapter } from "./types";
 
 const BOOKS_DIR = join(process.cwd(), "..", "data", "json", "bible", "books");
 
@@ -16,32 +17,46 @@ function psalmLxxToHebrew(lxx: number): number {
   return lxx;
 }
 
-export function getChapter(abbrev: string, chapter: number): string[] | null {
+export function getChapter(abbrev: string, chapter: number): Chapter | null {
   if (!bible[abbrev]) return null;
   const idx = abbrev === "ps" ? psalmLxxToHebrew(chapter) : chapter;
   try {
     const raw = readFileSync(join(BOOKS_DIR, abbrev, `${idx}.json`), "utf8");
-    const verses: string[] = JSON.parse(raw);
-    return verses.map(v => v.replace(/^\(\d+:\d+\)\s*/, ""));
+    const verses: Chapter = JSON.parse(raw);
+    for (const k in verses) {
+      verses[k as unknown as number] = verses[k as unknown as number].replace(
+        /^\(\d+:\d+\)\s*/,
+        "",
+      );
+    }
+    return verses;
   } catch {
     return null;
   }
 }
 
-export function getVerseText(abbrev: string, chapter: number, verse: number): string | null {
+export function getVerseText(
+  abbrev: string,
+  chapter: number,
+  verse: number,
+): string | null {
   const verses = getChapter(abbrev, chapter);
-  if (!verses) return null;
-  return verses[verse - 1] ?? null;
+  return verses?.[verse] ?? null;
 }
 
 export function getVerseRange(
   abbrev: string,
   chapter: number,
   from: number,
-  to?: number
+  to?: number,
 ): string {
   const verses = getChapter(abbrev, chapter);
   if (!verses) return "";
   const end = to ?? from;
-  return verses.slice(from - 1, end).join(" ");
+  const parts: string[] = [];
+  for (let v = from; v <= end; v++) {
+    const text = verses[v];
+    if (text) parts.push(text);
+  }
+  return parts.join(" ");
 }

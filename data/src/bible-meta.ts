@@ -12,7 +12,9 @@ export function getChapterCount(abbrev: string): number {
   return bible[abbrev]?.chapterCount ?? 0;
 }
 
-export function formatRef(ref: Pick<CrossRef, "book" | "chapter" | "verse" | "verseEnd">): string {
+export function formatRef(
+  ref: Pick<CrossRef, "book" | "chapter" | "verse" | "verseEnd">,
+): string {
   const book = bible[ref.book];
   const name = book?.nameShort ?? ref.book;
   if (ref.verseEnd && ref.verseEnd !== ref.verse) {

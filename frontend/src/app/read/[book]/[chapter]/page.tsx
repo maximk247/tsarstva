@@ -1,1 +1,5 @@
-export { ReaderPage as default, generateStaticParams, generateMetadata } from "@/modules/reader";
+export {
+  ReaderPage as default,
+  generateStaticParams,
+  generateMetadata,
+} from "@/modules/reader";

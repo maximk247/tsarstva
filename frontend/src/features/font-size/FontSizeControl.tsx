@@ -2,7 +2,8 @@
 
 import { useEffect, useLayoutEffect, useState } from "react";
 
-const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 const SIZES = [
   { key: "xs", value: "0.8125rem" },
@@ -33,7 +34,9 @@ export default function FontSizeControl() {
 
   useIsomorphicLayoutEffect(() => {
     const stored = localStorage.getItem(LS_KEY) as SizeKey | null;
-    const key = SIZES.some((s) => s.key === stored) ? (stored as SizeKey) : "md";
+    const key = SIZES.some((s) => s.key === stored)
+      ? (stored as SizeKey)
+      : "md";
     setCurrent(key);
     applySize(key);
   }, []);
@@ -56,7 +59,12 @@ export default function FontSizeControl() {
         title="Уменьшить шрифт"
         className={btnClass}
       >
-        <span className="font-serif leading-none" style={{ fontSize: "11px", fontWeight: 600 }}>A</span>
+        <span
+          className="font-serif leading-none"
+          style={{ fontSize: "11px", fontWeight: 600 }}
+        >
+          A
+        </span>
       </button>
       <button
         onClick={() => change(1)}
@@ -65,7 +73,12 @@ export default function FontSizeControl() {
         title="Увеличить шрифт"
         className={btnClass}
       >
-        <span className="font-serif leading-none" style={{ fontSize: "15px", fontWeight: 600 }}>A</span>
+        <span
+          className="font-serif leading-none"
+          style={{ fontSize: "15px", fontWeight: 600 }}
+        >
+          A
+        </span>
       </button>
     </div>
   );

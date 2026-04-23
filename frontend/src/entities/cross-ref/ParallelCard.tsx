@@ -3,7 +3,10 @@ import dynamic from "next/dynamic";
 import { cn } from "@/shared/lib/cn";
 import type { PrecomputedParallel, CrossRefTheme } from "@tsarstva/data";
 
-const ReportButton = dynamic(() => import("@/features/report-issue/ReportButton"), { ssr: false });
+const ReportButton = dynamic(
+  () => import("@/features/report-issue/ReportButton"),
+  { ssr: false },
+);
 
 const NAVIGABLE_BOOKS = new Set(["1sm", "2sm", "1kgs", "2kgs"]);
 
@@ -16,11 +19,15 @@ const THEME_LABELS: Record<CrossRefTheme, string> = {
 };
 
 const THEME_COLORS: Record<CrossRefTheme, string> = {
-  same_event:  "bg-[#78350F] text-[#FAF9F7]  dark:bg-amber-900/50 dark:text-amber-200",
-  prophecy:    "bg-[#92400E] text-[#FAF9F7]  dark:bg-amber-800/50 dark:text-amber-300",
-  theological: "bg-[#44403C] text-[#FAF9F7]  dark:bg-stone-600/50 dark:text-stone-200",
-  genealogy:   "bg-[#FEF3CC] text-[#78350F]  dark:bg-amber-900/30 dark:text-amber-300",
-  tsk:         "bg-[#F5F2F1] text-stone-600  dark:bg-stone-800    dark:text-stone-400",
+  same_event:
+    "bg-[#78350F] text-[#FAF9F7]  dark:bg-amber-900/50 dark:text-amber-200",
+  prophecy:
+    "bg-[#92400E] text-[#FAF9F7]  dark:bg-amber-800/50 dark:text-amber-300",
+  theological:
+    "bg-[#44403C] text-[#FAF9F7]  dark:bg-stone-600/50 dark:text-stone-200",
+  genealogy:
+    "bg-[#FEF3CC] text-[#78350F]  dark:bg-amber-900/30 dark:text-amber-300",
+  tsk: "bg-[#F5F2F1] text-stone-600  dark:bg-stone-800    dark:text-stone-400",
 };
 
 interface Props {
@@ -52,7 +59,7 @@ export default function ParallelCard({ ref_, sourceRef }: Props) {
           <span
             className={cn(
               "text-xs font-medium font-sans px-1.5 py-0.5 rounded-full",
-              THEME_COLORS[ref_.theme]
+              THEME_COLORS[ref_.theme],
             )}
           >
             {THEME_LABELS[ref_.theme]}

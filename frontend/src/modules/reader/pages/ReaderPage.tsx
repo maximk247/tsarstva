@@ -3,8 +3,11 @@ import type { Metadata } from "next";
 import { ChapterNav, BookSelector } from "@/features/navigate-chapter";
 import { ThemeToggle } from "@/features/theme-toggle";
 import {
-  getChapterCount, getBookName, KINGS_BOOKS,
-  getChapterParallels, formatRef,
+  getChapterCount,
+  getBookName,
+  KINGS_BOOKS,
+  getChapterParallels,
+  formatRef,
   type PrecomputedParallel,
 } from "@tsarstva/data";
 import { getChapter, getVerseRange } from "@tsarstva/data/server";
@@ -26,7 +29,9 @@ export async function generateStaticParams() {
   return params;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { book, chapter } = await params;
   const bookName = getBookName(book);
   return {
@@ -52,7 +57,11 @@ export default async function ReaderPage({ params }: PageProps) {
   const totalChapters = getChapterCount(book);
 
   // Precompute all parallel texts at build time so the client never calls readFileSync
-  const chapterParallels = getChapterParallels(book, chapter, verses.length);
+  const chapterParallels = getChapterParallels(
+    book,
+    chapter,
+    Object.keys(verses).length,
+  );
   const parallelsMap: Record<number, PrecomputedParallel[]> = {};
   for (const [verseNum, refs] of chapterParallels) {
     parallelsMap[verseNum] = refs.map((ref) => ({

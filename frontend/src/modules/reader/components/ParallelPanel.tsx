@@ -3,7 +3,10 @@ import dynamic from "next/dynamic";
 import { ParallelCard } from "@/entities/cross-ref";
 import type { PrecomputedParallel } from "@tsarstva/data";
 
-const ReportButton = dynamic(() => import("@/features/report-issue/ReportButton"), { ssr: false });
+const ReportButton = dynamic(
+  () => import("@/features/report-issue/ReportButton"),
+  { ssr: false },
+);
 
 interface Props {
   refs: PrecomputedParallel[];
@@ -12,7 +15,12 @@ interface Props {
   chapter: number;
 }
 
-export default memo(function ParallelPanel({ refs, activeVerse, bookName, chapter }: Props) {
+export default memo(function ParallelPanel({
+  refs,
+  activeVerse,
+  bookName,
+  chapter,
+}: Props) {
   if (activeVerse === null) {
     return (
       <div className="flex flex-col items-center justify-center h-64 text-center px-4">

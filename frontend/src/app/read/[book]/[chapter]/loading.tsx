@@ -9,7 +9,10 @@ export default function Loading() {
         <div className="px-3 py-3 border-b border-[#E1DDD8] dark:border-stone-700">
           <div className="flex flex-col gap-1.5">
             {Array.from({ length: 4 }, (_, i) => (
-              <div key={i} className="h-7 bg-stone-100 dark:bg-stone-800 rounded-md animate-pulse" />
+              <div
+                key={i}
+                className="h-7 bg-stone-100 dark:bg-stone-800 rounded-md animate-pulse"
+              />
             ))}
           </div>
         </div>
@@ -17,7 +20,10 @@ export default function Loading() {
           <div className="h-3 w-12 bg-stone-200 dark:bg-stone-700 rounded animate-pulse mb-3" />
           <div className="grid grid-cols-5 gap-1">
             {Array.from({ length: 25 }, (_, i) => (
-              <div key={i} className="h-9 bg-stone-100 dark:bg-stone-800 rounded-md animate-pulse" />
+              <div
+                key={i}
+                className="h-9 bg-stone-100 dark:bg-stone-800 rounded-md animate-pulse"
+              />
             ))}
           </div>
         </div>
@@ -44,7 +50,7 @@ export default function Loading() {
                     <div className="w-5 h-4 bg-stone-200 dark:bg-stone-700 rounded animate-pulse shrink-0" />
                     <div
                       className="h-4 bg-stone-100 dark:bg-stone-800 rounded animate-pulse"
-                      style={{ width: `${55 + (i * 17) % 40}%` }}
+                      style={{ width: `${55 + ((i * 17) % 40)}%` }}
                     />
                   </div>
                 ))}

@@ -2,9 +2,10 @@
 
 import { memo } from "react";
 import { VerseItem } from "@/entities/verse";
+import type { Chapter } from "@tsarstva/data";
 
 interface Props {
-  verses: string[];
+  verses: Chapter;
   versesWithParallels: Set<number>;
   activeVerse: number | null;
   selectedVerses: Set<number>;
@@ -12,11 +13,18 @@ interface Props {
   onCheckStart: (verse: number) => void;
 }
 
-export default memo(function MainText({ verses, versesWithParallels, activeVerse, selectedVerses, onVerseClick, onCheckStart }: Props) {
+export default memo(function MainText({
+  verses,
+  versesWithParallels,
+  activeVerse,
+  selectedVerses,
+  onVerseClick,
+  onCheckStart,
+}: Props) {
   return (
     <div className="space-y-0.5">
-      {verses.map((text, idx) => {
-        const verseNum = idx + 1;
+      {Object.entries(verses).map(([num, text]) => {
+        const verseNum = Number(num);
         return (
           <VerseItem
             key={verseNum}

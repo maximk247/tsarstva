@@ -24,7 +24,7 @@ for (const entry of manualData.refs) {
 export function getParallelsForVerse(
   book: string,
   chapter: number,
-  verse: number
+  verse: number,
 ): CrossRef[] {
   const key = `${book}:${chapter}:${verse}`;
   return manualIndex[key] ?? [];
@@ -42,7 +42,7 @@ export function getChaptersWithParallels(book: string): Set<number> {
 export function getChapterParallels(
   book: string,
   chapter: number,
-  verseCount: number
+  verseCount: number,
 ): Map<number, CrossRef[]> {
   const result = new Map<number, CrossRef[]>();
   for (let v = 1; v <= verseCount; v++) {

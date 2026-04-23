@@ -31,8 +31,8 @@ export default memo(function VerseItem({
         isActive
           ? "bg-[#FEF3CC] dark:bg-amber-800/30"
           : isSelected
-          ? "bg-amber-50 dark:bg-amber-900/20"
-          : "hover:bg-[#F5F2F1] dark:hover:bg-stone-700/40",
+            ? "bg-amber-50 dark:bg-amber-900/20"
+            : "hover:bg-[#F5F2F1] dark:hover:bg-stone-700/40",
       )}
     >
       <span className="select-none text-xs font-sans font-semibold text-stone-400 dark:text-stone-500 mr-1.5 align-top mt-1 inline-block w-5 text-right shrink-0">
@@ -51,7 +51,11 @@ export default memo(function VerseItem({
 
       {/* Большая область нажатия, кастомный чекбокс */}
       <span
-        onPointerDown={(e) => { e.preventDefault(); e.stopPropagation(); onCheckStart(verseNum); }}
+        onPointerDown={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onCheckStart(verseNum);
+        }}
         onClick={(e) => e.stopPropagation()}
         className="absolute right-0 top-0 bottom-0 w-8 flex items-center justify-center cursor-pointer"
       >
@@ -65,7 +69,13 @@ export default memo(function VerseItem({
         >
           {isSelected && (
             <svg width="9" height="9" viewBox="0 0 9 9" fill="none">
-              <path d="M1.5 5l2.5 2.5 4-4.5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d="M1.5 5l2.5 2.5 4-4.5"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           )}
         </span>

@@ -11,11 +11,11 @@ export interface BibleData {
 }
 
 export type CrossRefTheme =
-  | "same_event"       // тот же нарратив в другой книге
-  | "prophecy"         // пророчество / исполнение
-  | "theological"      // богословская параллель
-  | "genealogy"        // родословная параллель
-  | "tsk";             // из TSK (OpenBible, без метки)
+  | "same_event" // тот же нарратив в другой книге
+  | "prophecy" // пророчество / исполнение
+  | "theological" // богословская параллель
+  | "genealogy" // родословная параллель
+  | "tsk"; // из TSK (OpenBible, без метки)
 
 export interface CrossRef {
   book: string;
@@ -36,7 +36,7 @@ export interface TskEntry {
 }
 
 export interface ManualEntry {
-  from: string;         // "1kgs:1:1"
+  from: string; // "1kgs:1:1"
   to: string;
   toEnd?: number;
   theme: CrossRefTheme;
@@ -53,6 +53,8 @@ export interface PrecomputedParallel extends CrossRef {
   text: string;
   label: string;
 }
+
+export type Chapter = Record<number, string>;
 
 export const KINGS_BOOKS = ["1sm", "2sm", "1kgs", "2kgs"] as const;
 export type KingsBook = (typeof KINGS_BOOKS)[number];

@@ -26,9 +26,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" className={`${inter.variable} ${alegreya.variable} h-full`} suppressHydrationWarning>
+    <html
+      lang="ru"
+      className={`${inter.variable} ${alegreya.variable} h-full`}
+      suppressHydrationWarning
+    >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: `(function(){var s={xs:'0.8125rem',sm:'0.9375rem',md:'1.0625rem',lg:'1.1875rem',xl:'1.3125rem'};var k=localStorage.getItem('bible-font-size');if(s[k])document.documentElement.style.setProperty('--bible-font-size',s[k]);})()` }} />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var s={xs:'0.8125rem',sm:'0.9375rem',md:'1.0625rem',lg:'1.1875rem',xl:'1.3125rem'};var k=localStorage.getItem('bible-font-size');if(s[k])document.documentElement.style.setProperty('--bible-font-size',s[k]);})()`,
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col antialiased">
         <ThemeProvider>{children}</ThemeProvider>

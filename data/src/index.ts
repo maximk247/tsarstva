@@ -8,6 +8,7 @@ export type {
   ManualEntry,
   VerseRef,
   KingsBook,
+  Chapter,
 } from "./types";
 
 export { KINGS_BOOKS, KINGS_NAMES } from "./types";

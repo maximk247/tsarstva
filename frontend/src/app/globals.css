@@ -8,37 +8,37 @@
 }
 
 :root {
-  --background:        #FAF9F7;
-  --card:              #FFFFFF;
-  --sidebar:           #F1EEE9;
-  --hover:             #F5F2F1;
-  --muted:             #F1EEE9;
-  --foreground:        #1C1917;
-  --muted-foreground:  #A8A29E;
-  --text-secondary:    #57534E;
-  --border:            #E1DDD8;
-  --accent:            #78350F;
-  --accent-medium:     #92400E;
-  --accent-subtle:     #DA8107;
-  --active-verse:        #FEF3CC;
+  --background: #faf9f7;
+  --card: #ffffff;
+  --sidebar: #f1eee9;
+  --hover: #f5f2f1;
+  --muted: #f1eee9;
+  --foreground: #1c1917;
+  --muted-foreground: #a8a29e;
+  --text-secondary: #57534e;
+  --border: #e1ddd8;
+  --accent: #78350f;
+  --accent-medium: #92400e;
+  --accent-subtle: #da8107;
+  --active-verse: #fef3cc;
   --active-verse-border: transparent;
 }
 
 .dark {
-  --background:        #1C1917;
-  --card:              #292524;
-  --sidebar:           #161412;
-  --hover:             #2A2827;
-  --muted:             #292524;
-  --foreground:        #FAFAF7;
-  --muted-foreground:  #A8A29E;
-  --text-secondary:    #78716C;
-  --border:            #44403C;
-  --accent:            #D97706;
-  --accent-medium:     #B45309;
-  --accent-subtle:     #F59E0B;
-  --active-verse:        #451A03;
-  --active-verse-border: #92400E;
+  --background: #1c1917;
+  --card: #292524;
+  --sidebar: #161412;
+  --hover: #2a2827;
+  --muted: #292524;
+  --foreground: #fafaf7;
+  --muted-foreground: #a8a29e;
+  --text-secondary: #78716c;
+  --border: #44403c;
+  --accent: #d97706;
+  --accent-medium: #b45309;
+  --accent-subtle: #f59e0b;
+  --active-verse: #451a03;
+  --active-verse-border: #92400e;
 }
 
 body {
@@ -54,8 +54,22 @@ body {
   letter-spacing: 0.01em;
 }
 
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; transition: background 0.2s; }
-::-webkit-scrollbar-thumb:hover { background: var(--muted-foreground); }
-* { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}

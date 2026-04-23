@@ -3,7 +3,13 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import { cn } from "@/shared/lib/cn";
-import { KINGS_BOOKS, KINGS_NAMES, type KingsBook, getChaptersWithParallels, getChapterCount } from "@tsarstva/data";
+import {
+  KINGS_BOOKS,
+  KINGS_NAMES,
+  type KingsBook,
+  getChaptersWithParallels,
+  getChapterCount,
+} from "@tsarstva/data";
 import { ThemeToggle } from "@/features/theme-toggle";
 import { FontSizeControl } from "@/features/font-size";
 
@@ -16,11 +22,11 @@ export default function Sidebar({ currentBook, currentChapter }: Props) {
   const totalChapters = getChapterCount(currentBook);
   const chapters = useMemo(
     () => Array.from({ length: totalChapters }, (_, i) => i + 1),
-    [totalChapters]
+    [totalChapters],
   );
   const chaptersWithParallels = useMemo(
     () => getChaptersWithParallels(currentBook),
-    [currentBook]
+    [currentBook],
   );
 
   return (
@@ -47,7 +53,7 @@ export default function Sidebar({ currentBook, currentChapter }: Props) {
                   "font-sans text-sm px-3 py-1.5 rounded-md transition-colors",
                   isActive
                     ? "bg-amber-900/10 text-amber-900 dark:bg-stone-800 dark:text-stone-100 font-semibold"
-                    : "text-stone-600 hover:text-stone-900 hover:bg-[#F5F2F1] dark:text-stone-400 dark:hover:text-stone-200 dark:hover:bg-stone-800"
+                    : "text-stone-600 hover:text-stone-900 hover:bg-[#F5F2F1] dark:text-stone-400 dark:hover:text-stone-200 dark:hover:bg-stone-800",
                 )}
               >
                 {KINGS_NAMES[abbrev as KingsBook]}
@@ -69,12 +75,16 @@ export default function Sidebar({ currentBook, currentChapter }: Props) {
               <Link
                 key={ch}
                 href={`/read/${currentBook}/${ch}`}
-                title={hasParallels ? `Глава ${ch} — есть параллельные места` : `Глава ${ch}`}
+                title={
+                  hasParallels
+                    ? `Глава ${ch} — есть параллельные места`
+                    : `Глава ${ch}`
+                }
                 className={cn(
                   "flex flex-col items-center justify-center h-9 text-sm font-sans rounded-md transition-colors",
                   isActive
                     ? "bg-amber-900 text-[#FAF9F7] dark:bg-stone-200 dark:text-stone-900 font-semibold"
-                    : "text-stone-700 dark:text-stone-300 hover:bg-[#F5F2F1] dark:hover:bg-stone-800"
+                    : "text-stone-700 dark:text-stone-300 hover:bg-[#F5F2F1] dark:hover:bg-stone-800",
                 )}
               >
                 <span>{ch}</span>
@@ -84,8 +94,8 @@ export default function Sidebar({ currentBook, currentChapter }: Props) {
                     isActive && hasParallels
                       ? "bg-amber-400/80 dark:bg-stone-500"
                       : !isActive && hasParallels
-                      ? "bg-amber-500 dark:bg-amber-500"
-                      : "invisible"
+                        ? "bg-amber-500 dark:bg-amber-500"
+                        : "invisible",
                   )}
                 />
               </Link>
