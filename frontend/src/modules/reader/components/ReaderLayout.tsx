@@ -249,7 +249,7 @@ export default function ReaderLayout({
         ref={panelRef}
         className={cn(
           "shrink-0 overflow-y-auto border-t border-[#E1DDD8] dark:border-stone-700 lg:border-t-0 bg-[#F1EEE9] dark:bg-stone-950/50",
-          "lg:w-96 xl:w-[440px]",
+          "h-[55vh] lg:h-auto lg:w-96 xl:w-[440px]",
           activeVerse === null && "hidden lg:block",
         )}
         style={panelHeight !== null ? { height: panelHeight } : undefined}

@@ -11,11 +11,28 @@ for (const entry of manualData.refs) {
   if (!manualIndex[key]) manualIndex[key] = [];
 
   const [toBook, toChStr, toVStr] = entry.to.split(":");
+  const chapter = parseInt(toChStr);
+
+  let verseEnd: number | undefined;
+  let chapterEnd: number | undefined;
+  if (typeof entry.toEnd === "number") {
+    verseEnd = entry.toEnd;
+  } else if (typeof entry.toEnd === "string") {
+    const [endChStr, endVStr] = entry.toEnd.split(":");
+    if (endVStr === undefined) {
+      verseEnd = parseInt(endChStr);
+    } else {
+      chapterEnd = parseInt(endChStr);
+      verseEnd = parseInt(endVStr);
+    }
+  }
+
   manualIndex[key].push({
     book: toBook,
-    chapter: parseInt(toChStr),
+    chapter,
     verse: parseInt(toVStr),
-    verseEnd: entry.toEnd,
+    verseEnd,
+    chapterEnd,
     theme: entry.theme,
     note: entry.note,
   });

@@ -66,7 +66,13 @@ export default async function ReaderPage({ params }: PageProps) {
   for (const [verseNum, refs] of chapterParallels) {
     parallelsMap[verseNum] = refs.map((ref) => ({
       ...ref,
-      text: getVerseRange(ref.book, ref.chapter, ref.verse, ref.verseEnd),
+      text: getVerseRange(
+        ref.book,
+        ref.chapter,
+        ref.verse,
+        ref.verseEnd,
+        ref.chapterEnd,
+      ),
       label: formatRef(ref),
     }));
   }

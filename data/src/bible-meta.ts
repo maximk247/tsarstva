@@ -13,10 +13,14 @@ export function getChapterCount(abbrev: string): number {
 }
 
 export function formatRef(
-  ref: Pick<CrossRef, "book" | "chapter" | "verse" | "verseEnd">,
+  ref: Pick<CrossRef, "book" | "chapter" | "verse" | "verseEnd" | "chapterEnd">,
 ): string {
   const book = bible[ref.book];
   const name = book?.nameShort ?? ref.book;
+  if (ref.chapterEnd && ref.chapterEnd !== ref.chapter) {
+    const endVerse = ref.verseEnd ?? 1;
+    return `${name} ${ref.chapter}:${ref.verse}–${ref.chapterEnd}:${endVerse}`;
+  }
   if (ref.verseEnd && ref.verseEnd !== ref.verse) {
     return `${name} ${ref.chapter}:${ref.verse}–${ref.verseEnd}`;
   }

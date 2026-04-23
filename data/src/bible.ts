@@ -49,14 +49,26 @@ export function getVerseRange(
   chapter: number,
   from: number,
   to?: number,
+  chapterEnd?: number,
 ): string {
-  const verses = getChapter(abbrev, chapter);
-  if (!verses) return "";
-  const end = to ?? from;
   const parts: string[] = [];
-  for (let v = from; v <= end; v++) {
-    const text = verses[v];
-    if (text) parts.push(text);
+  const endChapter = chapterEnd ?? chapter;
+
+  for (let ch = chapter; ch <= endChapter; ch++) {
+    const verses = getChapter(abbrev, ch);
+    if (!verses) continue;
+    const verseKeys = Object.keys(verses)
+      .map(Number)
+      .sort((a, b) => a - b);
+    const firstVerse = ch === chapter ? from : (verseKeys[0] ?? 1);
+    const lastVerse =
+      ch === endChapter
+        ? (to ?? (ch === chapter ? from : verseKeys[verseKeys.length - 1] ?? 0))
+        : (verseKeys[verseKeys.length - 1] ?? 0);
+    for (let v = firstVerse; v <= lastVerse; v++) {
+      const text = verses[v];
+      if (text) parts.push(text);
+    }
   }
   return parts.join(" ");
 }
