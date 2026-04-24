@@ -75,11 +75,22 @@ export default function ParallelCard({ ref_, sourceRef }: Props) {
         </div>
       </div>
 
-      {text && (
+      {ref_.verses && ref_.verses.length > 0 ? (
+        <div className="bible-text text-sm text-stone-600 dark:text-stone-300 leading-relaxed space-y-0.5">
+          {ref_.verses.map((v) => (
+            <div key={`${v.chapter}-${v.num}`}>
+              <span className="select-none inline-block w-5 text-right mr-1.5 text-xs font-sans font-semibold text-stone-400 dark:text-stone-500 shrink-0 align-top mt-[2px]">
+                {v.num}
+              </span>
+              <span>{v.text}</span>
+            </div>
+          ))}
+        </div>
+      ) : text ? (
         <p className="bible-text text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
           {text}
         </p>
-      )}
+      ) : null}
 
       {ref_.note && (
         <p className="mt-1.5 text-xs font-sans text-stone-400 dark:text-stone-400 italic">

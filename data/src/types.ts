@@ -50,9 +50,16 @@ export interface VerseRef {
   verse: number;
 }
 
+export interface ParallelVerse {
+  num: number;
+  chapter: number;
+  text: string;
+}
+
 export interface PrecomputedParallel extends CrossRef {
   text: string;
   label: string;
+  verses: ParallelVerse[];
 }
 
 export type Chapter = Record<number, string>;

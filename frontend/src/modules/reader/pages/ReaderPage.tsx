@@ -10,7 +10,7 @@ import {
   formatRef,
   type PrecomputedParallel,
 } from "@tsarstva/data";
-import { getChapter, getVerseRange } from "@tsarstva/data/server";
+import { getChapter, getVerseItems } from "@tsarstva/data/server";
 import ReaderLayout from "../components/ReaderLayout";
 import Sidebar from "../components/Sidebar";
 
@@ -64,17 +64,21 @@ export default async function ReaderPage({ params }: PageProps) {
   );
   const parallelsMap: Record<number, PrecomputedParallel[]> = {};
   for (const [verseNum, refs] of chapterParallels) {
-    parallelsMap[verseNum] = refs.map((ref) => ({
-      ...ref,
-      text: getVerseRange(
+    parallelsMap[verseNum] = refs.map((ref) => {
+      const verses = getVerseItems(
         ref.book,
         ref.chapter,
         ref.verse,
         ref.verseEnd,
         ref.chapterEnd,
-      ),
-      label: formatRef(ref),
-    }));
+      );
+      return {
+        ...ref,
+        verses,
+        text: verses.map((v) => v.text).join(" "),
+        label: formatRef(ref),
+      };
+    });
   }
 
   return (

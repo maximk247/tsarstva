@@ -44,14 +44,14 @@ export function getVerseText(
   return verses?.[verse] ?? null;
 }
 
-export function getVerseRange(
+export function getVerseItems(
   abbrev: string,
   chapter: number,
   from: number,
   to?: number,
   chapterEnd?: number,
-): string {
-  const parts: string[] = [];
+): Array<{ num: number; chapter: number; text: string }> {
+  const items: Array<{ num: number; chapter: number; text: string }> = [];
   const endChapter = chapterEnd ?? chapter;
 
   for (let ch = chapter; ch <= endChapter; ch++) {
@@ -63,12 +63,24 @@ export function getVerseRange(
     const firstVerse = ch === chapter ? from : (verseKeys[0] ?? 1);
     const lastVerse =
       ch === endChapter
-        ? (to ?? (ch === chapter ? from : verseKeys[verseKeys.length - 1] ?? 0))
+        ? (to ?? (ch === chapter ? from : (verseKeys[verseKeys.length - 1] ?? 0)))
         : (verseKeys[verseKeys.length - 1] ?? 0);
     for (let v = firstVerse; v <= lastVerse; v++) {
       const text = verses[v];
-      if (text) parts.push(text);
+      if (text) items.push({ num: v, chapter: ch, text });
     }
   }
-  return parts.join(" ");
+  return items;
+}
+
+export function getVerseRange(
+  abbrev: string,
+  chapter: number,
+  from: number,
+  to?: number,
+  chapterEnd?: number,
+): string {
+  return getVerseItems(abbrev, chapter, from, to, chapterEnd)
+    .map((i) => i.text)
+    .join(" ");
 }
