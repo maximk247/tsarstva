@@ -1,10 +1,16 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/shared/lib/cn";
 import { useState, useRef, useEffect, useMemo } from "react";
-import { getChaptersWithParallels } from "@tsarstva/data";
+import {
+  getChapterCount,
+  getChaptersWithParallels,
+  getBookName,
+  KINGS_BOOKS,
+} from "@tsarstva/data";
 
 interface Props {
   book: string;
@@ -13,16 +19,63 @@ interface Props {
   bookName: string;
 }
 
+interface NavTarget {
+  book: string;
+  chapter: number;
+}
+
+function getAdjacentTarget(
+  book: string,
+  chapter: number,
+  direction: -1 | 1,
+): NavTarget | null {
+  const bookIndex = KINGS_BOOKS.findIndex((item) => item === book);
+  if (bookIndex === -1) return null;
+
+  if (direction === -1) {
+    if (chapter > 1) return { book, chapter: chapter - 1 };
+
+    const prevBook = KINGS_BOOKS[bookIndex - 1];
+    if (!prevBook) return null;
+
+    return { book: prevBook, chapter: getChapterCount(prevBook) };
+  }
+
+  const totalChapters = getChapterCount(book);
+  if (chapter < totalChapters) return { book, chapter: chapter + 1 };
+
+  const nextBook = KINGS_BOOKS[bookIndex + 1];
+  if (!nextBook) return null;
+
+  return { book: nextBook, chapter: 1 };
+}
+
+function getTargetHref(target: NavTarget | null) {
+  return target ? `/read/${target.book}/${target.chapter}` : "#";
+}
+
 export default function ChapterNav({
   book,
   chapter,
   totalChapters,
   bookName,
 }: Props) {
-  const prevChapter = chapter > 1 ? chapter - 1 : null;
-  const nextChapter = chapter < totalChapters ? chapter + 1 : null;
+  const router = useRouter();
+  const prevTarget = useMemo(
+    () => getAdjacentTarget(book, chapter, -1),
+    [book, chapter],
+  );
+  const nextTarget = useMemo(
+    () => getAdjacentTarget(book, chapter, 1),
+    [book, chapter],
+  );
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const isKeyboardNavigatingRef = useRef(false);
+
+  useEffect(() => {
+    isKeyboardNavigatingRef.current = false;
+  }, [book, chapter]);
 
   useEffect(() => {
     if (!open) return;
@@ -34,6 +87,58 @@ export default function ChapterNav({
     return () => document.removeEventListener("mousedown", handler);
   }, [open]);
 
+  useEffect(() => {
+    const isTypingTarget = (target: EventTarget | null) => {
+      if (!(target instanceof HTMLElement)) return false;
+      return (
+        target.isContentEditable ||
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.tagName === "SELECT"
+      );
+    };
+
+    const handler = (e: KeyboardEvent) => {
+      if (
+        e.defaultPrevented ||
+        e.altKey ||
+        e.ctrlKey ||
+        e.metaKey ||
+        e.shiftKey ||
+        isTypingTarget(e.target)
+      ) {
+        return;
+      }
+
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+
+      e.preventDefault();
+
+      if (isKeyboardNavigatingRef.current) return;
+
+      const target = e.key === "ArrowLeft" ? prevTarget : nextTarget;
+
+      if (!target) return;
+
+      isKeyboardNavigatingRef.current = true;
+      setOpen(false);
+      router.push(getTargetHref(target));
+    };
+
+    const resetKeyboardNavigation = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+        isKeyboardNavigatingRef.current = false;
+      }
+    };
+
+    window.addEventListener("keydown", handler);
+    window.addEventListener("keyup", resetKeyboardNavigation);
+    return () => {
+      window.removeEventListener("keydown", handler);
+      window.removeEventListener("keyup", resetKeyboardNavigation);
+    };
+  }, [nextTarget, prevTarget, router]);
+
   const chapters = useMemo(
     () => Array.from({ length: totalChapters }, (_, i) => i + 1),
     [totalChapters],
@@ -42,21 +147,27 @@ export default function ChapterNav({
     () => getChaptersWithParallels(book),
     [book],
   );
+  const getTargetLabel = (target: NavTarget | null, fallbackChapter: number) =>
+    target
+      ? target.book === book
+        ? `Гл. ${target.chapter}`
+        : `${getBookName(target.book, true)} ${target.chapter}`
+      : `Гл. ${fallbackChapter}`;
 
   return (
     <div className="flex items-center justify-between py-3 px-1">
       <Link
-        href={prevChapter ? `/read/${book}/${prevChapter}` : "#"}
-        aria-disabled={!prevChapter}
+        href={getTargetHref(prevTarget)}
+        aria-disabled={!prevTarget}
         className={cn(
           "flex items-center gap-1 text-sm font-sans px-3 py-1.5 rounded-md transition-colors",
-          prevChapter
+          prevTarget
             ? "text-stone-600 hover:text-stone-900 hover:bg-[#F5F2F1] dark:text-stone-300 dark:hover:text-stone-100 dark:hover:bg-stone-700/40"
             : "text-stone-300 dark:text-stone-600 pointer-events-none",
         )}
       >
         <ChevronLeft size={16} />
-        <span>Гл. {prevChapter ?? 1}</span>
+        <span>{getTargetLabel(prevTarget, 1)}</span>
       </Link>
 
       <div ref={ref} className="relative text-center">
@@ -111,16 +222,16 @@ export default function ChapterNav({
       </div>
 
       <Link
-        href={nextChapter ? `/read/${book}/${nextChapter}` : "#"}
-        aria-disabled={!nextChapter}
+        href={getTargetHref(nextTarget)}
+        aria-disabled={!nextTarget}
         className={cn(
           "flex items-center gap-1 text-sm font-sans px-3 py-1.5 rounded-md transition-colors",
-          nextChapter
+          nextTarget
             ? "text-stone-600 hover:text-stone-900 hover:bg-[#F5F2F1] dark:text-stone-300 dark:hover:text-stone-100 dark:hover:bg-stone-700/40"
             : "text-stone-300 dark:text-stone-600 pointer-events-none",
         )}
       >
-        <span>Гл. {nextChapter ?? totalChapters}</span>
+        <span>{getTargetLabel(nextTarget, totalChapters)}</span>
         <ChevronRight size={16} />
       </Link>
     </div>
