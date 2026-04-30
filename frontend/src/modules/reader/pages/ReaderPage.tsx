@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ChapterNav, BookSelector } from "@/features/navigate-chapter";
 import { ThemeToggle } from "@/features/theme-toggle";
+import { FontSizeControl } from "@/features/font-size";
 import {
   getChapterCount,
   getBookName,
@@ -88,8 +89,13 @@ export default async function ReaderPage({ params }: PageProps) {
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
         <header className="lg:hidden shrink-0 z-10 bg-[#FAF9F7]/90 dark:bg-stone-950/90 backdrop-blur border-b border-[#E1DDD8] dark:border-stone-700">
           <div className="px-3 flex items-center h-10 gap-2 border-b border-[#E1DDD8] dark:border-stone-700">
-            <BookSelector currentBook={book} currentChapter={chapter} />
-            <ThemeToggle />
+            <div className="min-w-0 flex-1 overflow-x-auto">
+              <BookSelector currentBook={book} currentChapter={chapter} />
+            </div>
+            <div className="shrink-0 flex items-center gap-1">
+              <FontSizeControl />
+              <ThemeToggle />
+            </div>
           </div>
           <ChapterNav
             book={book}
