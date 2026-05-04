@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "dev": "bun run --filter @tsarstva/frontend dev",
+    "validate:crossrefs": "bun run --filter @tsarstva/data validate:crossrefs",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

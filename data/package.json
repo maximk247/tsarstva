@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "sync:justbible": "node scripts/fetch-justbible.mjs"
+    "sync:justbible": "node scripts/fetch-justbible.mjs",
+    "validate:crossrefs": "bun run scripts/validate-crossrefs.mjs"
   },
   "main": "./src/index.ts",
   "types": "./src/index.ts",
