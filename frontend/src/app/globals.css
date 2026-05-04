@@ -47,6 +47,11 @@ body {
   font-family: var(--font-inter), system-ui, sans-serif;
 }
 
+.reader-viewport {
+  height: 100vh;
+  height: 100dvh;
+}
+
 .bible-text {
   font-family: var(--font-serif);
   font-size: var(--bible-font-size, 1.0625rem);

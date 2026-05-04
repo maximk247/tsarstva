@@ -19,6 +19,8 @@ const KEYBOARD_SCROLL_ACCELERATION = 18;
 const KEYBOARD_SCROLL_DECELERATION = 10;
 const KEYBOARD_SCROLL_MAX_FRAME = 0.05;
 const KEYBOARD_SCROLL_MIN_VELOCITY = 2;
+const PARALLEL_PANEL_MIN_HEIGHT = 80;
+const PARALLEL_PANEL_RESIZE_KEYBOARD_STEP = 32;
 const PARALLEL_PANEL_SWAP_DELAY_MS = Math.round(
   CHAPTER_NAVIGATION_COMMIT_DELAY_MS / 2,
 );
@@ -449,6 +451,27 @@ export default function ReaderLayout({
     return `${bookName} ${chapter}:${ranges.join(", ")}`;
   }, [selectedVerses, bookName, chapter]);
 
+  const getPanelHeightBounds = useCallback(() => {
+    const containerH =
+      panelRef.current?.parentElement?.getBoundingClientRect().height ??
+      window.visualViewport?.height ?? window.innerHeight;
+    return {
+      min: PARALLEL_PANEL_MIN_HEIGHT,
+      max: Math.max(
+        PARALLEL_PANEL_MIN_HEIGHT,
+        containerH - PARALLEL_PANEL_MIN_HEIGHT,
+      ),
+    };
+  }, []);
+
+  const setPanelHeightWithinBounds = useCallback(
+    (height: number) => {
+      const { min, max } = getPanelHeightBounds();
+      setPanelHeight(Math.max(min, Math.min(height, max)));
+    },
+    [getPanelHeightBounds],
+  );
+
   const handleResizeStart = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
       e.preventDefault();
@@ -460,19 +483,29 @@ export default function ReaderLayout({
 
       const onMove = (moveE: PointerEvent) => {
         const dy = startY - moveE.clientY;
-        const containerH =
-          panelRef.current?.parentElement?.getBoundingClientRect().height ??
-          window.innerHeight;
-        setPanelHeight(
-          Math.max(80, Math.min(startHeight + dy, containerH - 80)),
-        );
+        setPanelHeightWithinBounds(startHeight + dy);
       };
       const onUp = () => handle.removeEventListener("pointermove", onMove);
       handle.addEventListener("pointermove", onMove);
       handle.addEventListener("pointerup", onUp, { once: true });
       handle.addEventListener("pointercancel", onUp, { once: true });
     },
-    [],
+    [setPanelHeightWithinBounds],
+  );
+
+  const handleResizeKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (e.key !== "ArrowUp" && e.key !== "ArrowDown") return;
+
+      e.preventDefault();
+      const currentHeight =
+        panelRef.current?.getBoundingClientRect().height ?? panelHeight ?? 300;
+      const direction = e.key === "ArrowUp" ? 1 : -1;
+      setPanelHeightWithinBounds(
+        currentHeight + direction * PARALLEL_PANEL_RESIZE_KEYBOARD_STEP,
+      );
+    },
+    [panelHeight, setPanelHeightWithinBounds],
   );
 
   useEffect(() => {
@@ -491,10 +524,10 @@ export default function ReaderLayout({
   }, []);
 
   return (
-    <div className="flex flex-col lg:flex-row gap-0 flex-1 overflow-hidden">
+    <div className="flex min-h-0 flex-1 flex-col overflow-hidden lg:flex-row">
       <div
         ref={scrollRef}
-        className="flex-1 min-w-0 px-4 sm:px-6 lg:px-8 py-6 overflow-y-auto bg-white dark:bg-transparent"
+        className="min-h-0 flex-1 overflow-y-auto bg-white px-4 py-6 sm:px-6 lg:px-8 dark:bg-transparent"
       >
         <div
           className={cn(
@@ -524,17 +557,22 @@ export default function ReaderLayout({
         ref={panelRef}
         className={cn(
           "shrink-0 overflow-y-auto border-t border-[#E1DDD8] dark:border-stone-700 lg:border-t-0 bg-[#F1EEE9] dark:bg-stone-950/50",
-          "h-[55vh] lg:h-auto lg:w-96 xl:w-[440px]",
+          "h-[55vh] h-[55dvh] lg:h-auto lg:w-96 xl:w-[440px]",
           activeVerse === null && "hidden lg:block",
         )}
         style={panelHeight !== null ? { height: panelHeight } : undefined}
       >
         {/* Ручка перетаскивания — только на мобиле */}
         <div
-          className="lg:hidden sticky top-0 z-10 flex justify-center pt-3 pb-2 bg-[#F1EEE9] dark:bg-stone-950/50 cursor-ns-resize touch-none select-none"
+          role="separator"
+          aria-orientation="horizontal"
+          aria-label="Изменить высоту панели параллелей"
+          tabIndex={0}
+          className="group lg:hidden sticky top-0 z-10 flex min-h-10 justify-center border-y border-[#D8D2CA] bg-[#F1EEE9] py-3 cursor-ns-resize touch-none select-none outline-none transition-colors dark:border-stone-700 dark:bg-stone-950/50 focus-visible:ring-2 focus-visible:ring-amber-900/25 dark:focus-visible:ring-amber-400/30"
           onPointerDown={handleResizeStart}
+          onKeyDown={handleResizeKeyDown}
         >
-          <div className="w-10 h-1 rounded-full bg-stone-300 dark:bg-stone-600" />
+          <div className="h-2 w-20 rounded-full bg-stone-400/80 shadow-[0_0_0_1px_rgba(120,113,108,0.18)] transition-colors group-active:bg-amber-900/70 dark:bg-stone-500 dark:shadow-[0_0_0_1px_rgba(214,211,209,0.14)] dark:group-active:bg-amber-700" />
         </div>
 
         <div className="px-4 sm:px-6 pb-6 lg:py-6">

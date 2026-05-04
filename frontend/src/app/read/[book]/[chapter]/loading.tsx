@@ -1,6 +1,6 @@
 export default function Loading() {
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="reader-viewport flex overflow-hidden">
       {/* Sidebar skeleton (lg only) */}
       <aside className="hidden lg:flex flex-col w-52 xl:w-56 shrink-0 h-full border-r border-[#E1DDD8] dark:border-stone-700 bg-[#FAF9F7] dark:bg-stone-950">
         <div className="h-14 flex items-center px-4 border-b border-[#E1DDD8] dark:border-stone-700">
@@ -29,7 +29,7 @@ export default function Loading() {
         </div>
       </aside>
 
-      <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
         {/* Mobile header skeleton */}
         <header className="lg:hidden shrink-0 z-10 bg-[#FAF9F7]/90 dark:bg-stone-950/90 border-b border-[#E1DDD8] dark:border-stone-700">
           <div className="px-4 sm:px-6 flex items-center h-14 gap-4">
@@ -41,9 +41,9 @@ export default function Loading() {
         </header>
 
         {/* Main content skeleton */}
-        <main className="flex-1 flex overflow-hidden">
-          <div className="flex flex-col lg:flex-row gap-0 flex-1 overflow-hidden">
-            <div className="flex-1 min-w-0 px-4 sm:px-6 lg:px-8 py-6 overflow-y-auto bg-white dark:bg-transparent">
+        <main className="flex min-h-0 flex-1 overflow-hidden">
+          <div className="flex min-h-0 flex-1 flex-col overflow-hidden lg:flex-row">
+            <div className="min-h-0 flex-1 overflow-y-auto bg-white px-4 py-6 sm:px-6 lg:px-8 dark:bg-transparent">
               <div className="space-y-3">
                 {Array.from({ length: 15 }, (_, i) => (
                   <div key={i} className="flex gap-2">
