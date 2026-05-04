@@ -11,6 +11,10 @@ import {
   getBookName,
   READER_BOOKS,
 } from "@tsarstva/data";
+import {
+  CHAPTER_NAVIGATION_COMMIT_DELAY_MS,
+  announceChapterNavigationIntent,
+} from "./navigationIntent";
 
 interface Props {
   book: string;
@@ -72,9 +76,11 @@ export default function ChapterNav({
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const isKeyboardNavigatingRef = useRef(false);
+  const navigationTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
     isKeyboardNavigatingRef.current = false;
+    navigationTimerRef.current = undefined;
   }, [book, chapter]);
 
   useEffect(() => {
@@ -114,7 +120,12 @@ export default function ChapterNav({
 
       e.preventDefault();
 
-      if (isKeyboardNavigatingRef.current) return;
+      if (
+        isKeyboardNavigatingRef.current ||
+        navigationTimerRef.current !== undefined
+      ) {
+        return;
+      }
 
       const target = e.key === "ArrowLeft" ? prevTarget : nextTarget;
 
@@ -122,7 +133,11 @@ export default function ChapterNav({
 
       isKeyboardNavigatingRef.current = true;
       setOpen(false);
-      router.push(getTargetHref(target));
+      announceChapterNavigationIntent(target);
+      navigationTimerRef.current = setTimeout(() => {
+        navigationTimerRef.current = undefined;
+        router.push(getTargetHref(target));
+      }, CHAPTER_NAVIGATION_COMMIT_DELAY_MS);
     };
 
     const resetKeyboardNavigation = (e: KeyboardEvent) => {
@@ -136,6 +151,7 @@ export default function ChapterNav({
     return () => {
       window.removeEventListener("keydown", handler);
       window.removeEventListener("keyup", resetKeyboardNavigation);
+      clearTimeout(navigationTimerRef.current);
     };
   }, [nextTarget, prevTarget, router]);
 

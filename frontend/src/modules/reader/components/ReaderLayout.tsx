@@ -6,6 +6,11 @@ import MainText from "./MainText";
 import ParallelPanel from "./ParallelPanel";
 import type { PrecomputedParallel, Chapter } from "@tsarstva/data";
 import { cn } from "@/shared/lib/cn";
+import {
+  CHAPTER_NAVIGATION_COMMIT_DELAY_MS,
+  CHAPTER_NAVIGATION_INTENT_EVENT,
+  type ChapterNavigationIntent,
+} from "@/features/navigate-chapter";
 
 const EMPTY_PARALLELS: PrecomputedParallel[] = [];
 const KEYBOARD_SCROLL_SPEED = 560;
@@ -14,8 +19,26 @@ const KEYBOARD_SCROLL_ACCELERATION = 18;
 const KEYBOARD_SCROLL_DECELERATION = 10;
 const KEYBOARD_SCROLL_MAX_FRAME = 0.05;
 const KEYBOARD_SCROLL_MIN_VELOCITY = 2;
+const PARALLEL_PANEL_SWAP_DELAY_MS = Math.round(
+  CHAPTER_NAVIGATION_COMMIT_DELAY_MS / 2,
+);
 
 type ScrollDirection = -1 | 0 | 1;
+
+interface ParallelPanelSnapshot {
+  refs: PrecomputedParallel[];
+  activeVerse: number | null;
+  bookName: string;
+  chapter: number;
+}
+
+function getPanelSnapshotKey(
+  book: string,
+  chapter: number,
+  activeVerse: number | null,
+) {
+  return `${book}:${chapter}:${activeVerse ?? "empty"}`;
+}
 
 interface Props {
   book: string;
@@ -40,16 +63,57 @@ export default function ReaderLayout({
   >(null);
   const [mounted, setMounted] = useState(false);
   const [panelHeight, setPanelHeight] = useState<number | null>(null);
+  const [isTextVisible, setIsTextVisible] = useState(false);
+  const [isParallelPanelVisible, setIsParallelPanelVisible] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const copiedTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const updatePosRafRef = useRef<number>(undefined);
+  const textVisibilityRafRef = useRef<number>(undefined);
+  const panelSwapTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const panelVisibilityRafRef = useRef<number>(undefined);
+  const panelSnapshotKeyRef = useRef("");
   const keyboardScrollRafRef = useRef<number>(undefined);
   const keyboardScrollDirectionRef = useRef<ScrollDirection>(0);
   const keyboardScrollVelocityRef = useRef(0);
   const keyboardScrollLastFrameRef = useRef(0);
 
   useEffect(() => setMounted(true), []);
+
+  useEffect(() => {
+    setIsTextVisible(false);
+    cancelAnimationFrame(textVisibilityRafRef.current!);
+    textVisibilityRafRef.current = requestAnimationFrame(() => {
+      textVisibilityRafRef.current = requestAnimationFrame(() => {
+        setIsTextVisible(true);
+      });
+    });
+
+    return () => cancelAnimationFrame(textVisibilityRafRef.current!);
+  }, [book, chapter]);
+
+  useEffect(() => {
+    const handleNavigationIntent = (event: Event) => {
+      const target = (event as CustomEvent<ChapterNavigationIntent>).detail;
+      if (!target || (target.book === book && target.chapter === chapter)) {
+        return;
+      }
+
+      setIsTextVisible(false);
+      setIsParallelPanelVisible(false);
+    };
+
+    window.addEventListener(
+      CHAPTER_NAVIGATION_INTENT_EVENT,
+      handleNavigationIntent,
+    );
+    return () => {
+      window.removeEventListener(
+        CHAPTER_NAVIGATION_INTENT_EVENT,
+        handleNavigationIntent,
+      );
+    };
+  }, [book, chapter]);
 
   const versesWithParallels = useMemo(
     () => new Set(Object.keys(parallelsMap).map(Number)),
@@ -63,6 +127,59 @@ export default function ReaderLayout({
         : EMPTY_PARALLELS,
     [activeVerse, parallelsMap],
   );
+  const [parallelPanelSnapshot, setParallelPanelSnapshot] =
+    useState<ParallelPanelSnapshot>(() => ({
+      refs: activeParallels,
+      activeVerse,
+      bookName,
+      chapter,
+    }));
+
+  useEffect(() => {
+    const nextKey = getPanelSnapshotKey(book, chapter, activeVerse);
+    const hadPreviousSnapshot = panelSnapshotKeyRef.current !== "";
+
+    clearTimeout(panelSwapTimerRef.current);
+    cancelAnimationFrame(panelVisibilityRafRef.current!);
+
+    if (panelSnapshotKeyRef.current === nextKey) {
+      setParallelPanelSnapshot({
+        refs: activeParallels,
+        activeVerse,
+        bookName,
+        chapter,
+      });
+      setIsParallelPanelVisible(true);
+      return;
+    }
+
+    if (hadPreviousSnapshot) {
+      setIsParallelPanelVisible(false);
+    }
+
+    panelSwapTimerRef.current = setTimeout(
+      () => {
+        panelSnapshotKeyRef.current = nextKey;
+        setParallelPanelSnapshot({
+          refs: activeParallels,
+          activeVerse,
+          bookName,
+          chapter,
+        });
+        panelVisibilityRafRef.current = requestAnimationFrame(() => {
+          panelVisibilityRafRef.current = requestAnimationFrame(() => {
+            setIsParallelPanelVisible(true);
+          });
+        });
+      },
+      hadPreviousSnapshot ? PARALLEL_PANEL_SWAP_DELAY_MS : 0,
+    );
+
+    return () => {
+      clearTimeout(panelSwapTimerRef.current);
+      cancelAnimationFrame(panelVisibilityRafRef.current!);
+    };
+  }, [activeParallels, activeVerse, book, bookName, chapter]);
 
   const handleVerseClick = useCallback((v: number) => {
     setActiveVerse((prev) => (prev === v ? null : v));
@@ -223,7 +340,10 @@ export default function ReaderLayout({
       );
       const nextScrollTop = Math.max(
         0,
-        Math.min(maxScrollTop, container.scrollTop + nextVelocity * deltaSeconds),
+        Math.min(
+          maxScrollTop,
+          container.scrollTop + nextVelocity * deltaSeconds,
+        ),
       );
       const hitTop = nextScrollTop <= 0 && nextVelocity < 0;
       const hitBottom = nextScrollTop >= maxScrollTop && nextVelocity > 0;
@@ -238,7 +358,8 @@ export default function ReaderLayout({
 
       if (
         keyboardScrollDirectionRef.current !== 0 ||
-        Math.abs(keyboardScrollVelocityRef.current) > KEYBOARD_SCROLL_MIN_VELOCITY
+        Math.abs(keyboardScrollVelocityRef.current) >
+          KEYBOARD_SCROLL_MIN_VELOCITY
       ) {
         keyboardScrollRafRef.current = requestAnimationFrame(animateScroll);
       } else {
@@ -375,14 +496,26 @@ export default function ReaderLayout({
         ref={scrollRef}
         className="flex-1 min-w-0 px-4 sm:px-6 lg:px-8 py-6 overflow-y-auto bg-white dark:bg-transparent"
       >
-        <MainText
-          verses={verses}
-          versesWithParallels={versesWithParallels}
-          activeVerse={activeVerse}
-          selectedVerses={selectedVerses}
-          onVerseClick={handleVerseClick}
-          onCheckStart={handleCheckStart}
-        />
+        <div
+          className={cn(
+            "transition-[opacity,transform,filter] ease-in-out motion-reduce:transition-none",
+            isTextVisible
+              ? "opacity-100 translate-y-0 blur-0"
+              : "pointer-events-none opacity-0 translate-y-1 blur-[1px]",
+          )}
+          style={{
+            transitionDuration: `${CHAPTER_NAVIGATION_COMMIT_DELAY_MS}ms`,
+          }}
+        >
+          <MainText
+            verses={verses}
+            versesWithParallels={versesWithParallels}
+            activeVerse={activeVerse}
+            selectedVerses={selectedVerses}
+            onVerseClick={handleVerseClick}
+            onCheckStart={handleCheckStart}
+          />
+        </div>
       </div>
 
       <div className="hidden lg:block w-px bg-[#E1DDD8] dark:bg-stone-700 shrink-0" />
@@ -405,12 +538,24 @@ export default function ReaderLayout({
         </div>
 
         <div className="px-4 sm:px-6 pb-6 lg:py-6">
-          <ParallelPanel
-            refs={activeParallels}
-            activeVerse={activeVerse}
-            bookName={bookName}
-            chapter={chapter}
-          />
+          <div
+            className={cn(
+              "transition-[opacity,transform,filter] ease-in-out motion-reduce:transition-none",
+              isParallelPanelVisible
+                ? "opacity-100 translate-y-0 blur-0"
+                : "pointer-events-none opacity-0 translate-y-1 blur-[1px]",
+            )}
+            style={{
+              transitionDuration: `${PARALLEL_PANEL_SWAP_DELAY_MS}ms`,
+            }}
+          >
+            <ParallelPanel
+              refs={parallelPanelSnapshot.refs}
+              activeVerse={parallelPanelSnapshot.activeVerse}
+              bookName={parallelPanelSnapshot.bookName}
+              chapter={parallelPanelSnapshot.chapter}
+            />
+          </div>
         </div>
       </div>
 
