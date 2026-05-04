@@ -1,0 +1,7 @@
+import { CHAPTER_NAVIGATION_COMMIT_DELAY_MS } from "@/features/navigate-chapter";
+
+export const PARALLEL_PANEL_MIN_HEIGHT = 80;
+export const PARALLEL_PANEL_RESIZE_KEYBOARD_STEP = 32;
+export const PARALLEL_PANEL_SWAP_DELAY_MS = Math.round(
+  CHAPTER_NAVIGATION_COMMIT_DELAY_MS / 2,
+);

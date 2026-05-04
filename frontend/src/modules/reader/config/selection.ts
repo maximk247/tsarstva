@@ -1,0 +1,1 @@
+export const SELECTION_COPIED_RESET_DELAY_MS = 1500;

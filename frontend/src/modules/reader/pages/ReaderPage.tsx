@@ -13,7 +13,7 @@ import {
 } from "@tsarstva/data";
 import { getChapter, getVerseItems } from "@tsarstva/data/server";
 import ReaderLayout from "../components/ReaderLayout";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/sidebar/Sidebar";
 
 interface PageProps {
   params: Promise<{ book: string; chapter: string }>;
