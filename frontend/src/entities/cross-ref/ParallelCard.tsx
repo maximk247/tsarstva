@@ -1,17 +1,22 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { cn } from "@/shared/lib/cn";
-import type { PrecomputedParallel, CrossRefTheme } from "@tsarstva/data";
+import {
+  READER_BOOKS,
+  type PrecomputedParallel,
+  type CrossRefTheme,
+} from "@tsarstva/data";
 
 const ReportButton = dynamic(
   () => import("@/features/report-issue/ReportButton"),
   { ssr: false },
 );
 
-const NAVIGABLE_BOOKS = new Set(["1sm", "2sm", "1kgs", "2kgs"]);
+const NAVIGABLE_BOOKS = new Set<string>(READER_BOOKS);
 
 const THEME_LABELS: Record<CrossRefTheme, string> = {
   same_event: "тот же нарратив",
+  fulfillment: "исполнение",
   prophecy: "пророчество",
   theological: "богословская",
   genealogy: "родословная",
@@ -21,6 +26,8 @@ const THEME_LABELS: Record<CrossRefTheme, string> = {
 const THEME_COLORS: Record<CrossRefTheme, string> = {
   same_event:
     "bg-[#78350F] text-[#FAF9F7]  dark:bg-amber-900/50 dark:text-amber-200",
+  fulfillment:
+    "bg-[#7C2D12] text-[#FAF9F7]  dark:bg-orange-900/50 dark:text-orange-200",
   prophecy:
     "bg-[#92400E] text-[#FAF9F7]  dark:bg-amber-800/50 dark:text-amber-300",
   theological:

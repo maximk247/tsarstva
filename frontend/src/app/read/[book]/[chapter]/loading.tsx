@@ -8,7 +8,7 @@ export default function Loading() {
         </div>
         <div className="px-3 py-3 border-b border-[#E1DDD8] dark:border-stone-700">
           <div className="flex flex-col gap-1.5">
-            {Array.from({ length: 4 }, (_, i) => (
+            {Array.from({ length: 9 }, (_, i) => (
               <div
                 key={i}
                 className="h-7 bg-stone-100 dark:bg-stone-800 rounded-md animate-pulse"

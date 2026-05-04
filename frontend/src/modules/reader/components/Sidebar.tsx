@@ -4,9 +4,8 @@ import Link from "next/link";
 import { useMemo } from "react";
 import { cn } from "@/shared/lib/cn";
 import {
-  KINGS_BOOKS,
-  KINGS_NAMES,
-  type KingsBook,
+  READER_BOOK_NAMES,
+  READER_BOOK_SECTIONS,
   getChaptersWithParallels,
   getChapterCount,
 } from "@tsarstva/data";
@@ -33,7 +32,7 @@ export default function Sidebar({ currentBook, currentChapter }: Props) {
     <aside className="hidden lg:flex flex-col w-52 xl:w-56 shrink-0 h-full border-r border-[#E1DDD8] dark:border-stone-700 bg-[#FAF9F7] dark:bg-stone-950 overflow-hidden">
       <div className="h-14 flex items-center justify-between px-4 border-b border-[#E1DDD8] dark:border-stone-700 shrink-0">
         <p className="font-sans text-sm font-semibold text-stone-800 dark:text-stone-200 tracking-wide">
-          Чтение Царств
+          Чтение книг
         </p>
         <div className="flex items-center gap-1">
           <FontSizeControl />
@@ -42,24 +41,33 @@ export default function Sidebar({ currentBook, currentChapter }: Props) {
       </div>
 
       <div className="px-3 py-3 border-b border-[#E1DDD8] dark:border-stone-700 shrink-0">
-        <nav className="flex flex-col gap-0.5">
-          {KINGS_BOOKS.map((abbrev) => {
-            const isActive = currentBook === abbrev;
-            return (
-              <Link
-                key={abbrev}
-                href={`/read/${abbrev}/1`}
-                className={cn(
-                  "font-sans text-sm px-3 py-1.5 rounded-md transition-colors",
-                  isActive
-                    ? "bg-amber-900/10 text-amber-900 dark:bg-stone-800 dark:text-stone-100 font-semibold"
-                    : "text-stone-600 hover:text-stone-900 hover:bg-[#F5F2F1] dark:text-stone-400 dark:hover:text-stone-200 dark:hover:bg-stone-800",
-                )}
-              >
-                {KINGS_NAMES[abbrev as KingsBook]}
-              </Link>
-            );
-          })}
+        <nav className="flex flex-col gap-3">
+          {READER_BOOK_SECTIONS.map((section) => (
+            <div key={section.title}>
+              <p className="text-[10px] uppercase tracking-widest text-stone-400 dark:text-stone-600 font-sans mb-1 px-1">
+                {section.title}
+              </p>
+              <div className="flex flex-col gap-0.5">
+                {section.books.map((abbrev) => {
+                  const isActive = currentBook === abbrev;
+                  return (
+                    <Link
+                      key={abbrev}
+                      href={`/read/${abbrev}/1`}
+                      className={cn(
+                        "font-sans text-sm px-3 py-1.5 rounded-md transition-colors",
+                        isActive
+                          ? "bg-amber-900/10 text-amber-900 dark:bg-stone-800 dark:text-stone-100 font-semibold"
+                          : "text-stone-600 hover:text-stone-900 hover:bg-[#F5F2F1] dark:text-stone-400 dark:hover:text-stone-200 dark:hover:bg-stone-800",
+                      )}
+                    >
+                      {READER_BOOK_NAMES[abbrev]}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </nav>
       </div>
 

@@ -6,18 +6,19 @@ export default function HomePage() {
       <div className="max-w-2xl w-full">
         <div className="text-center mb-12">
           <h1 className="font-serif text-4xl sm:text-5xl font-semibold text-stone-800 dark:text-stone-200 mb-4">
-            Чтение Царств
+            Чтение Царств с параллелями
           </h1>
           <p className="font-sans text-stone-500 dark:text-stone-400 text-lg leading-relaxed">
-            Читайте 1–4 Царств с параллельными местами из пророков,
-            Паралипоменона и других книг — всё сразу в одном экране.
+            Читайте 1–4 Царств, 1–2 Паралипоменон и связанные места из
+            ветхозаветных книг — всё сразу в одном экране.
           </p>
         </div>
 
         <BookGrid />
 
         <p className="text-center mt-10 font-sans text-xs text-stone-400 dark:text-stone-600">
-          Синодальный перевод · Параллели: OpenBible + ручная разметка
+          Синодальный перевод · Тексты: JustBible API · Параллели: ручная
+          разметка
         </p>
       </div>
     </div>

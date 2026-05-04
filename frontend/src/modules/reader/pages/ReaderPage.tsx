@@ -6,7 +6,7 @@ import { FontSizeControl } from "@/features/font-size";
 import {
   getChapterCount,
   getBookName,
-  KINGS_BOOKS,
+  READER_BOOKS,
   getChapterParallels,
   formatRef,
   type PrecomputedParallel,
@@ -21,7 +21,7 @@ interface PageProps {
 
 export async function generateStaticParams() {
   const params: { book: string; chapter: string }[] = [];
-  for (const book of KINGS_BOOKS) {
+  for (const book of READER_BOOKS) {
     const total = getChapterCount(book);
     for (let ch = 1; ch <= total; ch++) {
       params.push({ book, chapter: String(ch) });
@@ -36,7 +36,7 @@ export async function generateMetadata({
   const { book, chapter } = await params;
   const bookName = getBookName(book);
   return {
-    title: `${bookName} ${chapter} — Чтение Царств`,
+    title: `${bookName} ${chapter} — Чтение Царств с параллелями`,
     description: `Параллельное чтение ${bookName}, глава ${chapter}`,
   };
 }
@@ -44,7 +44,7 @@ export async function generateMetadata({
 export default async function ReaderPage({ params }: PageProps) {
   const { book, chapter: chapterStr } = await params;
 
-  if (!KINGS_BOOKS.includes(book as (typeof KINGS_BOOKS)[number])) {
+  if (!READER_BOOKS.some((item) => item === book)) {
     notFound();
   }
 

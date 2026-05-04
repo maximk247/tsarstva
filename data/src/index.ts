@@ -8,10 +8,21 @@ export type {
   ManualEntry,
   VerseRef,
   KingsBook,
+  ParalipomenonBook,
+  OtherOtBook,
+  ReaderBook,
   Chapter,
 } from "./types";
 
-export { KINGS_BOOKS, KINGS_NAMES } from "./types";
+export {
+  KINGS_BOOKS,
+  KINGS_NAMES,
+  PARALIPOMENON_BOOKS,
+  OTHER_OT_BOOKS,
+  READER_BOOKS,
+  READER_BOOK_NAMES,
+  READER_BOOK_SECTIONS,
+} from "./types";
 
 export {
   bible,

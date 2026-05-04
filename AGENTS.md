@@ -2,7 +2,7 @@
 
 ## Что это
 
-Статический читалка книг 1–4 Царств (1sm, 2sm, 1kgs, 2kgs) с параллельными местами из других книг Библии. Деплоится на Vercel как `next export`. Монорепо на Bun workspaces.
+Статическая читалка книг 1–4 Царств (1sm, 2sm, 1kgs, 2kgs), 1–2 Паралипоменон (1ch, 2ch) и ветхозаветных книг, на которые есть параллельные места (ne, is, jr). Деплоится на Vercel как `next export`. Монорепо на Bun workspaces.
 
 ## Структура
 
@@ -10,7 +10,7 @@
 /
 ├── data/                  # @tsarstva/data — данные и утилиты (Node/server)
 │   ├── src/
-│   │   ├── types.ts       # Все типы: BookMeta, CrossRef, ManualEntry и пр.
+│   │   ├── types.ts       # Все типы и списки книг: BookMeta, CrossRef, READER_BOOKS и пр.
 │   │   ├── index.ts       # Публичный API пакета
 │   │   ├── bible-meta.ts  # getBook, getChapterCount, formatRef, getBookName
 │   │   ├── crossRefs.ts   # getParallelsForVerse, getChaptersWithParallels, getChapterParallels
@@ -44,6 +44,7 @@
 **Статический экспорт.** `next.config.ts` задаёт `output: "export"`. Все данные читаются на этапе сборки через Server Components — клиент не делает запросов к файловой системе.
 
 **Предвычисление параллелей.** `ReaderPage` (Server Component) на этапе сборки:
+
 1. Читает все стихи главы через `getChapter(book, chapter)`
 2. Вызывает `getChapterParallels` → получает Map<verse, CrossRef[]>
 3. Для каждого ref вызывает `getVerseRange` и `formatRef` → формирует `PrecomputedParallel[]`
@@ -51,7 +52,13 @@
 
 **Важно:** `getChapter`/`getVerseRange` используют `readFileSync` — их можно вызывать **только в Server Components** (через `@tsarstva/data/server`). В клиентских компонентах используй только `@tsarstva/data` (без /server).
 
-**Ref формат.** Ключи в `manual.json` и индексах: `"book:chapter:verse"` → `"1sm:1:1"`. Книги: `1sm`, `2sm`, `1kgs`, `2kgs`.
+**Ref формат.** Ключи в `manual.json` и индексах: `"book:chapter:verse"` → `"1sm:1:1"`. Читаемые книги живут в `READER_BOOKS`: `1sm`, `2sm`, `1kgs`, `2kgs`, `1ch`, `2ch`, `ne`, `is`, `jr`. Новозаветные отсылки остаются в панели параллелей, но не добавляются в библиотеку чтения.
+
+**Тексты Библии.** Локальные JSON можно обновить из JustBible API:
+
+```bash
+cd data && bun run sync:justbible
+```
 
 **Архитектура компонентов (FSD-подобная):** `app` → `modules` → `features` → `entities` → `shared`. Импорты только вниз по слоям.
 
@@ -82,13 +89,14 @@ bun install
 }
 ```
 
-Темы: `same_event`, `prophecy`, `theological`, `genealogy`, `tsk`.
+Темы: `same_event`, `fulfillment`, `prophecy`, `theological`, `genealogy`, `tsk`.
 
 После изменения `manual.json` — пересборка не нужна для dev (файл читается при старте). Для production — `bun run build`.
 
 ## Деплой
 
 Vercel, конфиг в `vercel.json`:
+
 - `buildCommand`: `npm run build --workspace=frontend`
 - `outputDirectory`: `frontend/out`
 - Фреймворк: `null` (не детектить Next.js автоматически — статический экспорт в папку out)

@@ -16,8 +16,8 @@ const alegreya = Alegreya({
 });
 
 export const metadata: Metadata = {
-  title: "Чтение Царств",
-  description: "Параллельное чтение книг Царств с пророками",
+  title: "Чтение Царств с параллелями",
+  description: "Параллельное чтение книг Царств и связанных мест",
 };
 
 export default function RootLayout({

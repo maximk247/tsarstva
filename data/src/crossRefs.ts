@@ -1,14 +1,49 @@
-import type { CrossRef, ManualEntry } from "./types";
+import {
+  READER_BOOKS,
+  type CrossRef,
+  type ManualEntry,
+  type VerseRef,
+} from "./types";
 
 import manualRaw from "../json/cross-refs/manual.json";
 
 const manualData = manualRaw as { refs: ManualEntry[] };
 
 const manualIndex: Record<string, CrossRef[]> = {};
+const readerBooks = new Set<string>(READER_BOOKS);
+
+function parseVerseRef(ref: string): VerseRef {
+  const [book, chapterStr, verseStr] = ref.split(":");
+  return {
+    book,
+    chapter: parseInt(chapterStr),
+    verse: parseInt(verseStr),
+  };
+}
+
+function addToIndex(key: string, ref: CrossRef) {
+  if (!manualIndex[key]) manualIndex[key] = [];
+  const exists = manualIndex[key].some(
+    (item) =>
+      item.book === ref.book &&
+      item.chapter === ref.chapter &&
+      item.verse === ref.verse &&
+      item.verseEnd === ref.verseEnd &&
+      item.chapterEnd === ref.chapterEnd &&
+      item.theme === ref.theme,
+  );
+  if (exists) return;
+  manualIndex[key].push(ref);
+}
+
+function shouldAddReciprocal(fromBook: string, toBook: string): boolean {
+  return (
+    fromBook !== toBook && readerBooks.has(fromBook) && readerBooks.has(toBook)
+  );
+}
 
 for (const entry of manualData.refs) {
-  const key = entry.from;
-  if (!manualIndex[key]) manualIndex[key] = [];
+  const from = parseVerseRef(entry.from);
 
   const [toBook, toChStr, toVStr] = entry.to.split(":");
   const chapter = parseInt(toChStr);
@@ -27,7 +62,7 @@ for (const entry of manualData.refs) {
     }
   }
 
-  manualIndex[key].push({
+  const forwardRef: CrossRef = {
     book: toBook,
     chapter,
     verse: parseInt(toVStr),
@@ -35,7 +70,19 @@ for (const entry of manualData.refs) {
     chapterEnd,
     theme: entry.theme,
     note: entry.note,
-  });
+  };
+
+  addToIndex(entry.from, forwardRef);
+
+  if (shouldAddReciprocal(from.book, forwardRef.book)) {
+    addToIndex(entry.to, {
+      book: from.book,
+      chapter: from.chapter,
+      verse: from.verse,
+      theme: entry.theme,
+      note: entry.note,
+    });
+  }
 }
 
 export function getParallelsForVerse(
