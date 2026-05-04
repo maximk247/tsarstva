@@ -575,7 +575,7 @@ export default function ReaderLayout({
           <div className="h-2 w-20 rounded-full bg-stone-400/80 shadow-[0_0_0_1px_rgba(120,113,108,0.18)] transition-colors group-active:bg-amber-900/70 dark:bg-stone-500 dark:shadow-[0_0_0_1px_rgba(214,211,209,0.14)] dark:group-active:bg-amber-700" />
         </div>
 
-        <div className="px-4 sm:px-6 pb-6 lg:py-6">
+        <div className="px-4 pt-4 pb-6 sm:px-6 lg:py-6">
           <div
             className={cn(
               "transition-[opacity,transform,filter] ease-in-out motion-reduce:transition-none",
