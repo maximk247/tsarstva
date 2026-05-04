@@ -1,0 +1,232 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - paragraph [ref=e5]: Чтение книг
+        - generic [ref=e6]:
+          - generic [ref=e7]:
+            - button "Уменьшить шрифт" [ref=e8]:
+              - generic [ref=e9]: A
+            - button "Увеличить шрифт" [ref=e10]:
+              - generic [ref=e11]: A
+          - button "Переключить тему" [ref=e12]:
+            - img [ref=e13]
+            - img [ref=e19]
+      - navigation [ref=e22]:
+        - generic [ref=e23]:
+          - paragraph [ref=e24]: Книги Царств
+          - generic [ref=e25]:
+            - link "1 Царств" [ref=e26] [cursor=pointer]:
+              - /url: /read/1sm/1/
+            - link "2 Царств" [ref=e27] [cursor=pointer]:
+              - /url: /read/2sm/1/
+            - link "3 Царств" [ref=e28] [cursor=pointer]:
+              - /url: /read/1kgs/1/
+            - link "4 Царств" [ref=e29] [cursor=pointer]:
+              - /url: /read/2kgs/1/
+        - generic [ref=e30]:
+          - paragraph [ref=e31]: Паралипоменон
+          - generic [ref=e32]:
+            - link "1 Паралипоменон" [ref=e33] [cursor=pointer]:
+              - /url: /read/1ch/1/
+            - link "2 Паралипоменон" [ref=e34] [cursor=pointer]:
+              - /url: /read/2ch/1/
+        - generic [ref=e35]:
+          - paragraph [ref=e36]: Другие Ветхого Завета
+          - generic [ref=e37]:
+            - link "Неемия" [ref=e38] [cursor=pointer]:
+              - /url: /read/ne/1/
+            - link "Исаия" [ref=e39] [cursor=pointer]:
+              - /url: /read/is/1/
+            - link "Иеремия" [ref=e40] [cursor=pointer]:
+              - /url: /read/jr/1/
+      - generic [ref=e41]:
+        - paragraph [ref=e42]: Главы
+        - generic [ref=e43]:
+          - link "1" [ref=e44] [cursor=pointer]:
+            - /url: /read/1sm/1/
+            - generic [ref=e45]: "1"
+          - link "2" [ref=e47] [cursor=pointer]:
+            - /url: /read/1sm/2/
+            - generic [ref=e48]: "2"
+          - link "3" [ref=e50] [cursor=pointer]:
+            - /url: /read/1sm/3/
+            - generic [ref=e51]: "3"
+          - link "4" [ref=e52] [cursor=pointer]:
+            - /url: /read/1sm/4/
+            - generic [ref=e53]: "4"
+          - link "5" [ref=e55] [cursor=pointer]:
+            - /url: /read/1sm/5/
+            - generic [ref=e56]: "5"
+          - link "6" [ref=e57] [cursor=pointer]:
+            - /url: /read/1sm/6/
+            - generic [ref=e58]: "6"
+          - link "7" [ref=e59] [cursor=pointer]:
+            - /url: /read/1sm/7/
+            - generic [ref=e60]: "7"
+          - link "8" [ref=e61] [cursor=pointer]:
+            - /url: /read/1sm/8/
+            - generic [ref=e62]: "8"
+          - link "9" [ref=e64] [cursor=pointer]:
+            - /url: /read/1sm/9/
+            - generic [ref=e65]: "9"
+          - link "10" [ref=e66] [cursor=pointer]:
+            - /url: /read/1sm/10/
+            - generic [ref=e67]: "10"
+          - link "11" [ref=e68] [cursor=pointer]:
+            - /url: /read/1sm/11/
+            - generic [ref=e69]: "11"
+          - link "12" [ref=e70] [cursor=pointer]:
+            - /url: /read/1sm/12/
+            - generic [ref=e71]: "12"
+          - link "13" [ref=e72] [cursor=pointer]:
+            - /url: /read/1sm/13/
+            - generic [ref=e73]: "13"
+          - link "14" [ref=e74] [cursor=pointer]:
+            - /url: /read/1sm/14/
+            - generic [ref=e75]: "14"
+          - link "15" [ref=e76] [cursor=pointer]:
+            - /url: /read/1sm/15/
+            - generic [ref=e77]: "15"
+          - link "16" [ref=e78] [cursor=pointer]:
+            - /url: /read/1sm/16/
+            - generic [ref=e79]: "16"
+          - link "17" [ref=e80] [cursor=pointer]:
+            - /url: /read/1sm/17/
+            - generic [ref=e81]: "17"
+          - link "18" [ref=e82] [cursor=pointer]:
+            - /url: /read/1sm/18/
+            - generic [ref=e83]: "18"
+          - link "19" [ref=e84] [cursor=pointer]:
+            - /url: /read/1sm/19/
+            - generic [ref=e85]: "19"
+          - link "20" [ref=e86] [cursor=pointer]:
+            - /url: /read/1sm/20/
+            - generic [ref=e87]: "20"
+          - link "21" [ref=e88] [cursor=pointer]:
+            - /url: /read/1sm/21/
+            - generic [ref=e89]: "21"
+          - link "22" [ref=e90] [cursor=pointer]:
+            - /url: /read/1sm/22/
+            - generic [ref=e91]: "22"
+          - link "23" [ref=e92] [cursor=pointer]:
+            - /url: /read/1sm/23/
+            - generic [ref=e93]: "23"
+          - link "24" [ref=e94] [cursor=pointer]:
+            - /url: /read/1sm/24/
+            - generic [ref=e95]: "24"
+          - link "25" [ref=e96] [cursor=pointer]:
+            - /url: /read/1sm/25/
+            - generic [ref=e97]: "25"
+          - link "26" [ref=e98] [cursor=pointer]:
+            - /url: /read/1sm/26/
+            - generic [ref=e99]: "26"
+          - link "27" [ref=e100] [cursor=pointer]:
+            - /url: /read/1sm/27/
+            - generic [ref=e101]: "27"
+          - link "28" [ref=e103] [cursor=pointer]:
+            - /url: /read/1sm/28/
+            - generic [ref=e104]: "28"
+          - link "29" [ref=e106] [cursor=pointer]:
+            - /url: /read/1sm/29/
+            - generic [ref=e107]: "29"
+          - link "30" [ref=e109] [cursor=pointer]:
+            - /url: /read/1sm/30/
+            - generic [ref=e110]: "30"
+          - link "31" [ref=e111] [cursor=pointer]:
+            - /url: /read/1sm/31/
+            - generic [ref=e112]: "31"
+    - main [ref=e115]:
+      - generic [ref=e116]:
+        - generic [ref=e118]:
+          - generic [ref=e119] [cursor=pointer]:
+            - generic [ref=e120]: "1"
+            - text: Был один человек из Рамафаим-Цофима, с горы Ефремовой, имя ему Елкана, сын Иерохама, сына Илия, сына Тоху, сына Цуфа, — Ефрафянин;
+            - generic "Есть параллельные места" [ref=e121]
+          - generic [ref=e124] [cursor=pointer]:
+            - generic [ref=e125]: "2"
+            - text: "у него были две жены: имя одной Анна, а имя другой Феннана; у Феннаны были дети, у Анны же не было детей."
+          - generic [ref=e128] [cursor=pointer]:
+            - generic [ref=e129]: "3"
+            - text: И ходил этот человек из города своего в положенные дни поклоняться и приносить жертву Господу Саваофу в Силом; там были [Илий и] два сына его, Офни и Финеес, священниками Господа.
+          - generic [ref=e132] [cursor=pointer]:
+            - generic [ref=e133]: "4"
+            - text: В тот день, когда Елкана приносил жертву, давал Феннане, жене своей, и всем сыновьям ее и дочерям ее части;
+          - generic [ref=e136] [cursor=pointer]:
+            - generic [ref=e137]: "5"
+            - text: Анне же давал часть особую, [так как у нее не было детей], ибо любил Анну [более, нежели Феннану], хотя Господь заключил чрево ее.
+          - generic [ref=e140] [cursor=pointer]:
+            - generic [ref=e141]: "6"
+            - text: Соперница ее сильно огорчала ее, побуждая ее к ропоту на то, что Господь заключил чрево ее.
+          - generic [ref=e144] [cursor=pointer]:
+            - generic [ref=e145]: "7"
+            - text: Так бывало каждый год, когда ходила она в дом Господень; та огорчала ее, а эта плакала [и сетовала] и не ела.
+          - generic [ref=e148] [cursor=pointer]:
+            - generic [ref=e149]: "8"
+            - text: "И сказал ей Елкана, муж ее: Анна! [Она отвечала ему: вот я. И сказал ей:] что ты плачешь и почему не ешь, и отчего скорбит сердце твое? не лучше ли я для тебя десяти сыновей?"
+          - generic [ref=e152] [cursor=pointer]:
+            - generic [ref=e153]: "9"
+            - text: И встала Анна после того, как они ели и пили в Силоме, [и стала пред Господом]. Илий же священник сидел тогда на седалище у входа в храм Господень.
+          - generic [ref=e156] [cursor=pointer]:
+            - generic [ref=e157]: "10"
+            - text: И была она в скорби души, и молилась Господу, и горько плакала,
+          - generic [ref=e160] [cursor=pointer]:
+            - generic [ref=e161]: "11"
+            - text: "и дала обет, говоря: Господи [Всемогущий Боже] Саваоф! если Ты призришь на скорбь рабы Твоей и вспомнишь обо мне, и не забудешь рабы Твоей и дашь рабе Твоей дитя мужеского пола, то я отдам его Господу [в дар] на все дни жизни его, [и вина и сикера не будет он пить,] и бритва не коснется головы его."
+          - generic [ref=e164] [cursor=pointer]:
+            - generic [ref=e165]: "12"
+            - text: Между тем как она долго молилась пред Господом, Илий смотрел на уста ее;
+          - generic [ref=e168] [cursor=pointer]:
+            - generic [ref=e169]: "13"
+            - text: и как Анна говорила в сердце своем, а уста ее только двигались, и не было слышно голоса ее, то Илий счел ее пьяною.
+          - generic [ref=e172] [cursor=pointer]:
+            - generic [ref=e173]: "14"
+            - text: "И сказал ей Илий: доколе ты будешь пьяною? вытрезвись от вина твоего [и иди от лица Господня]."
+          - generic [ref=e176] [cursor=pointer]:
+            - generic [ref=e177]: "15"
+            - text: "И отвечала Анна, и сказала: нет, господин мой; я — жена, скорбящая духом, вина и сикера я не пила, но изливаю душу мою пред Господом;"
+          - generic [ref=e180] [cursor=pointer]:
+            - generic [ref=e181]: "16"
+            - text: не считай рабы твоей негодною женщиною, ибо от великой печали моей и от скорби моей я говорила доселе.
+          - generic [ref=e184] [cursor=pointer]:
+            - generic [ref=e185]: "17"
+            - text: "И отвечал Илий и сказал: иди с миром, и Бог Израилев исполнит прошение твое, чего ты просила у Него."
+          - generic [ref=e188] [cursor=pointer]:
+            - generic [ref=e189]: "18"
+            - text: "Она же сказала: да найдет раба твоя милость в очах твоих! И пошла она в путь свой, и ела, и лице ее не было уже печально, как прежде."
+          - generic [ref=e192] [cursor=pointer]:
+            - generic [ref=e193]: "19"
+            - text: И встали они поутру, и поклонились пред Господом, и возвратились, и пришли в дом свой в Раму. И познал Елкана Анну, жену свою, и вспомнил о ней Господь.
+          - generic [ref=e196] [cursor=pointer]:
+            - generic [ref=e197]: "20"
+            - text: "Чрез несколько времени зачала Анна и родила сына и дала ему имя: Самуил, ибо, [говорила она], от Господа [Бога Саваофа] я испросила его."
+          - generic [ref=e200] [cursor=pointer]:
+            - generic [ref=e201]: "21"
+            - text: И пошел муж ее Елкана и все семейство его [в Силом] совершить годичную жертву Господу и обеты свои [и все десятины от земли своей].
+          - generic [ref=e204] [cursor=pointer]:
+            - generic [ref=e205]: "22"
+            - text: "Анна же не пошла [с ним], сказав мужу своему: когда младенец отнят будет от груди и подрастет, тогда я отведу его, и он явится пред Господом и останется там навсегда."
+          - generic [ref=e208] [cursor=pointer]:
+            - generic [ref=e209]: "23"
+            - text: "И сказал ей Елкана, муж ее: делай, что тебе угодно; оставайся, доколе не вскормишь его грудью; только да утвердит Господь слово, [вышедшее из уст твоих]. И осталась жена его, и кормила грудью сына своего, доколе не вскормила."
+          - generic [ref=e212] [cursor=pointer]:
+            - generic [ref=e213]: "24"
+            - text: Когда же вскормила его, пошла с ним в Силом, взяв три тельца [и хлебы] и одну ефу муки и мех вина, и пришла в дом Господа в Силом, [и отрок с ними]; отрок же был еще дитя.
+          - generic [ref=e216] [cursor=pointer]:
+            - generic [ref=e217]: "25"
+            - text: "[И привели его пред лице Господа; и принес отец его жертву, какую в установленные дни приносил Господу. И привели отрока] и закололи тельца; и привела отрока [Анна мать] к Илию"
+          - generic [ref=e220] [cursor=pointer]:
+            - generic [ref=e221]: "26"
+            - text: "и сказала: о, господин мой! да живет душа твоя, господин мой! я — та самая женщина, которая здесь при тебе стояла и молилась Господу;"
+          - generic [ref=e224] [cursor=pointer]:
+            - generic [ref=e225]: "27"
+            - text: о сем дитяти молилась я, и исполнил мне Господь прошение мое, чего я просила у Него;
+          - generic [ref=e228] [cursor=pointer]:
+            - generic [ref=e229]: "28"
+            - text: и я отдаю его Господу на все дни жизни его, служить Господу. И поклонилась там Господу.
+        - generic [ref=e235]:
+          - generic [ref=e236]: ⬡
+          - paragraph [ref=e237]: Нажмите на любой стих, чтобы увидеть параллельные места
+  - button "Open Next.js Dev Tools" [ref=e243] [cursor=pointer]:
+    - img [ref=e244]
+  - alert [ref=e247]

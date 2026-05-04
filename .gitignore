@@ -33,3 +33,5 @@ bun.lock
 
 # claude
 CLAUDE.md
+
+.playwright-mcp
