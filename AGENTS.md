@@ -97,8 +97,9 @@ bun install
 
 Vercel, конфиг в `vercel.json`:
 
-- `buildCommand`: `npm run build --workspace=frontend`
+- `buildCommand`: `bun run --filter @tsarstva/frontend build`
 - `outputDirectory`: `frontend/out`
+- `installCommand`: `bun install --frozen-lockfile`
 - Фреймворк: `null` (не детектить Next.js автоматически — статический экспорт в папку out)
 
 ## Стиль кода
