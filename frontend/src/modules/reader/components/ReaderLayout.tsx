@@ -67,15 +67,14 @@ export default function ReaderLayout({
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden lg:flex-row">
       <div
         ref={scrollRef}
-        className="min-h-0 flex-1 overflow-y-auto bg-white px-4 py-6 sm:px-6 lg:px-8 dark:bg-transparent"
+        className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto bg-white px-4 py-6 sm:px-6 lg:px-8 dark:bg-transparent"
       >
         <div
           className={cn(
-            "transition-[opacity,transform,filter] ease-in-out motion-reduce:transition-none",
-            textTransition.isVisible
-              ? "opacity-100 translate-y-0 blur-0"
-              : "pointer-events-none opacity-0 translate-y-1 blur-[1px]",
+            "reader-wind-transition",
+            !textTransition.isVisible && "pointer-events-none",
           )}
+          data-visible={textTransition.isVisible ? "true" : "false"}
           style={{ transitionDuration: `${textTransition.durationMs}ms` }}
         >
           <MainText
@@ -94,7 +93,7 @@ export default function ReaderLayout({
       <div
         ref={panelRef}
         className={cn(
-          "shrink-0 overflow-y-auto border-t border-[#E1DDD8] dark:border-stone-700 lg:border-t-0 bg-[#F1EEE9] dark:bg-stone-950/50",
+          "shrink-0 overflow-x-hidden overflow-y-auto border-t border-[#E1DDD8] dark:border-stone-700 lg:border-t-0 bg-[#F1EEE9] dark:bg-stone-950/50",
           "h-[55vh] h-[55dvh] lg:h-auto lg:w-96 xl:w-[440px]",
           activeVerse === null && "hidden lg:block",
         )}
@@ -103,24 +102,15 @@ export default function ReaderLayout({
         <ParallelPanelResizeHandle {...resizablePanel.resizeHandleProps} />
 
         <div className="px-4 pt-4 pb-6 sm:px-6 lg:py-6">
-          <div
-            className={cn(
-              "transition-[opacity,transform,filter] ease-in-out motion-reduce:transition-none",
-              panelTransition.isVisible
-                ? "opacity-100 translate-y-0 blur-0"
-                : "pointer-events-none opacity-0 translate-y-1 blur-[1px]",
-            )}
-            style={{
-              transitionDuration: `${panelTransition.durationMs}ms`,
-            }}
-          >
-            <ParallelPanel
-              refs={panelTransition.snapshot.refs}
-              activeVerse={panelTransition.snapshot.activeVerse}
-              bookName={panelTransition.snapshot.bookName}
-              chapter={panelTransition.snapshot.chapter}
-            />
-          </div>
+          <ParallelPanel
+            refs={panelTransition.snapshot.refs}
+            activeVerse={panelTransition.snapshot.activeVerse}
+            bookName={panelTransition.snapshot.bookName}
+            chapter={panelTransition.snapshot.chapter}
+            isReferenceTransitionVisible={panelTransition.isVisible}
+            isContentTransitionVisible={panelTransition.isContentVisible}
+            transitionDurationMs={panelTransition.durationMs}
+          />
         </div>
       </div>
 

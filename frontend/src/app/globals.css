@@ -59,6 +59,58 @@ body {
   letter-spacing: 0.01em;
 }
 
+.reader-wind-transition {
+  opacity: 1;
+  filter: blur(0);
+  transform: translate3d(0, 0, 0) skewX(0);
+  transition-property:
+    opacity, transform, filter, -webkit-mask-position, mask-position;
+  transition-timing-function: cubic-bezier(0.34, 0, 0.18, 1);
+  will-change: opacity, transform, filter, -webkit-mask-position, mask-position;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 7%,
+    #000 26%,
+    #000 74%,
+    transparent 93%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 7%,
+    #000 26%,
+    #000 74%,
+    transparent 93%,
+    transparent 100%
+  );
+  -webkit-mask-position: 50% 0;
+  mask-position: 50% 0;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 300% 100%;
+  mask-size: 300% 100%;
+}
+
+.reader-wind-transition[data-visible="false"] {
+  opacity: 0;
+  filter: blur(2px);
+  transform: translate3d(1.25rem, 0, 0) skewX(-1.5deg);
+  -webkit-mask-position: 100% 0;
+  mask-position: 100% 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reader-wind-transition {
+    filter: none;
+    transform: none;
+    transition: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;

@@ -25,6 +25,28 @@ function getPanelSnapshotKey(
   return `${book}:${chapter}:${activeVerse ?? "empty"}`;
 }
 
+function getPanelContentSnapshotKey(
+  activeVerse: number | null,
+  refs: PrecomputedParallel[],
+) {
+  if (activeVerse === null) {
+    return "prompt";
+  }
+
+  if (refs.length === 0) {
+    return "no-parallels";
+  }
+
+  return refs
+    .map(
+      (ref) =>
+        `${ref.book}:${ref.chapter}:${ref.verse}:${ref.chapterEnd ?? ""}:${
+          ref.verseEnd ?? ""
+        }:${ref.theme}:${ref.label}`,
+    )
+    .join("|");
+}
+
 interface Params {
   book: string;
   chapter: number;
@@ -41,9 +63,12 @@ export function useParallelPanelSnapshot({
   parallelsMap,
 }: Params) {
   const [isParallelPanelVisible, setIsParallelPanelVisible] = useState(false);
+  const [isParallelContentVisible, setIsParallelContentVisible] =
+    useState(false);
   const panelSwapTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const panelVisibilityRafRef = useRef<number>(undefined);
   const panelSnapshotKeyRef = useRef("");
+  const panelContentSnapshotKeyRef = useRef("");
   const activeParallels = useMemo(
     () =>
       activeVerse !== null
@@ -67,6 +92,7 @@ export function useParallelPanelSnapshot({
       }
 
       setIsParallelPanelVisible(false);
+      setIsParallelContentVisible(false);
     };
 
     window.addEventListener(
@@ -83,12 +109,19 @@ export function useParallelPanelSnapshot({
 
   useEffect(() => {
     const nextKey = getPanelSnapshotKey(book, chapter, activeVerse);
+    const nextContentKey = getPanelContentSnapshotKey(
+      activeVerse,
+      activeParallels,
+    );
     const hadPreviousSnapshot = panelSnapshotKeyRef.current !== "";
+    const hasSameContent =
+      panelContentSnapshotKeyRef.current === nextContentKey;
 
     clearTimeout(panelSwapTimerRef.current);
     cancelAnimationFrame(panelVisibilityRafRef.current!);
 
     if (panelSnapshotKeyRef.current === nextKey) {
+      panelContentSnapshotKeyRef.current = nextContentKey;
       setParallelPanelSnapshot({
         refs: activeParallels,
         activeVerse,
@@ -96,16 +129,26 @@ export function useParallelPanelSnapshot({
         chapter,
       });
       setIsParallelPanelVisible(true);
+      setIsParallelContentVisible(true);
       return;
     }
 
     if (hadPreviousSnapshot) {
       setIsParallelPanelVisible(false);
+
+      if (!hasSameContent) {
+        setIsParallelContentVisible(false);
+      }
+    }
+
+    if (hasSameContent) {
+      setIsParallelContentVisible(true);
     }
 
     panelSwapTimerRef.current = setTimeout(
       () => {
         panelSnapshotKeyRef.current = nextKey;
+        panelContentSnapshotKeyRef.current = nextContentKey;
         setParallelPanelSnapshot({
           refs: activeParallels,
           activeVerse,
@@ -115,6 +158,7 @@ export function useParallelPanelSnapshot({
         panelVisibilityRafRef.current = requestAnimationFrame(() => {
           panelVisibilityRafRef.current = requestAnimationFrame(() => {
             setIsParallelPanelVisible(true);
+            setIsParallelContentVisible(true);
           });
         });
       },
@@ -131,6 +175,7 @@ export function useParallelPanelSnapshot({
     panelTransition: {
       snapshot: parallelPanelSnapshot,
       isVisible: isParallelPanelVisible,
+      isContentVisible: isParallelContentVisible,
       durationMs: PARALLEL_PANEL_SWAP_DELAY_MS,
     },
   };
