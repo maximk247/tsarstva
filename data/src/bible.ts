@@ -63,7 +63,8 @@ export function getVerseItems(
     const firstVerse = ch === chapter ? from : (verseKeys[0] ?? 1);
     const lastVerse =
       ch === endChapter
-        ? (to ?? (ch === chapter ? from : (verseKeys[verseKeys.length - 1] ?? 0)))
+        ? (to ??
+          (ch === chapter ? from : (verseKeys[verseKeys.length - 1] ?? 0)))
         : (verseKeys[verseKeys.length - 1] ?? 0);
     for (let v = firstVerse; v <= lastVerse; v++) {
       const text = verses[v];

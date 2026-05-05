@@ -1,1 +1,6 @@
-export { getChapter, getVerseText, getVerseRange, getVerseItems } from "./bible";
+export {
+  getChapter,
+  getVerseText,
+  getVerseRange,
+  getVerseItems,
+} from "./bible";
