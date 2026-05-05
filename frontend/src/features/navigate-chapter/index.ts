@@ -3,11 +3,11 @@ export { default as BookSelector } from "./components/BookSelector";
 export {
   shouldSkipDeferredNavigation,
   getChapterHref,
-} from "./lib/navigationLinks";
-export { useDeferredChapterNavigation } from "./model/useDeferredChapterNavigation";
+} from "./utils/navigationLinks";
+export { useDeferredChapterNavigation } from "./hooks/useDeferredChapterNavigation";
 export {
   CHAPTER_NAVIGATION_INTENT_EVENT,
   announceChapterNavigationIntent,
   type ChapterNavigationIntent,
-} from "./model/navigationIntent";
-export { CHAPTER_NAVIGATION_COMMIT_DELAY_MS } from "./config/navigation";
+} from "./utils/navigationIntent";
+export { CHAPTER_NAVIGATION_COMMIT_DELAY_MS } from "./constants/navigation";

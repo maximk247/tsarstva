@@ -1,5 +1,5 @@
 import { READER_BOOKS, getBookName, getChapterCount } from "@tsarstva/data";
-import type { ChapterNavigationIntent } from "../model/navigationIntent";
+import type { ChapterNavigationIntent } from "./navigationIntent";
 
 export type NavTarget = ChapterNavigationIntent;
 

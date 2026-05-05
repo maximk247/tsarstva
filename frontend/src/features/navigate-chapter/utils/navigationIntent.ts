@@ -1,4 +1,4 @@
-import { CHAPTER_NAVIGATION_INTENT_EVENT } from "../config/navigation";
+import { CHAPTER_NAVIGATION_INTENT_EVENT } from "../constants/navigation";
 
 export interface ChapterNavigationIntent {
   book: string;

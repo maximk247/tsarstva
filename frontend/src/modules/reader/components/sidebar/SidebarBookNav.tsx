@@ -4,8 +4,8 @@ import Link from "next/link";
 import type { MouseEvent, RefObject } from "react";
 import { READER_BOOK_NAMES, READER_BOOK_SECTIONS } from "@tsarstva/data";
 import type { ChapterNavigationIntent } from "@/features/navigate-chapter";
-import { cn } from "@/shared/lib/cn";
-import type { IndicatorRect } from "../../lib/bookIndicator";
+import { cn } from "@/shared/utils/cn";
+import type { IndicatorRect } from "../../utils/bookIndicator";
 
 interface Props {
   activeBook: string;

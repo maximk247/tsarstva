@@ -2,17 +2,17 @@
 
 import { useCallback, useMemo, useRef, useState } from "react";
 import type { Chapter, PrecomputedParallel } from "@tsarstva/data";
-import { useParallelPanelSnapshot } from "../model/useParallelPanelSnapshot";
-import { useHashVerseScroll } from "../model/useHashVerseScroll";
-import { useKeyboardScroll } from "../model/useKeyboardScroll";
-import { useReaderVisibility } from "../model/useReaderVisibility";
-import { useResizablePanel } from "../model/useResizablePanel";
-import { useVerseSelection } from "../model/useVerseSelection";
+import { useParallelPanelSnapshot } from "../hooks/useParallelPanelSnapshot";
+import { useHashVerseScroll } from "../hooks/useHashVerseScroll";
+import { useKeyboardScroll } from "../hooks/useKeyboardScroll";
+import { useReaderVisibility } from "../hooks/useReaderVisibility";
+import { useResizablePanel } from "../hooks/useResizablePanel";
+import { useVerseSelection } from "../hooks/useVerseSelection";
 import ParallelPanel from "./parallel/ParallelPanel";
 import ParallelPanelResizeHandle from "./parallel/ParallelPanelResizeHandle";
 import VerseSelectionToolbar from "./selection/VerseSelectionToolbar";
 import MainText from "./text/MainText";
-import { cn } from "@/shared/lib/cn";
+import { cn } from "@/shared/utils/cn";
 
 interface Props {
   book: string;

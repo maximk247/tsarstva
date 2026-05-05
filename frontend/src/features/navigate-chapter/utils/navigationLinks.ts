@@ -1,5 +1,5 @@
 import type { MouseEvent as ReactMouseEvent } from "react";
-import type { ChapterNavigationIntent } from "../model/navigationIntent";
+import type { ChapterNavigationIntent } from "./navigationIntent";
 
 export function getChapterHref(target: ChapterNavigationIntent | null) {
   return target ? `/read/${target.book}/${target.chapter}` : "#";

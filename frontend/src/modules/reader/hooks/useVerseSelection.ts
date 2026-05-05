@@ -9,8 +9,8 @@ import {
   type RefObject,
 } from "react";
 import type { Chapter } from "@tsarstva/data";
-import { SELECTION_COPIED_RESET_DELAY_MS } from "../config/selection";
-import { getSelectionLabel } from "../lib/selectionLabel";
+import { SELECTION_COPIED_RESET_DELAY_MS } from "../constants/selection";
+import { getSelectionLabel } from "../utils/selectionLabel";
 
 export type TooltipPosition =
   | {

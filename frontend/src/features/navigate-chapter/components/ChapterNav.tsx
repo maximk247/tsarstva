@@ -4,11 +4,11 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { getChaptersWithParallels } from "@tsarstva/data";
-import { cn } from "@/shared/lib/cn";
-import { getAdjacentTarget, getTargetLabel } from "../lib/chapterTargets";
-import { isTypingTarget } from "../lib/dom";
-import { getChapterHref } from "../lib/navigationLinks";
-import { useDeferredChapterNavigation } from "../model/useDeferredChapterNavigation";
+import { cn } from "@/shared/utils/cn";
+import { getAdjacentTarget, getTargetLabel } from "../utils/chapterTargets";
+import { isTypingTarget } from "../utils/dom";
+import { getChapterHref } from "../utils/navigationLinks";
+import { useDeferredChapterNavigation } from "../hooks/useDeferredChapterNavigation";
 import ChapterDropdown from "./ChapterDropdown";
 
 interface Props {

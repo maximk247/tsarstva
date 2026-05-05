@@ -59,7 +59,14 @@ export default memo(function ParallelPanel({
             <ParallelCard
               key={`${ref.book}:${ref.chapter}:${ref.verse}`}
               ref_={ref}
-              sourceRef={`${bookName} ${chapter}:${activeVerse}`}
+              reportAction={
+                <ReportButton
+                  type="parallel"
+                  reference={`${bookName} ${chapter}:${activeVerse}`}
+                  parallelRef={ref.label}
+                  parallelText={ref.text}
+                />
+              }
             />
           ))}
         </div>

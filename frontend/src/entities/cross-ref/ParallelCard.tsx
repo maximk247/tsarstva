@@ -1,16 +1,11 @@
 import Link from "next/link";
-import dynamic from "next/dynamic";
-import { cn } from "@/shared/lib/cn";
+import type { ReactNode } from "react";
+import { cn } from "@/shared/utils/cn";
 import {
   READER_BOOKS,
   type PrecomputedParallel,
   type CrossRefTheme,
 } from "@tsarstva/data";
-
-const ReportButton = dynamic(
-  () => import("@/features/report-issue/ReportButton"),
-  { ssr: false },
-);
 
 const NAVIGABLE_BOOKS = new Set<string>(READER_BOOKS);
 
@@ -39,10 +34,10 @@ const THEME_COLORS: Record<CrossRefTheme, string> = {
 
 interface Props {
   ref_: PrecomputedParallel;
-  sourceRef?: string;
+  reportAction?: ReactNode;
 }
 
-export default function ParallelCard({ ref_, sourceRef }: Props) {
+export default function ParallelCard({ ref_, reportAction }: Props) {
   const { text, label } = ref_;
   const isNavigable = NAVIGABLE_BOOKS.has(ref_.book);
   const href = `/read/${ref_.book}/${ref_.chapter}#v${ref_.verse}`;
@@ -71,14 +66,11 @@ export default function ParallelCard({ ref_, sourceRef }: Props) {
           >
             {THEME_LABELS[ref_.theme]}
           </span>
-          <span className="opacity-0 group-hover:opacity-100 transition-opacity">
-            <ReportButton
-              type="parallel"
-              reference={sourceRef ?? "?"}
-              parallelRef={label}
-              parallelText={text}
-            />
-          </span>
+          {reportAction && (
+            <span className="opacity-0 group-hover:opacity-100 transition-opacity">
+              {reportAction}
+            </span>
+          )}
         </div>
       </div>
 

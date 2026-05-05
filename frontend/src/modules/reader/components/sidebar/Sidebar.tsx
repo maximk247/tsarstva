@@ -16,7 +16,7 @@ import {
 } from "@/features/navigate-chapter";
 import { FontSizeControl } from "@/features/font-size";
 import { ThemeToggle } from "@/features/theme-toggle";
-import { useBookIndicator } from "../../model/useBookIndicator";
+import { useBookIndicator } from "../../hooks/useBookIndicator";
 import SidebarBookNav from "./SidebarBookNav";
 import SidebarChapterGrid from "./SidebarChapterGrid";
 

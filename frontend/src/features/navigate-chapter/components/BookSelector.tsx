@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { cn } from "@/shared/lib/cn";
+import { cn } from "@/shared/utils/cn";
 import { READER_BOOK_SECTIONS, getBookName } from "@tsarstva/data";
 
 interface Props {

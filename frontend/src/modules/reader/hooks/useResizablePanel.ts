@@ -12,7 +12,7 @@ import {
 import {
   PARALLEL_PANEL_MIN_HEIGHT,
   PARALLEL_PANEL_RESIZE_KEYBOARD_STEP,
-} from "../config/parallelPanel";
+} from "../constants/parallelPanel";
 
 interface Params {
   activeVerse: number | null;

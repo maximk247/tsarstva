@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Alegreya } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/shared/config/theme-provider";
+import { ThemeProvider } from "@/shared/configs/theme-provider";
 
 const inter = Inter({
   variable: "--font-inter",

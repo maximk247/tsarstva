@@ -8,8 +8,8 @@ import {
   KEYBOARD_SCROLL_MAX_FRAME,
   KEYBOARD_SCROLL_MIN_VELOCITY,
   KEYBOARD_SCROLL_SPEED,
-} from "../config/keyboardScroll";
-import { isTypingTarget } from "../lib/dom";
+} from "../constants/keyboardScroll";
+import { isTypingTarget } from "../utils/dom";
 
 type ScrollDirection = -1 | 0 | 1;
 

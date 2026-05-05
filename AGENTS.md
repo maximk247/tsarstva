@@ -25,8 +25,8 @@
     └── src/
         ├── app/           # App Router: page.tsx — thin re-exports из modules/
         ├── modules/
-        │   ├── home/      # HomePage + BookGrid
-        │   └── reader/    # ReaderPage, ReaderLayout, MainText, ParallelPanel, Sidebar
+        │   ├── home/      # pages/, components/
+        │   └── reader/    # pages/, components/, hooks/, constants/, utils/
         ├── features/
         │   ├── navigate-chapter/   # BookSelector, ChapterNav
         │   ├── reading-progress/   # прогресс чтения
@@ -35,8 +35,8 @@
         │   ├── verse/     # VerseItem
         │   └── cross-ref/ # ParallelCard
         └── shared/
-            ├── lib/cn.ts           # cn() утилита (clsx + tailwind-merge)
-            └── config/theme-provider.tsx
+            ├── utils/cn.ts         # cn() утилита (clsx + tailwind-merge)
+            └── configs/theme-provider.tsx
 ```
 
 ## Архитектура — ключевые паттерны
@@ -60,7 +60,7 @@
 cd data && bun run sync:justbible
 ```
 
-**Архитектура компонентов (FSD-подобная):** `app` → `modules` → `features` → `entities` → `shared`. Импорты только вниз по слоям.
+**Архитектура компонентов (FSD-подобная):** `app` → `modules` → `features` → `entities` → `shared`. Импорты только вниз по слоям. Для внутренних папок используй словарь как в `tyres-frontend`: `components`, `pages`, `hooks`, `constants`, `utils`, `configs`, `types`. В React-коде `use...` файлы клади в `hooks`. Не заводи `model`, `lib`, `config`, `composables`.
 
 ## Команды
 
@@ -105,7 +105,7 @@ Vercel, конфиг в `vercel.json`:
 
 - TypeScript, strict
 - Tailwind 4 (postcss плагин `@tailwindcss/postcss`)
-- `cn()` из `@/shared/lib/cn` для условных классов
+- `cn()` из `@/shared/utils/cn` для условных классов
 - Цветовая схема: stone + amber-900 акценты, `#FAF9F7` фон
 - `"use client"` только там, где нужен state/effect (ReaderLayout, Sidebar, и пр.)
 

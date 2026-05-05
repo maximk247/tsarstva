@@ -2,8 +2,8 @@
 
 import ReportDialog from "./components/ReportDialog";
 import ReportTrigger from "./components/ReportTrigger";
-import { FORMSPREE_ID, type ReportType } from "./config/report";
-import { useReportForm } from "./model/useReportForm";
+import { FORMSPREE_ID, type ReportType } from "./constants/report";
+import { useReportForm } from "./hooks/useReportForm";
 
 interface Props {
   type: ReportType;

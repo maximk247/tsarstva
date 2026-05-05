@@ -3,7 +3,7 @@
 import Link from "next/link";
 import type { MouseEvent } from "react";
 import type { ChapterNavigationIntent } from "@/features/navigate-chapter";
-import { cn } from "@/shared/lib/cn";
+import { cn } from "@/shared/utils/cn";
 
 interface Props {
   currentBook: string;

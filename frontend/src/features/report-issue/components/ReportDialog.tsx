@@ -3,12 +3,12 @@
 import { X } from "lucide-react";
 import { createPortal } from "react-dom";
 import type { FormEvent } from "react";
-import { cn } from "@/shared/lib/cn";
+import { cn } from "@/shared/utils/cn";
 import {
   REPORT_CATEGORIES,
   type ReportStatus,
   type ReportType,
-} from "../config/report";
+} from "../constants/report";
 
 interface ReportFormProps {
   problem: string;

@@ -12,8 +12,8 @@ import {
   FORMSPREE_ID,
   type ReportStatus,
   type ReportType,
-} from "../config/report";
-import { buildReportPayload } from "../lib/reportPayload";
+} from "../constants/report";
+import { buildReportPayload } from "../utils/reportPayload";
 
 interface Params {
   type: ReportType;

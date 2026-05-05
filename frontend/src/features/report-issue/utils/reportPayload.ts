@@ -1,4 +1,4 @@
-import type { ReportType } from "../config/report";
+import type { ReportType } from "../constants/report";
 
 interface Params {
   type: ReportType;

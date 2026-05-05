@@ -6,7 +6,7 @@ import {
   type ChapterNavigationIntent,
 } from "@/features/navigate-chapter";
 import type { PrecomputedParallel } from "@tsarstva/data";
-import { PARALLEL_PANEL_SWAP_DELAY_MS } from "../config/parallelPanel";
+import { PARALLEL_PANEL_SWAP_DELAY_MS } from "../constants/parallelPanel";
 
 const EMPTY_PARALLELS: PrecomputedParallel[] = [];
 

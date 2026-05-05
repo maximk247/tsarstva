@@ -2,12 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import { CHAPTER_NAVIGATION_COMMIT_DELAY_MS } from "../config/navigation";
-import { getChapterHref } from "../lib/navigationLinks";
+import { CHAPTER_NAVIGATION_COMMIT_DELAY_MS } from "../constants/navigation";
+import { getChapterHref } from "../utils/navigationLinks";
 import {
   announceChapterNavigationIntent,
   type ChapterNavigationIntent,
-} from "./navigationIntent";
+} from "../utils/navigationIntent";
 
 interface Options {
   onIntent?: (target: ChapterNavigationIntent) => void;

@@ -5,7 +5,7 @@ import {
   areIndicatorRectsEqual,
   getBookIndicatorRect,
   type IndicatorRect,
-} from "../lib/bookIndicator";
+} from "../utils/bookIndicator";
 
 export function useBookIndicator(activeBook: string) {
   const [bookIndicatorRect, setBookIndicatorRect] =

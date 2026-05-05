@@ -2,7 +2,7 @@
 
 import { Check, Copy, X } from "lucide-react";
 import { createPortal } from "react-dom";
-import type { TooltipPosition } from "../../model/useVerseSelection";
+import type { TooltipPosition } from "../../hooks/useVerseSelection";
 
 interface Props {
   visible: boolean;
