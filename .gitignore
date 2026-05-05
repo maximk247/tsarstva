@@ -1,5 +1,7 @@
 # dependencies
 node_modules
+.venv/
+.venv-*/
 
 # next.js
 .next/
@@ -27,6 +29,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# generated semantic-search artifacts
+data/json/search/
+data/json/cross-refs/candidates.semantic.json
 
 # lock files (using npm)
 bun.lock

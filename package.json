@@ -9,6 +9,9 @@
   "scripts": {
     "dev": "bun run --filter @tsarstva/frontend dev",
     "validate:crossrefs": "bun run --filter @tsarstva/data validate:crossrefs",
+    "semantic:corpus": "bun run --filter @tsarstva/data semantic:corpus",
+    "semantic:embed": "bun run --filter @tsarstva/data semantic:embed",
+    "semantic:candidates": "bun run --filter @tsarstva/data semantic:candidates",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
