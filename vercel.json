@@ -1,6 +1,6 @@
 {
   "framework": null,
-  "buildCommand": "npm run build --workspace=frontend",
+  "buildCommand": "bun run --filter @tsarstva/frontend build",
   "outputDirectory": "frontend/out",
-  "installCommand": "npm install"
+  "installCommand": "bun install --frozen-lockfile"
 }
