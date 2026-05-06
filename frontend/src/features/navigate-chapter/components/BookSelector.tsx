@@ -1,15 +1,90 @@
+"use client";
+
 import Link from "next/link";
+import { useLayoutEffect, useRef } from "react";
 import { cn } from "@/shared/utils/cn";
 import { READER_BOOK_SECTIONS, getBookName } from "@tsarstva/data";
 
-interface Props {
-  currentBook: string;
-  currentChapter: number;
+let lastBookSelectorBook: string | null = null;
+let lastBookSelectorScrollLeft: number | null = null;
+
+function getScrollContainer(nav: HTMLElement | null) {
+  return nav?.parentElement ?? null;
 }
 
-export default function BookSelector({ currentBook, currentChapter }: Props) {
+function getCenteredScrollLeft(container: HTMLElement, link: HTMLElement) {
+  const containerRect = container.getBoundingClientRect();
+  const linkRect = link.getBoundingClientRect();
+  const rawLeft =
+    linkRect.left -
+    containerRect.left +
+    container.scrollLeft -
+    (container.clientWidth - linkRect.width) / 2;
+  const maxLeft = container.scrollWidth - container.clientWidth;
+
+  return Math.min(Math.max(rawLeft, 0), maxLeft);
+}
+
+function shouldReduceMotion() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+interface Props {
+  currentBook: string;
+}
+
+export default function BookSelector({ currentBook }: Props) {
+  const navRef = useRef<HTMLElement | null>(null);
+  const activeBookRef = useRef<HTMLAnchorElement | null>(null);
+
+  useLayoutEffect(() => {
+    const container = getScrollContainer(navRef.current);
+    const activeBook = activeBookRef.current;
+
+    if (!container || !activeBook) return;
+
+    const targetScrollLeft = getCenteredScrollLeft(container, activeBook);
+    const previousBook = lastBookSelectorBook;
+    const isBookChange = previousBook !== null && previousBook !== currentBook;
+
+    if (isBookChange && lastBookSelectorScrollLeft !== null) {
+      container.scrollLeft = lastBookSelectorScrollLeft;
+      container.scrollTo({
+        left: targetScrollLeft,
+        behavior: shouldReduceMotion() ? "auto" : "smooth",
+      });
+    } else {
+      container.scrollLeft =
+        previousBook === currentBook && lastBookSelectorScrollLeft !== null
+          ? lastBookSelectorScrollLeft
+          : targetScrollLeft;
+    }
+
+    lastBookSelectorBook = currentBook;
+    lastBookSelectorScrollLeft = targetScrollLeft;
+  }, [currentBook]);
+
+  useLayoutEffect(() => {
+    const container = getScrollContainer(navRef.current);
+    if (!container) return;
+
+    const rememberScrollLeft = () => {
+      lastBookSelectorScrollLeft = container.scrollLeft;
+    };
+
+    rememberScrollLeft();
+    container.addEventListener("scroll", rememberScrollLeft, {
+      passive: true,
+    });
+
+    return () => {
+      rememberScrollLeft();
+      container.removeEventListener("scroll", rememberScrollLeft);
+    };
+  }, []);
+
   return (
-    <nav className="flex items-center gap-1">
+    <nav ref={navRef} className="flex items-center gap-1">
       {READER_BOOK_SECTIONS.map((section, sectionIndex) => (
         <div key={section.title} className="flex items-center gap-1">
           {sectionIndex > 0 && (
@@ -22,6 +97,7 @@ export default function BookSelector({ currentBook, currentChapter }: Props) {
               <Link
                 key={abbrev}
                 href={`/read/${abbrev}/1`}
+                ref={isActive ? activeBookRef : undefined}
                 className={cn(
                   "font-sans text-sm px-2.5 py-1 rounded-md transition-colors whitespace-nowrap",
                   isActive

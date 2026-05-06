@@ -62,6 +62,8 @@ cd data && bun run sync:justbible
 
 **Архитектура компонентов (FSD-подобная):** `app` → `modules` → `features` → `entities` → `shared`. Импорты только вниз по слоям. Для внутренних папок используй словарь как в `tyres-frontend`: `components`, `pages`, `hooks`, `constants`, `utils`, `configs`, `types`. В React-коде `use...` файлы клади в `hooks`. Не заводи `model`, `lib`, `config`, `composables`.
 
+**Навигация по книгам.** Desktop-список книг живёт в `modules/reader/components/sidebar/SidebarBookNav`, мобильный горизонтальный список — в `features/navigate-chapter/components/BookSelector`. При баге "сайдбара" или списка книг сначала уточняй/проверяй нужную поверхность и не откатывай фикс другой поверхности, если он не конфликтует. `BookSelector` должен реагировать на смену `currentBook`, а не на смену главы.
+
 ## Команды
 
 ```bash

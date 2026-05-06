@@ -90,7 +90,7 @@ export default async function ReaderPage({ params }: PageProps) {
         <header className="lg:hidden shrink-0 z-10 bg-[#FAF9F7]/90 dark:bg-stone-950/90 backdrop-blur border-b border-[#E1DDD8] dark:border-stone-700">
           <div className="px-3 flex items-center h-10 gap-2 border-b border-[#E1DDD8] dark:border-stone-700">
             <div className="min-w-0 flex-1 overflow-x-auto">
-              <BookSelector currentBook={book} currentChapter={chapter} />
+              <BookSelector currentBook={book} />
             </div>
             <div className="shrink-0 flex items-center gap-1">
               <FontSizeControl />

@@ -1,46 +1,79 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   areIndicatorRectsEqual,
   getBookIndicatorRect,
   type IndicatorRect,
 } from "../utils/bookIndicator";
 
+interface BookIndicatorState {
+  rect: IndicatorRect | null;
+  animate: boolean;
+}
+
+interface MoveBookIndicatorOptions {
+  animate?: boolean;
+}
+
+let lastBookIndicatorSnapshot: {
+  book: string;
+  rect: IndicatorRect;
+} | null = null;
+
 export function useBookIndicator(activeBook: string) {
-  const [bookIndicatorRect, setBookIndicatorRect] =
-    useState<IndicatorRect | null>(null);
+  const [bookIndicator, setBookIndicator] = useState<BookIndicatorState>(() =>
+    lastBookIndicatorSnapshot?.book === activeBook
+      ? { rect: lastBookIndicatorSnapshot.rect, animate: false }
+      : { rect: null, animate: false },
+  );
   const bookNavRef = useRef<HTMLElement>(null);
   const bookLinkRefs = useRef(new Map<string, HTMLAnchorElement>());
-  const bookIndicatorRectRef = useRef<IndicatorRect | null>(null);
+  const bookIndicatorRectRef = useRef<IndicatorRect | null>(
+    bookIndicator.rect,
+  );
 
-  const moveBookIndicatorTo = useCallback((book: string) => {
-    const nextRect = getBookIndicatorRect(
-      book,
-      bookNavRef.current,
-      bookLinkRefs.current,
-    );
+  const moveBookIndicatorTo = useCallback(
+    (book: string, options: MoveBookIndicatorOptions = {}) => {
+      const nextRect = getBookIndicatorRect(
+        book,
+        bookNavRef.current,
+        bookLinkRefs.current,
+      );
 
-    if (!nextRect) {
-      setBookIndicatorRect(null);
-      return;
-    }
+      if (!nextRect) {
+        bookIndicatorRectRef.current = null;
+        setBookIndicator({ rect: null, animate: false });
+        return;
+      }
 
-    const prevRect = bookIndicatorRectRef.current;
+      const prevRect = bookIndicatorRectRef.current;
+      const shouldAnimate = options.animate === true && prevRect !== null;
 
-    if (prevRect && areIndicatorRectsEqual(prevRect, nextRect)) {
-      return;
-    }
+      lastBookIndicatorSnapshot = { book, rect: nextRect };
 
-    bookIndicatorRectRef.current = nextRect;
-    setBookIndicatorRect(nextRect);
-  }, []);
+      if (prevRect && areIndicatorRectsEqual(prevRect, nextRect)) {
+        return;
+      }
+
+      bookIndicatorRectRef.current = nextRect;
+      setBookIndicator({ rect: nextRect, animate: shouldAnimate });
+    },
+    [],
+  );
 
   const updateBookIndicator = useCallback(() => {
-    moveBookIndicatorTo(activeBook);
+    moveBookIndicatorTo(activeBook, { animate: false });
   }, [activeBook, moveBookIndicatorTo]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     updateBookIndicator();
   }, [updateBookIndicator]);
 
@@ -56,10 +89,11 @@ export function useBookIndicator(activeBook: string) {
         bookLinkRefs,
       },
       indicator: {
-        rect: bookIndicatorRect,
+        rect: bookIndicator.rect,
+        animate: bookIndicator.animate,
         moveTo: moveBookIndicatorTo,
       },
     }),
-    [bookIndicatorRect, moveBookIndicatorTo],
+    [bookIndicator, moveBookIndicatorTo],
   );
 }

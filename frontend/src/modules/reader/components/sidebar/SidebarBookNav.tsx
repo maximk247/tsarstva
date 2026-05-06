@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import type { MouseEvent, RefObject } from "react";
+import { memo, type MouseEvent, type RefObject } from "react";
 import { READER_BOOK_NAMES, READER_BOOK_SECTIONS } from "@tsarstva/data";
 import type { ChapterNavigationIntent } from "@/features/navigate-chapter";
 import { cn } from "@/shared/utils/cn";
@@ -11,6 +11,7 @@ interface Props {
   activeBook: string;
   currentBook: string;
   bookIndicatorRect: IndicatorRect | null;
+  bookIndicatorAnimate: boolean;
   bookNavRef: RefObject<HTMLElement | null>;
   bookLinkRefs: RefObject<Map<string, HTMLAnchorElement>>;
   onNavigate: (
@@ -19,10 +20,11 @@ interface Props {
   ) => void;
 }
 
-export default function SidebarBookNav({
+function SidebarBookNav({
   activeBook,
   currentBook,
   bookIndicatorRect,
+  bookIndicatorAnimate,
   bookNavRef,
   bookLinkRefs,
   onNavigate,
@@ -32,7 +34,12 @@ export default function SidebarBookNav({
       {bookIndicatorRect && (
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute left-0 top-0 rounded-md bg-amber-900/10 transition-transform duration-[300ms] ease-in-out will-change-transform dark:bg-stone-800 motion-reduce:transition-none"
+          className={cn(
+            "pointer-events-none absolute left-0 top-0 rounded-md bg-amber-900/10 will-change-transform dark:bg-stone-800 motion-reduce:transition-none",
+            bookIndicatorAnimate
+              ? "transition-[transform,width,height] duration-[300ms] ease-in-out"
+              : "transition-none",
+          )}
           style={{
             width: bookIndicatorRect.width,
             height: bookIndicatorRect.height,
@@ -77,3 +84,5 @@ export default function SidebarBookNav({
     </nav>
   );
 }
+
+export default memo(SidebarBookNav);

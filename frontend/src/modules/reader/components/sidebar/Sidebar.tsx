@@ -4,6 +4,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type MouseEvent,
 } from "react";
@@ -44,11 +45,20 @@ export default function Sidebar({ currentBook, currentChapter }: Props) {
   const activeBook = activeTarget.book;
   const bookIndicator = useBookIndicator(activeBook);
   const moveBookIndicatorTo = bookIndicator.indicator.moveTo;
+  const activeBookRef = useRef(activeBook);
 
   const activateTarget = useCallback(
     (target: ChapterNavigationIntent) => {
-      setActiveTarget(target);
-      moveBookIndicatorTo(target.book);
+      setActiveTarget((prevTarget) =>
+        prevTarget.book === target.book && prevTarget.chapter === target.chapter
+          ? prevTarget
+          : target,
+      );
+
+      if (activeBookRef.current !== target.book) {
+        activeBookRef.current = target.book;
+        moveBookIndicatorTo(target.book, { animate: true });
+      }
     },
     [moveBookIndicatorTo],
   );
@@ -106,6 +116,7 @@ export default function Sidebar({ currentBook, currentChapter }: Props) {
           activeBook={activeBook}
           currentBook={currentBook}
           bookIndicatorRect={bookIndicator.indicator.rect}
+          bookIndicatorAnimate={bookIndicator.indicator.animate}
           bookNavRef={bookIndicator.refs.bookNavRef}
           bookLinkRefs={bookIndicator.refs.bookLinkRefs}
           onNavigate={navigateAfterIndicatorMove}
