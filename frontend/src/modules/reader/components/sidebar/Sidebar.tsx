@@ -103,7 +103,7 @@ export default function Sidebar({ currentBook, currentChapter }: Props) {
     <aside className="hidden lg:flex flex-col w-52 xl:w-56 shrink-0 h-full border-r border-[#E1DDD8] dark:border-stone-700 bg-[#FAF9F7] dark:bg-stone-950 overflow-hidden">
       <div className="h-14 flex items-center justify-between px-4 border-b border-[#E1DDD8] dark:border-stone-700 shrink-0">
         <p className="font-sans text-sm font-semibold text-stone-800 dark:text-stone-200 tracking-wide">
-          Чтение книг
+          Настройки
         </p>
         <div className="flex items-center gap-1">
           <FontSizeControl />
