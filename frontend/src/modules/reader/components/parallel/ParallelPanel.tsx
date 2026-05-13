@@ -64,7 +64,7 @@ export default memo(function ParallelPanel({
         className="flex h-64 flex-col items-center justify-center px-4 text-center"
       >
         <div className="text-3xl mb-3 opacity-30">⬡</div>
-        <p className="font-sans text-sm text-stone-400 dark:text-stone-400">
+        <p className="font-sans text-sm text-[var(--muted-foreground)] dark:text-stone-400">
           Нажмите на любой стих, чтобы увидеть параллельные места
         </p>
       </WindTransition>
@@ -73,8 +73,8 @@ export default memo(function ParallelPanel({
 
   return (
     <div>
-      <div className="mb-4 pb-3 border-b border-[#E1DDD8] dark:border-stone-700">
-        <p className="font-sans text-xs text-stone-400 dark:text-stone-400 uppercase tracking-wider mb-0.5">
+      <div className="mb-4 pb-3 border-b border-[var(--border)] dark:border-stone-700">
+        <p className="font-sans text-xs text-[var(--muted-foreground)] dark:text-stone-400 uppercase tracking-wider mb-0.5">
           Параллельные места
         </p>
         <div className="flex items-center justify-between gap-2">
@@ -99,7 +99,7 @@ export default memo(function ParallelPanel({
         durationMs={transitionDurationMs}
       >
         {refs.length === 0 ? (
-          <p className="font-sans text-sm text-stone-400 dark:text-stone-400 text-center py-8">
+          <p className="font-sans text-sm text-[var(--muted-foreground)] dark:text-stone-400 text-center py-8">
             Параллельных мест для этого стиха не найдено
           </p>
         ) : (

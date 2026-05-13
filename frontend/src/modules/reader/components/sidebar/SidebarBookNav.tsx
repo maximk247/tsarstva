@@ -35,7 +35,7 @@ function SidebarBookNav({
         <div
           aria-hidden="true"
           className={cn(
-            "pointer-events-none absolute left-0 top-0 rounded-md bg-amber-900/10 will-change-transform dark:bg-stone-800 motion-reduce:transition-none",
+            "pointer-events-none absolute left-0 top-0 rounded-md bg-[var(--sidebar-left-active)] will-change-transform dark:bg-stone-800 motion-reduce:transition-none",
             bookIndicatorAnimate
               ? "transition-[transform,width,height] duration-[300ms] ease-in-out"
               : "transition-none",
@@ -49,7 +49,7 @@ function SidebarBookNav({
       )}
       {READER_BOOK_SECTIONS.map((section) => (
         <div key={section.title}>
-          <p className="text-[10px] uppercase tracking-widest text-stone-400 dark:text-stone-600 font-sans mb-1 px-1">
+          <p className="text-[10px] uppercase tracking-widest text-[var(--sidebar-left-muted)] dark:text-stone-600 font-sans mb-1 px-1">
             {section.title}
           </p>
           <div className="flex flex-col gap-0.5">
@@ -71,7 +71,7 @@ function SidebarBookNav({
                     "relative z-10 font-sans text-sm font-medium px-3 py-1.5 rounded-md transition-colors duration-300",
                     isActive
                       ? "text-amber-900 dark:text-stone-100"
-                      : "text-stone-600 hover:text-stone-900 hover:bg-[#F5F2F1] dark:text-stone-400 dark:hover:text-stone-200 dark:hover:bg-stone-800",
+                      : "text-stone-700 hover:text-stone-950 hover:bg-[var(--sidebar-left-active)] dark:text-stone-400 dark:hover:text-stone-200 dark:hover:bg-stone-800",
                   )}
                 >
                   {READER_BOOK_NAMES[abbrev]}

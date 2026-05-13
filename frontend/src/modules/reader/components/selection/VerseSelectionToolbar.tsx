@@ -25,7 +25,7 @@ export default function VerseSelectionToolbar({
 
   return createPortal(
     <div
-      className="fixed z-[9999] flex items-center gap-0.5 rounded-2xl p-1 shadow-2xl select-none bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700"
+      className="fixed z-[9999] flex items-center gap-0.5 rounded-2xl p-1 shadow-2xl select-none bg-[var(--card)] dark:bg-stone-800 border border-[var(--border)] dark:border-stone-700"
       style={
         tooltipPos === "bottom"
           ? {
@@ -46,14 +46,14 @@ export default function VerseSelectionToolbar({
       <button
         onClick={onCopy}
         title="Копировать"
-        className="cursor-pointer p-2 rounded-xl hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors text-stone-700 dark:text-stone-200"
+        className="cursor-pointer p-2 rounded-xl hover:bg-[var(--hover)] dark:hover:bg-stone-700 transition-colors text-stone-700 dark:text-stone-200"
       >
         {copied ? <Check size={15} /> : <Copy size={15} strokeWidth={1.5} />}
       </button>
       <button
         onClick={onClear}
         title="Снять выделение"
-        className="cursor-pointer p-2 rounded-xl hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors text-stone-400 dark:text-stone-500"
+        className="cursor-pointer p-2 rounded-xl hover:bg-[var(--hover)] dark:hover:bg-stone-700 transition-colors text-[var(--muted-foreground)] dark:text-stone-500"
       >
         <X size={13} strokeWidth={2} />
       </button>

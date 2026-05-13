@@ -20,16 +20,16 @@ const THEME_LABELS: Record<CrossRefTheme, string> = {
 
 const THEME_COLORS: Record<CrossRefTheme, string> = {
   same_event:
-    "bg-[#78350F] text-[#FAF9F7]  dark:bg-amber-900/50 dark:text-amber-200",
+    "bg-[#78350F] text-[var(--card)]  dark:bg-amber-900/50 dark:text-amber-200",
   fulfillment:
-    "bg-[#7C2D12] text-[#FAF9F7]  dark:bg-orange-900/50 dark:text-orange-200",
+    "bg-[#7C2D12] text-[var(--card)]  dark:bg-orange-900/50 dark:text-orange-200",
   prophecy:
-    "bg-[#92400E] text-[#FAF9F7]  dark:bg-amber-800/50 dark:text-amber-300",
+    "bg-[#92400E] text-[var(--card)]  dark:bg-amber-800/50 dark:text-amber-300",
   theological:
-    "bg-[#44403C] text-[#FAF9F7]  dark:bg-stone-600/50 dark:text-stone-200",
+    "bg-[#44403C] text-[var(--card)]  dark:bg-stone-600/50 dark:text-stone-200",
   genealogy:
-    "bg-[#FEF3CC] text-[#78350F]  dark:bg-amber-900/30 dark:text-amber-300",
-  tsk: "bg-[#F5F2F1] text-stone-600  dark:bg-stone-800    dark:text-stone-400",
+    "bg-[var(--active-verse)] text-[#78350F]  dark:bg-amber-900/30 dark:text-amber-300",
+  tsk: "bg-[var(--hover)] text-stone-700  dark:bg-stone-800    dark:text-stone-400",
 };
 
 interface Props {
@@ -43,12 +43,12 @@ export default function ParallelCard({ ref_, reportAction }: Props) {
   const href = `/read/${ref_.book}/${ref_.chapter}#v${ref_.verse}`;
 
   return (
-    <div className="group rounded-lg border border-[#E1DDD8] dark:border-stone-700 bg-white dark:bg-stone-900 p-3.5 shadow-sm hover:shadow-md hover:border-[#A8A29E] dark:hover:border-stone-600 transition-all">
+    <div className="group rounded-lg border border-[var(--border)] dark:border-stone-700 bg-[var(--card)] dark:bg-stone-900 p-3.5 shadow-sm hover:shadow-md hover:border-[var(--muted-foreground)] dark:hover:border-stone-600 transition-all">
       <div className="flex items-start justify-between gap-2 mb-2">
         {isNavigable ? (
           <Link
             href={href}
-            className="font-sans font-semibold text-sm text-stone-900 dark:text-stone-200 hover:text-[#92400E] dark:hover:text-amber-400 transition-colors"
+            className="font-sans font-semibold text-sm text-stone-900 dark:text-stone-200 hover:text-[var(--accent-medium)] dark:hover:text-amber-400 transition-colors"
           >
             {label}
           </Link>
@@ -75,10 +75,10 @@ export default function ParallelCard({ ref_, reportAction }: Props) {
       </div>
 
       {ref_.verses && ref_.verses.length > 0 ? (
-        <div className="bible-text text-sm text-stone-600 dark:text-stone-300 leading-relaxed space-y-0.5">
+        <div className="bible-text text-sm text-[var(--text-secondary)] dark:text-stone-300 leading-relaxed space-y-0.5">
           {ref_.verses.map((v) => (
             <div key={`${v.chapter}-${v.num}`}>
-              <span className="select-none inline-block w-5 text-right mr-1.5 text-xs font-sans font-semibold text-stone-400 dark:text-stone-500 shrink-0 align-top mt-[2px]">
+              <span className="select-none inline-block w-5 text-right mr-1.5 text-xs font-sans font-semibold text-[var(--muted-foreground)] dark:text-stone-500 shrink-0 align-top mt-[2px]">
                 {v.num}
               </span>
               <span>{v.text}</span>
@@ -86,13 +86,13 @@ export default function ParallelCard({ ref_, reportAction }: Props) {
           ))}
         </div>
       ) : text ? (
-        <p className="bible-text text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
+        <p className="bible-text text-sm text-[var(--text-secondary)] dark:text-stone-300 leading-relaxed">
           {text}
         </p>
       ) : null}
 
       {ref_.note && (
-        <p className="mt-1.5 text-xs font-sans text-stone-400 dark:text-stone-400 italic">
+        <p className="mt-1.5 text-xs font-sans text-[var(--muted-foreground)] dark:text-stone-400 italic">
           {ref_.note}
         </p>
       )}

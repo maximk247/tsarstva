@@ -27,23 +27,31 @@ export default memo(function VerseItem({
       id={`v${verseNum}`}
       onClick={() => onClick(verseNum)}
       className={cn(
-        "bible-text relative cursor-pointer rounded px-2 py-0.5 -mx-2 transition-colors duration-150 group pr-8",
-        isActive
-          ? "bg-[#FEF3CC] dark:bg-amber-800/30"
-          : isSelected
-            ? "bg-amber-50 dark:bg-amber-900/20"
-            : "hover:bg-[#F5F2F1] dark:hover:bg-stone-700/40",
+        "bible-text relative cursor-pointer rounded-2xl px-5 py-0.5 pr-14 text-[var(--reader-text)] group",
       )}
     >
-      <span className="select-none text-xs font-sans font-semibold text-stone-400 dark:text-stone-500 mr-1.5 align-top mt-1 inline-block w-5 text-right shrink-0">
+      <span
+        aria-hidden="true"
+        className={cn(
+          "pointer-events-none absolute inset-0 rounded-2xl",
+          isActive
+            ? "bg-[var(--active-verse)] dark:bg-amber-800/30"
+            : isSelected
+              ? "bg-[var(--selected-verse)] dark:bg-amber-900/20"
+              : "group-hover:bg-[var(--hover)] dark:group-hover:bg-stone-700/40",
+        )}
+      />
+      <span className="relative z-10 select-none text-xs font-sans font-semibold text-[var(--muted-foreground)] dark:text-stone-500 mr-1.5 align-top mt-1 inline-block w-5 text-right shrink-0">
         {verseNum}
       </span>
-      <span>{text}</span>
+      <span className="relative z-10">{text}</span>
       {hasParallels && (
         <span
           className={cn(
-            "inline-block ml-1.5 w-1.5 h-1.5 rounded-full align-middle mb-0.5 transition-colors",
-            isActive ? "bg-[#DA8107]" : "bg-[#DA8107] dark:bg-amber-500",
+            "relative z-10 inline-block ml-1.5 w-1.5 h-1.5 rounded-full align-middle mb-0.5",
+            isActive
+              ? "bg-[var(--accent-subtle)]"
+              : "bg-[var(--accent-subtle)] dark:bg-amber-500",
           )}
           title="Есть параллельные места"
         />
@@ -57,14 +65,14 @@ export default memo(function VerseItem({
           onCheckStart(verseNum);
         }}
         onClick={(e) => e.stopPropagation()}
-        className="absolute right-0 top-0 bottom-0 w-8 flex items-center justify-center cursor-pointer"
+        className="absolute right-3 top-0 bottom-0 z-10 w-8 flex items-center justify-center cursor-pointer"
       >
         <span
           className={cn(
-            "w-4 h-4 rounded border flex items-center justify-center transition-all duration-150 shrink-0",
+            "w-4 h-4 rounded border flex items-center justify-center shrink-0",
             isSelected
               ? "bg-amber-500 border-amber-500"
-              : "border-stone-300 dark:border-stone-600 opacity-30 group-hover:opacity-70",
+              : "border-[var(--border)] dark:border-stone-600",
           )}
         >
           {isSelected && (

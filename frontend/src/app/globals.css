@@ -8,35 +8,51 @@
 }
 
 :root {
-  --background: #faf9f7;
-  --card: #ffffff;
-  --sidebar: #f1eee9;
-  --hover: #f5f2f1;
-  --muted: #f1eee9;
+  --background: #fbf7ed;
+  --background-overlay: rgba(251, 247, 237, 0.92);
+  --card: #fffaf0;
+  --sidebar: #f2eadf;
+  --sidebar-left: var(--sidebar);
+  --sidebar-left-border: var(--border);
+  --sidebar-left-active: var(--accent-wash);
+  --sidebar-left-muted: var(--muted-foreground);
+  --hover: #f8efd9;
+  --muted: #f2eadf;
   --foreground: #1c1917;
+  --reader-text: #000000;
   --muted-foreground: #a8a29e;
   --text-secondary: #57534e;
-  --border: #e1ddd8;
+  --border: #e7dccb;
   --accent: #78350f;
   --accent-medium: #92400e;
   --accent-subtle: #da8107;
-  --active-verse: #fef3cc;
+  --accent-wash: rgba(120, 53, 15, 0.1);
+  --selected-verse: #fff7e7;
+  --active-verse: #ffefc2;
   --active-verse-border: transparent;
 }
 
 .dark {
   --background: #1c1917;
+  --background-overlay: rgba(28, 25, 23, 0.94);
   --card: #292524;
   --sidebar: #161412;
+  --sidebar-left: var(--sidebar);
+  --sidebar-left-border: var(--border);
+  --sidebar-left-active: var(--accent-wash);
+  --sidebar-left-muted: var(--muted-foreground);
   --hover: #2a2827;
   --muted: #292524;
   --foreground: #fafaf7;
+  --reader-text: #fafaf7;
   --muted-foreground: #a8a29e;
   --text-secondary: #78716c;
   --border: #44403c;
   --accent: #d97706;
   --accent-medium: #b45309;
   --accent-subtle: #f59e0b;
+  --accent-wash: #292524;
+  --selected-verse: #451a03;
   --active-verse: #451a03;
   --active-verse-border: #92400e;
 }
@@ -61,12 +77,9 @@ body {
 
 .reader-wind-transition {
   opacity: 1;
-  filter: blur(0);
-  transform: translate3d(0, 0, 0) skewX(0);
-  transition-property:
-    opacity, transform, filter, -webkit-mask-position, mask-position;
+  transition-property: opacity, -webkit-mask-position, mask-position;
   transition-timing-function: cubic-bezier(0.34, 0, 0.18, 1);
-  will-change: opacity, transform, filter, -webkit-mask-position, mask-position;
+  will-change: opacity, -webkit-mask-position, mask-position;
   -webkit-mask-image: linear-gradient(
     90deg,
     transparent 0%,
@@ -95,16 +108,12 @@ body {
 
 .reader-wind-transition[data-visible="false"] {
   opacity: 0;
-  filter: blur(2px);
-  transform: translate3d(1.25rem, 0, 0) skewX(-1.5deg);
   -webkit-mask-position: 100% 0;
   mask-position: 100% 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .reader-wind-transition {
-    filter: none;
-    transform: none;
     transition: none;
     -webkit-mask-image: none;
     mask-image: none;

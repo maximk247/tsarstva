@@ -40,7 +40,7 @@ export default function ReportDialog({
       onClick={onClose}
     >
       <div
-        className="w-full max-w-sm bg-white dark:bg-stone-900 rounded-2xl shadow-2xl border border-[#E1DDD8] dark:border-stone-700 overflow-hidden"
+        className="w-full max-w-sm bg-[var(--card)] dark:bg-stone-900 rounded-2xl shadow-2xl border border-[var(--border)] dark:border-stone-700 overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between px-5 pt-5 pb-3">
@@ -80,7 +80,7 @@ export default function ReportDialog({
                     "font-sans text-xs px-2.5 py-1 rounded-full border transition-colors",
                     reportForm.selected.includes(cat)
                       ? "bg-amber-600 border-amber-600 text-white"
-                      : "border-[#E1DDD8] dark:border-stone-600 text-stone-500 dark:text-stone-400 hover:border-stone-400 dark:hover:border-stone-500",
+                    : "border-[var(--border)] dark:border-stone-600 text-stone-500 dark:text-stone-400 hover:border-[var(--muted-foreground)] dark:hover:border-stone-500",
                   )}
                 >
                   {cat}
@@ -99,7 +99,7 @@ export default function ReportDialog({
               required
               rows={3}
               placeholder="Опишите проблему…"
-              className="w-full font-sans text-sm rounded-lg border border-[#E1DDD8] dark:border-stone-600 bg-[#FAF9F7] dark:bg-stone-800 text-stone-700 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-600 px-3 py-2 resize-none focus:outline-none focus:border-amber-400 dark:focus:border-amber-600 transition-colors"
+              className="w-full font-sans text-sm rounded-lg border border-[var(--border)] dark:border-stone-600 bg-[var(--background)] dark:bg-stone-800 text-stone-700 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-600 px-3 py-2 resize-none focus:outline-none focus:border-amber-400 dark:focus:border-amber-600 transition-colors"
             />
           </div>
 
@@ -107,7 +107,7 @@ export default function ReportDialog({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 font-sans text-sm py-2 rounded-xl border border-[#E1DDD8] dark:border-stone-600 text-stone-500 dark:text-stone-400 hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors"
+              className="flex-1 font-sans text-sm py-2 rounded-xl border border-[var(--border)] dark:border-stone-600 text-stone-500 dark:text-stone-400 hover:bg-[var(--hover)] dark:hover:bg-stone-800 transition-colors"
             >
               Отмена
             </button>

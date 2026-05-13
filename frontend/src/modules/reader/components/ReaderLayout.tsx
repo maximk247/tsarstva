@@ -67,7 +67,7 @@ export default function ReaderLayout({
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden lg:flex-row">
       <div
         ref={scrollRef}
-        className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto bg-white px-4 py-6 sm:px-6 lg:px-8 dark:bg-transparent"
+        className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto bg-[var(--card)] px-4 py-6 sm:px-6 lg:px-8 dark:bg-transparent"
       >
         <div
           className={cn(
@@ -88,12 +88,12 @@ export default function ReaderLayout({
         </div>
       </div>
 
-      <div className="hidden lg:block w-px bg-[#E1DDD8] dark:bg-stone-700 shrink-0" />
+      <div className="hidden lg:block w-px bg-[var(--border)] dark:bg-stone-700 shrink-0" />
 
       <div
         ref={panelRef}
         className={cn(
-          "shrink-0 overflow-x-hidden overflow-y-auto border-t border-[#E1DDD8] dark:border-stone-700 lg:border-t-0 bg-[#F1EEE9] dark:bg-stone-950/50",
+          "shrink-0 overflow-x-hidden overflow-y-auto border-t border-[var(--border)] dark:border-stone-700 lg:border-t-0 bg-[var(--sidebar)] dark:bg-stone-950/50",
           "h-[55vh] h-[55dvh] lg:h-auto lg:w-96 xl:w-[440px]",
           activeVerse === null && "hidden lg:block",
         )}

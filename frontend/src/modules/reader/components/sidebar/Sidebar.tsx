@@ -100,8 +100,8 @@ export default function Sidebar({ currentBook, currentChapter }: Props) {
   }, [activateTarget]);
 
   return (
-    <aside className="hidden lg:flex flex-col w-52 xl:w-56 shrink-0 h-full border-r border-[#E1DDD8] dark:border-stone-700 bg-[#FAF9F7] dark:bg-stone-950 overflow-hidden">
-      <div className="h-14 flex items-center justify-between px-4 border-b border-[#E1DDD8] dark:border-stone-700 shrink-0">
+    <aside className="hidden lg:flex flex-col w-52 xl:w-56 shrink-0 h-full border-r border-[var(--sidebar-left-border)] dark:border-stone-700 bg-[var(--sidebar-left)] dark:bg-stone-950/50 overflow-hidden">
+      <div className="h-14 flex items-center justify-between px-4 border-b border-[var(--sidebar-left-border)] dark:border-stone-700 shrink-0">
         <p className="font-sans text-sm font-semibold text-stone-800 dark:text-stone-200 tracking-wide">
           Настройки
         </p>
@@ -111,7 +111,7 @@ export default function Sidebar({ currentBook, currentChapter }: Props) {
         </div>
       </div>
 
-      <div className="px-3 py-3 border-b border-[#E1DDD8] dark:border-stone-700 shrink-0">
+      <div className="px-3 py-3 border-b border-[var(--sidebar-left-border)] dark:border-stone-700 shrink-0">
         <SidebarBookNav
           activeBook={activeBook}
           currentBook={currentBook}
@@ -124,7 +124,7 @@ export default function Sidebar({ currentBook, currentChapter }: Props) {
       </div>
 
       <div className="flex-1 overflow-y-auto px-3 py-3">
-        <p className="text-[10px] uppercase tracking-widest text-stone-400 dark:text-stone-600 font-sans mb-2.5 px-1">
+        <p className="text-[10px] uppercase tracking-widest text-[var(--sidebar-left-muted)] dark:text-stone-600 font-sans mb-2.5 px-1">
           Главы
         </p>
         <SidebarChapterGrid

@@ -64,8 +64,8 @@ export default function SidebarChapterGrid({
             className={cn(
               "relative z-10 flex flex-col items-center justify-center h-9 text-sm font-sans font-medium rounded-md transition-colors duration-300",
               isActive
-                ? "text-[#FAF9F7] dark:text-stone-900"
-                : "text-stone-700 dark:text-stone-300 hover:bg-[#F5F2F1] dark:hover:bg-stone-800",
+                ? "text-[var(--card)] dark:text-stone-900"
+                : "text-stone-800 dark:text-stone-300 hover:bg-[var(--sidebar-left-active)] dark:hover:bg-stone-800",
             )}
           >
             <span>{ch}</span>

@@ -20,7 +20,7 @@ export default function ParallelPanelResizeHandle({
       aria-orientation="horizontal"
       aria-label="Изменить высоту панели параллелей"
       tabIndex={0}
-      className="group lg:hidden sticky top-0 z-10 flex min-h-10 justify-center border-y border-[#D8D2CA] bg-[#F1EEE9] py-3 cursor-ns-resize touch-none select-none outline-none transition-colors dark:border-stone-700 dark:bg-stone-950/50 focus-visible:ring-2 focus-visible:ring-amber-900/25 dark:focus-visible:ring-amber-400/30"
+      className="group lg:hidden sticky top-0 z-10 flex min-h-10 justify-center border-y border-[var(--border)] bg-[var(--sidebar)] py-3 cursor-ns-resize touch-none select-none outline-none transition-colors dark:border-stone-700 dark:bg-stone-950/50 focus-visible:ring-2 focus-visible:ring-amber-900/25 dark:focus-visible:ring-amber-400/30"
       onPointerDown={onPointerDown}
       onKeyDown={onKeyDown}
     >

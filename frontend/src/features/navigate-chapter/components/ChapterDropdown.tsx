@@ -19,7 +19,7 @@ export default function ChapterDropdown({
   onSelect,
 }: Props) {
   return (
-    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-50 bg-white dark:bg-stone-900 border border-[#E1DDD8] dark:border-stone-700 rounded-xl shadow-lg p-3 w-64">
+    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-50 bg-[var(--card)] dark:bg-stone-900 border border-[var(--border)] dark:border-stone-700 rounded-xl shadow-lg p-3 w-64">
       <p className="text-xs text-stone-400 dark:text-stone-400 font-sans mb-2 text-center">
         Выбрать главу
       </p>
@@ -32,8 +32,8 @@ export default function ChapterDropdown({
             className={cn(
               "flex flex-col items-center justify-center w-8 h-9 text-sm font-sans rounded-md transition-colors",
               ch === chapter
-                ? "bg-amber-900 text-[#FAF9F7] dark:bg-stone-200 dark:text-stone-900 font-semibold"
-                : "text-stone-600 dark:text-stone-300 hover:bg-[#F5F2F1] dark:hover:bg-stone-700/40",
+                ? "bg-amber-900 text-[var(--card)] dark:bg-stone-200 dark:text-stone-900 font-semibold"
+                : "text-stone-600 dark:text-stone-300 hover:bg-[var(--hover)] dark:hover:bg-stone-700/40",
             )}
           >
             {ch}
@@ -42,8 +42,8 @@ export default function ChapterDropdown({
                 className={cn(
                   "w-1 h-1 rounded-full",
                   ch === chapter
-                    ? "bg-[#DA8107] dark:bg-stone-600"
-                    : "bg-[#DA8107] dark:bg-amber-400",
+                    ? "bg-[var(--accent-subtle)] dark:bg-stone-600"
+                    : "bg-[var(--accent-subtle)] dark:bg-amber-400",
                 )}
               />
             ) : (

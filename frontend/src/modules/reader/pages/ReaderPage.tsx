@@ -87,8 +87,8 @@ export default async function ReaderPage({ params }: PageProps) {
       <Sidebar currentBook={book} currentChapter={chapter} />
 
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-        <header className="lg:hidden shrink-0 z-10 bg-[#FAF9F7]/90 dark:bg-stone-950/90 backdrop-blur border-b border-[#E1DDD8] dark:border-stone-700">
-          <div className="px-3 flex items-center h-10 gap-2 border-b border-[#E1DDD8] dark:border-stone-700">
+        <header className="lg:hidden shrink-0 z-10 bg-[var(--background-overlay)] dark:bg-stone-950/90 backdrop-blur border-b border-[var(--border)] dark:border-stone-700">
+          <div className="px-3 flex items-center h-10 gap-2 border-b border-[var(--border)] dark:border-stone-700">
             <div className="min-w-0 flex-1 overflow-x-auto">
               <BookSelector currentBook={book} />
             </div>
