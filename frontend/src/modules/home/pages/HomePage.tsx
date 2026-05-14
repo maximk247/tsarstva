@@ -1,10 +1,11 @@
 import BookGrid from "../components/BookGrid";
+import { SearchBox } from "@/features/word-search";
 
 export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-16">
       <div className="max-w-2xl w-full">
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <h1 className="font-serif text-4xl sm:text-5xl font-semibold text-stone-800 dark:text-stone-200 mb-4">
             Чтение Царств с параллелями
           </h1>
@@ -12,6 +13,10 @@ export default function HomePage() {
             Читайте 1–4 Царств, 1–2 Паралипоменон и связанные места из
             ветхозаветных книг — всё сразу в одном экране.
           </p>
+        </div>
+
+        <div className="mb-10 w-full">
+          <SearchBox />
         </div>
 
         <BookGrid />

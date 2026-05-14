@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { ChapterNav, BookSelector } from "@/features/navigate-chapter";
 import { ThemeToggle } from "@/features/theme-toggle";
 import { FontSizeControl } from "@/features/font-size";
+import { SearchLink } from "@/features/word-search";
 import {
   getChapterCount,
   getBookName,
@@ -93,6 +94,7 @@ export default async function ReaderPage({ params }: PageProps) {
               <BookSelector currentBook={book} />
             </div>
             <div className="shrink-0 flex items-center gap-1">
+              <SearchLink />
               <FontSizeControl />
               <ThemeToggle />
             </div>

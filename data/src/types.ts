@@ -57,6 +57,16 @@ export interface VerseRef {
   verse: number;
 }
 
+export interface SearchVerse {
+  book: ReaderBook;
+  chapter: number;
+  verse: number;
+  text: string;
+  label: string;
+  bookName: string;
+  bookShortName: string;
+}
+
 export interface ParallelVerse {
   num: number;
   chapter: number;

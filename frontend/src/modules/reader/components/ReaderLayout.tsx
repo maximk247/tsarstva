@@ -3,8 +3,8 @@
 import { useCallback, useRef, useState } from "react";
 import type { Chapter, PrecomputedParallel } from "@tsarstva/data";
 import { useParallelPanelSnapshot } from "../hooks/useParallelPanelSnapshot";
-import { useHashVerseScroll } from "../hooks/useHashVerseScroll";
 import { useKeyboardScroll } from "../hooks/useKeyboardScroll";
+import { useRememberedActiveVerse } from "../hooks/useRememberedActiveVerse";
 import { useReaderVisibility } from "../hooks/useReaderVisibility";
 import { useResizablePanel } from "../hooks/useResizablePanel";
 import { useVerseSelection } from "../hooks/useVerseSelection";
@@ -53,7 +53,13 @@ export default function ReaderLayout({
   });
 
   useKeyboardScroll(scrollRef);
-  useHashVerseScroll(setActiveVerse);
+  useRememberedActiveVerse({
+    book,
+    chapter,
+    verses,
+    activeVerse,
+    setActiveVerse,
+  });
 
   const handleVerseClick = useCallback((v: number) => {
     setActiveVerse((prev) => (prev === v ? null : v));

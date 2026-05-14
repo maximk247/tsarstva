@@ -4,3 +4,5 @@ export {
   getVerseRange,
   getVerseItems,
 } from "./bible";
+
+export { getSearchIndex } from "./search";

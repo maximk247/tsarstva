@@ -7,6 +7,7 @@ export type {
   TskEntry,
   ManualEntry,
   VerseRef,
+  SearchVerse,
   KingsBook,
   ParalipomenonBook,
   OtherOtBook,
