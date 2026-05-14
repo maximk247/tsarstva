@@ -68,7 +68,7 @@ function parseRef(value) {
   };
 }
 
-function parseToEnd(value, startChapter, startVerse) {
+function parseRangeEnd(value, startChapter, startVerse) {
   if (value === undefined) {
     return { chapter: startChapter, verse: startVerse };
   }
@@ -170,16 +170,56 @@ function entryKey(entry) {
   const from = parseRef(entry.from);
   const to = parseRef(entry.to);
   if (!from || !to) return null;
-  const end = parseToEnd(entry.toEnd, to.chapter, to.verse);
-  if (!end) return null;
-  return `${entry.from}->${rangeKey(to, end)}:${entry.theme}`;
+  const fromEnd = parseRangeEnd(entry.fromEnd, from.chapter, from.verse);
+  const toEnd = parseRangeEnd(entry.toEnd, to.chapter, to.verse);
+  if (!fromEnd || !toEnd) return null;
+  return `${rangeKey(from, fromEnd)}->${rangeKey(to, toEnd)}:${entry.theme}`;
 }
 
 function reciprocalKey(entry) {
   const from = parseRef(entry.from);
   const to = parseRef(entry.to);
   if (!from || !to) return null;
-  return `${entry.to}->${entry.from}:${entry.theme}`;
+  const fromEnd = parseRangeEnd(entry.fromEnd, from.chapter, from.verse);
+  const toEnd = parseRangeEnd(entry.toEnd, to.chapter, to.verse);
+  if (!fromEnd || !toEnd) return null;
+  return `${rangeKey(to, toEnd)}->${rangeKey(from, fromEnd)}:${entry.theme}`;
+}
+
+function validateRangeEnd(entry, source, index, field, startRef) {
+  const end = parseRangeEnd(entry[field], startRef.chapter, startRef.verse);
+  if (!end) {
+    addIssue(
+      errors,
+      source,
+      index,
+      `${field} must be a positive integer or "chapter:verse"`,
+    );
+    return null;
+  }
+
+  if (compareRefs(end, startRef) < 0) {
+    addIssue(errors, source, index, `${field} must not point before its start`);
+  }
+
+  if (end.chapter !== startRef.chapter && typeof entry[field] !== "string") {
+    addIssue(
+      errors,
+      source,
+      index,
+      `cross-chapter ${field} must use "chapter:verse"`,
+    );
+  }
+
+  if (end.chapter !== startRef.chapter || end.verse !== startRef.verse) {
+    validateRef(source, index, field, {
+      book: startRef.book,
+      chapter: end.chapter,
+      verse: end.verse,
+    });
+  }
+
+  return end;
 }
 
 function validateEntry(entry, source, index, seenGlobal, seenBySource) {
@@ -208,37 +248,8 @@ function validateEntry(entry, source, index, seenGlobal, seenBySource) {
 
   if (!to) return;
 
-  const toEnd = parseToEnd(entry.toEnd, to.chapter, to.verse);
-  if (!toEnd) {
-    addIssue(
-      errors,
-      source,
-      index,
-      'toEnd must be a positive integer or "chapter:verse"',
-    );
-    return;
-  }
-
-  if (compareRefs(toEnd, to) < 0) {
-    addIssue(errors, source, index, "toEnd must not point before to");
-  }
-
-  if (toEnd.chapter !== to.chapter && typeof entry.toEnd !== "string") {
-    addIssue(
-      errors,
-      source,
-      index,
-      'cross-chapter toEnd must use "chapter:verse"',
-    );
-  }
-
-  if (toEnd.chapter !== to.chapter || toEnd.verse !== to.verse) {
-    validateRef(source, index, "toEnd", {
-      book: to.book,
-      chapter: toEnd.chapter,
-      verse: toEnd.verse,
-    });
-  }
+  if (from) validateRangeEnd(entry, source, index, "fromEnd", from);
+  validateRangeEnd(entry, source, index, "toEnd", to);
 
   if (
     fromOk &&

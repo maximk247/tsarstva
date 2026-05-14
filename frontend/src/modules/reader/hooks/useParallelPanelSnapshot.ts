@@ -13,6 +13,7 @@ const EMPTY_PARALLELS: PrecomputedParallel[] = [];
 export interface ParallelPanelSnapshot {
   refs: PrecomputedParallel[];
   activeVerse: number | null;
+  activeReferenceLabel: string | null;
   bookName: string;
   chapter: number;
 }
@@ -42,9 +43,36 @@ function getPanelContentSnapshotKey(
       (ref) =>
         `${ref.book}:${ref.chapter}:${ref.verse}:${ref.chapterEnd ?? ""}:${
           ref.verseEnd ?? ""
-        }:${ref.theme}:${ref.label}`,
+        }:${ref.sourceChapter ?? ""}:${ref.sourceVerse ?? ""}:${
+          ref.sourceChapterEnd ?? ""
+        }:${ref.sourceVerseEnd ?? ""}:${ref.theme}:${ref.label}`,
     )
     .join("|");
+}
+
+function getActiveReferenceLabel(
+  bookName: string,
+  chapter: number,
+  activeVerse: number | null,
+  refs: PrecomputedParallel[],
+) {
+  if (activeVerse === null) return null;
+
+  const firstRef = refs[0];
+  const startChapter = firstRef?.sourceChapter ?? chapter;
+  const startVerse = firstRef?.sourceVerse ?? activeVerse;
+  const endChapter = firstRef?.sourceChapterEnd ?? startChapter;
+  const endVerse = firstRef?.sourceVerseEnd ?? startVerse;
+
+  if (endChapter !== startChapter) {
+    return `${bookName} ${startChapter}:${startVerse}–${endChapter}:${endVerse}`;
+  }
+
+  if (endVerse !== startVerse) {
+    return `${bookName} ${startChapter}:${startVerse}–${endVerse}`;
+  }
+
+  return `${bookName} ${chapter}:${activeVerse}`;
 }
 
 interface Params {
@@ -76,10 +104,16 @@ export function useParallelPanelSnapshot({
         : EMPTY_PARALLELS,
     [activeVerse, parallelsMap],
   );
+  const activeReferenceLabel = useMemo(
+    () =>
+      getActiveReferenceLabel(bookName, chapter, activeVerse, activeParallels),
+    [activeParallels, activeVerse, bookName, chapter],
+  );
   const [parallelPanelSnapshot, setParallelPanelSnapshot] =
     useState<ParallelPanelSnapshot>(() => ({
       refs: activeParallels,
       activeVerse,
+      activeReferenceLabel,
       bookName,
       chapter,
     }));
@@ -125,6 +159,7 @@ export function useParallelPanelSnapshot({
       setParallelPanelSnapshot({
         refs: activeParallels,
         activeVerse,
+        activeReferenceLabel,
         bookName,
         chapter,
       });
@@ -152,6 +187,7 @@ export function useParallelPanelSnapshot({
         setParallelPanelSnapshot({
           refs: activeParallels,
           activeVerse,
+          activeReferenceLabel,
           bookName,
           chapter,
         });
@@ -169,7 +205,14 @@ export function useParallelPanelSnapshot({
       clearTimeout(panelSwapTimerRef.current);
       cancelAnimationFrame(panelVisibilityRafRef.current!);
     };
-  }, [activeParallels, activeVerse, book, bookName, chapter]);
+  }, [
+    activeParallels,
+    activeReferenceLabel,
+    activeVerse,
+    book,
+    bookName,
+    chapter,
+  ]);
 
   return {
     panelTransition: {

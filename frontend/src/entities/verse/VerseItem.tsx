@@ -3,10 +3,35 @@
 import { memo } from "react";
 import { cn } from "@/shared/utils/cn";
 
+type ParallelRangePosition = "single" | "start" | "middle" | "end";
+
+function getRadiusClass(position: ParallelRangePosition | null) {
+  if (position === "start") return "rounded-t-2xl rounded-b-md";
+  if (position === "middle") return "rounded-md";
+  if (position === "end") return "rounded-t-md rounded-b-2xl";
+  return "rounded-2xl";
+}
+
+function getRangeClass(position: ParallelRangePosition) {
+  if (position === "start")
+    return "-bottom-0.5 rounded-t-2xl border-x border-t";
+  if (position === "middle") return "-top-0.5 -bottom-0.5 border-x";
+  if (position === "end") return "-top-0.5 rounded-b-2xl border-x border-b";
+  return "rounded-2xl border";
+}
+
+function getRangeBackgroundClass(position: ParallelRangePosition) {
+  if (position === "start") return "-bottom-0.5 rounded-t-2xl";
+  if (position === "middle") return "-top-0.5 -bottom-0.5";
+  if (position === "end") return "-top-0.5 rounded-b-2xl";
+  return "rounded-2xl";
+}
+
 interface Props {
   verseNum: number;
   text: string;
   hasParallels: boolean;
+  parallelRangePosition: ParallelRangePosition | null;
   isActive: boolean;
   isSelected: boolean;
   onClick: (verse: number) => void;
@@ -17,30 +42,55 @@ export default memo(function VerseItem({
   verseNum,
   text,
   hasParallels,
+  parallelRangePosition,
   isActive,
   isSelected,
   onClick,
   onCheckStart,
 }: Props) {
+  const radiusClass = getRadiusClass(parallelRangePosition);
+
   return (
     <div
       id={`v${verseNum}`}
       onClick={() => onClick(verseNum)}
       className={cn(
-        "bible-text relative cursor-pointer rounded-2xl px-5 py-0.5 pr-14 text-[var(--reader-text)] group",
+        "bible-text group relative cursor-pointer px-5 py-0.5 pr-14 text-[var(--reader-text)]",
+        radiusClass,
       )}
     >
+      {parallelRangePosition && (
+        <span
+          aria-hidden="true"
+          className={cn(
+            "pointer-events-none absolute inset-0 z-0 bg-amber-100/85 dark:bg-[#2f1b10]",
+            getRangeBackgroundClass(parallelRangePosition),
+          )}
+        />
+      )}
       <span
         aria-hidden="true"
         className={cn(
-          "pointer-events-none absolute inset-0 rounded-2xl",
+          "pointer-events-none absolute inset-0 z-[1]",
+          radiusClass,
           isActive
-            ? "bg-[var(--active-verse)] dark:bg-amber-800/30"
+            ? parallelRangePosition
+              ? "bg-amber-200/60 dark:bg-amber-700/35"
+              : "bg-[var(--active-verse)] dark:bg-amber-800/30"
             : isSelected
               ? "bg-[var(--selected-verse)] dark:bg-amber-900/20"
               : "group-hover:bg-[var(--hover)] dark:group-hover:bg-stone-700/40",
         )}
       />
+      {parallelRangePosition && (
+        <span
+          aria-hidden="true"
+          className={cn(
+            "pointer-events-none absolute inset-0 z-[2] border-amber-300/80 border-l-2 border-r dark:border-amber-700/70",
+            getRangeClass(parallelRangePosition),
+          )}
+        />
+      )}
       <span className="relative z-10 select-none text-xs font-sans font-semibold text-[var(--muted-foreground)] dark:text-stone-500 mr-1.5 align-top mt-1 inline-block w-5 text-right shrink-0">
         {verseNum}
       </span>

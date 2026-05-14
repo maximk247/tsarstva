@@ -24,6 +24,11 @@ export interface CrossRef {
   verse: number;
   verseEnd?: number;
   chapterEnd?: number;
+  sourceBook?: string;
+  sourceChapter?: number;
+  sourceVerse?: number;
+  sourceVerseEnd?: number;
+  sourceChapterEnd?: number;
   theme: CrossRefTheme;
   note?: string;
   votes?: number;
@@ -39,6 +44,7 @@ export interface TskEntry {
 
 export interface ManualEntry {
   from: string; // "1kgs:1:1"
+  fromEnd?: number | string; // number = стих в той же главе; "ch:v" = межглавный конец диапазона
   to: string;
   toEnd?: number | string; // number = стих в той же главе; "ch:v" = межглавный конец диапазона
   theme: CrossRefTheme;

@@ -3,6 +3,7 @@
   "refs": [
     {
       "from": "1sm:27:1",
+      "fromEnd": 12,
       "to": "1ch:12:1",
       "toEnd": 7,
       "theme": "same_event",
@@ -10,6 +11,7 @@
     },
     {
       "from": "1sm:29:1",
+      "fromEnd": 3,
       "to": "1ch:12:19",
       "toEnd": 22,
       "theme": "same_event",
@@ -17,6 +19,7 @@
     },
     {
       "from": "1sm:31:1",
+      "fromEnd": 13,
       "to": "1ch:10:1",
       "toEnd": 14,
       "theme": "same_event",
@@ -31,6 +34,7 @@
     },
     {
       "from": "2sm:5:1",
+      "fromEnd": 5,
       "to": "1ch:11:1",
       "toEnd": 3,
       "theme": "same_event",
@@ -44,6 +48,7 @@
     },
     {
       "from": "2sm:5:6",
+      "fromEnd": 10,
       "to": "1ch:11:4",
       "toEnd": 9,
       "theme": "same_event",
@@ -51,6 +56,7 @@
     },
     {
       "from": "2sm:5:11",
+      "fromEnd": 16,
       "to": "1ch:14:1",
       "toEnd": 7,
       "theme": "same_event",
@@ -58,6 +64,7 @@
     },
     {
       "from": "2sm:5:17",
+      "fromEnd": 25,
       "to": "1ch:14:8",
       "toEnd": 17,
       "theme": "same_event",
@@ -65,6 +72,7 @@
     },
     {
       "from": "2sm:6:1",
+      "fromEnd": 11,
       "to": "1ch:13:1",
       "toEnd": 14,
       "theme": "same_event",
@@ -72,6 +80,7 @@
     },
     {
       "from": "2sm:6:12",
+      "fromEnd": 16,
       "to": "1ch:15:1",
       "toEnd": 29,
       "theme": "same_event",
@@ -79,12 +88,14 @@
     },
     {
       "from": "2sm:6:20",
+      "fromEnd": 23,
       "to": "1ch:15:29",
       "theme": "same_event",
       "note": "Мелхола презирает Давида, скачущего перед ковчегом"
     },
     {
       "from": "2sm:6:17",
+      "fromEnd": 19,
       "to": "1ch:16:1",
       "toEnd": 43,
       "theme": "same_event",
@@ -92,6 +103,7 @@
     },
     {
       "from": "2sm:7:1",
+      "fromEnd": 29,
       "to": "1ch:17:1",
       "toEnd": 27,
       "theme": "same_event",
@@ -99,6 +111,7 @@
     },
     {
       "from": "2sm:8:1",
+      "fromEnd": 18,
       "to": "1ch:18:1",
       "toEnd": 17,
       "theme": "same_event",
@@ -106,6 +119,7 @@
     },
     {
       "from": "2sm:10:1",
+      "fromEnd": 19,
       "to": "1ch:19:1",
       "toEnd": 19,
       "theme": "same_event",
@@ -113,12 +127,14 @@
     },
     {
       "from": "2sm:11:1",
+      "fromEnd": 27,
       "to": "1ch:20:1",
       "theme": "same_event",
       "note": "Осада Раввы Аммонитской — Паралипоменон опускает историю с Вирсавией"
     },
     {
       "from": "2sm:12:29",
+      "fromEnd": 31,
       "to": "1ch:20:1",
       "toEnd": 3,
       "theme": "same_event",
@@ -133,6 +149,7 @@
     },
     {
       "from": "2sm:23:8",
+      "fromEnd": 39,
       "to": "1ch:11:10",
       "toEnd": 47,
       "theme": "same_event",
@@ -140,6 +157,7 @@
     },
     {
       "from": "2sm:24:1",
+      "fromEnd": 9,
       "to": "1ch:21:1",
       "toEnd": 6,
       "theme": "same_event",
@@ -147,6 +165,7 @@
     },
     {
       "from": "2sm:24:1",
+      "fromEnd": 9,
       "to": "1ch:27:23",
       "toEnd": 24,
       "theme": "same_event",
@@ -154,6 +173,7 @@
     },
     {
       "from": "2sm:24:10",
+      "fromEnd": 17,
       "to": "1ch:21:7",
       "toEnd": 17,
       "theme": "same_event",
@@ -161,6 +181,7 @@
     },
     {
       "from": "2sm:24:18",
+      "fromEnd": 24,
       "to": "1ch:21:18",
       "toEnd": "22:1",
       "theme": "same_event",
@@ -182,6 +203,7 @@
     },
     {
       "from": "1kgs:2:1",
+      "fromEnd": 4,
       "to": "1ch:28:20",
       "toEnd": 21,
       "theme": "same_event",
@@ -189,19 +211,15 @@
     },
     {
       "from": "1kgs:2:10",
+      "fromEnd": 12,
       "to": "1ch:29:26",
-      "toEnd": 30,
+      "toEnd": 28,
       "theme": "same_event",
       "note": "Смерть Давида и воцарение Соломона"
     },
     {
-      "from": "1kgs:2:46",
-      "to": "2ch:1:1",
-      "theme": "same_event",
-      "note": "Царство утвердилось в руке Соломона"
-    },
-    {
       "from": "1kgs:3:4",
+      "fromEnd": 15,
       "to": "2ch:1:2",
       "toEnd": 13,
       "theme": "same_event",
@@ -209,6 +227,7 @@
     },
     {
       "from": "1kgs:5:1",
+      "fromEnd": 18,
       "to": "2ch:2:1",
       "toEnd": 18,
       "theme": "same_event",
@@ -216,6 +235,7 @@
     },
     {
       "from": "1kgs:6:1",
+      "fromEnd": 35,
       "to": "2ch:3:1",
       "toEnd": 14,
       "theme": "same_event",
@@ -229,6 +249,7 @@
     },
     {
       "from": "1kgs:7:15",
+      "fromEnd": 21,
       "to": "2ch:3:15",
       "toEnd": 17,
       "theme": "same_event",
@@ -236,6 +257,7 @@
     },
     {
       "from": "1kgs:7:23",
+      "fromEnd": 26,
       "to": "2ch:4:2",
       "toEnd": 5,
       "theme": "same_event",
@@ -261,6 +283,7 @@
     },
     {
       "from": "1kgs:7:47",
+      "fromEnd": 50,
       "to": "2ch:4:18",
       "toEnd": 22,
       "theme": "same_event",
@@ -274,6 +297,7 @@
     },
     {
       "from": "1kgs:8:1",
+      "fromEnd": 11,
       "to": "2ch:5:2",
       "toEnd": 14,
       "theme": "same_event",
@@ -281,6 +305,7 @@
     },
     {
       "from": "1kgs:8:12",
+      "fromEnd": 21,
       "to": "2ch:6:1",
       "toEnd": 11,
       "theme": "same_event",
@@ -288,6 +313,7 @@
     },
     {
       "from": "1kgs:8:22",
+      "fromEnd": 53,
       "to": "2ch:6:12",
       "toEnd": 42,
       "theme": "same_event",
@@ -295,6 +321,7 @@
     },
     {
       "from": "1kgs:8:54",
+      "fromEnd": 61,
       "to": "2ch:7:1",
       "toEnd": 3,
       "theme": "same_event",
@@ -302,6 +329,7 @@
     },
     {
       "from": "1kgs:8:62",
+      "fromEnd": 66,
       "to": "2ch:7:4",
       "toEnd": 10,
       "theme": "same_event",
@@ -309,6 +337,7 @@
     },
     {
       "from": "1kgs:9:1",
+      "fromEnd": 9,
       "to": "2ch:7:11",
       "toEnd": 22,
       "theme": "same_event",
@@ -316,6 +345,7 @@
     },
     {
       "from": "1kgs:9:10",
+      "fromEnd": 28,
       "to": "2ch:8:1",
       "toEnd": 18,
       "theme": "same_event",
@@ -323,6 +353,7 @@
     },
     {
       "from": "1kgs:10:1",
+      "fromEnd": 13,
       "to": "2ch:9:1",
       "toEnd": 12,
       "theme": "same_event",
@@ -330,6 +361,7 @@
     },
     {
       "from": "1kgs:10:14",
+      "fromEnd": 25,
       "to": "2ch:9:13",
       "toEnd": 24,
       "theme": "same_event",
@@ -337,6 +369,7 @@
     },
     {
       "from": "1kgs:10:26",
+      "fromEnd": 29,
       "to": "2ch:9:25",
       "toEnd": 28,
       "theme": "same_event",
@@ -344,6 +377,7 @@
     },
     {
       "from": "1kgs:10:26",
+      "fromEnd": 29,
       "to": "2ch:1:14",
       "toEnd": 17,
       "theme": "same_event",
@@ -357,6 +391,7 @@
     },
     {
       "from": "1kgs:11:41",
+      "fromEnd": 43,
       "to": "2ch:9:29",
       "toEnd": 31,
       "theme": "same_event",
@@ -364,6 +399,7 @@
     },
     {
       "from": "1kgs:12:1",
+      "fromEnd": 19,
       "to": "2ch:10:1",
       "toEnd": 19,
       "theme": "same_event",
@@ -371,6 +407,7 @@
     },
     {
       "from": "1kgs:12:21",
+      "fromEnd": 24,
       "to": "2ch:11:1",
       "toEnd": 4,
       "theme": "same_event",
@@ -385,6 +422,7 @@
     },
     {
       "from": "1kgs:12:26",
+      "fromEnd": 31,
       "to": "2ch:11:13",
       "toEnd": 17,
       "theme": "same_event",
@@ -392,12 +430,14 @@
     },
     {
       "from": "1kgs:14:22",
+      "fromEnd": 24,
       "to": "2ch:12:1",
       "theme": "same_event",
       "note": "Иуда делает зло пред Господом при Ровоаме"
     },
     {
       "from": "1kgs:14:25",
+      "fromEnd": 28,
       "to": "2ch:12:2",
       "toEnd": 12,
       "theme": "same_event",
@@ -412,6 +452,7 @@
     },
     {
       "from": "1kgs:14:29",
+      "fromEnd": 31,
       "to": "2ch:12:15",
       "toEnd": 16,
       "theme": "same_event",
@@ -445,6 +486,7 @@
     },
     {
       "from": "1kgs:15:11",
+      "fromEnd": 12,
       "to": "2ch:14:1",
       "toEnd": 5,
       "theme": "same_event",
@@ -452,6 +494,7 @@
     },
     {
       "from": "1kgs:15:13",
+      "fromEnd": 15,
       "to": "2ch:15:16",
       "toEnd": 18,
       "theme": "same_event",
@@ -459,6 +502,7 @@
     },
     {
       "from": "1kgs:15:16",
+      "fromEnd": 22,
       "to": "2ch:16:1",
       "toEnd": 6,
       "theme": "same_event",
@@ -466,6 +510,7 @@
     },
     {
       "from": "1kgs:15:23",
+      "fromEnd": 24,
       "to": "2ch:16:11",
       "toEnd": 14,
       "theme": "same_event",
@@ -473,6 +518,7 @@
     },
     {
       "from": "1kgs:22:1",
+      "fromEnd": 40,
       "to": "2ch:18:1",
       "toEnd": 34,
       "theme": "same_event",
@@ -486,6 +532,7 @@
     },
     {
       "from": "1kgs:22:42",
+      "fromEnd": 43,
       "to": "2ch:20:31",
       "toEnd": 33,
       "theme": "same_event",
@@ -499,6 +546,7 @@
     },
     {
       "from": "1kgs:22:47",
+      "fromEnd": 49,
       "to": "2ch:20:35",
       "toEnd": 37,
       "theme": "same_event",
@@ -519,6 +567,7 @@
     },
     {
       "from": "2kgs:8:16",
+      "fromEnd": 19,
       "to": "2ch:21:2",
       "toEnd": 7,
       "theme": "same_event",
@@ -526,6 +575,7 @@
     },
     {
       "from": "2kgs:8:20",
+      "fromEnd": 22,
       "to": "2ch:21:8",
       "toEnd": 15,
       "theme": "same_event",
@@ -533,6 +583,7 @@
     },
     {
       "from": "2kgs:8:23",
+      "fromEnd": 24,
       "to": "2ch:21:16",
       "toEnd": 20,
       "theme": "same_event",
@@ -540,6 +591,7 @@
     },
     {
       "from": "2kgs:8:25",
+      "fromEnd": 27,
       "to": "2ch:22:1",
       "toEnd": 4,
       "theme": "same_event",
@@ -547,6 +599,7 @@
     },
     {
       "from": "2kgs:8:28",
+      "fromEnd": 29,
       "to": "2ch:22:5",
       "toEnd": 9,
       "theme": "same_event",
@@ -554,12 +607,14 @@
     },
     {
       "from": "2kgs:9:1",
+      "fromEnd": 20,
       "to": "2ch:22:7",
       "theme": "same_event",
       "note": "Помазание Ииуя и начало восстания — Паралипоменон сжимает весь рассказ в одну строку: «от Бога было падение Охозии»"
     },
     {
       "from": "2kgs:9:21",
+      "fromEnd": 28,
       "to": "2ch:22:7",
       "toEnd": 9,
       "theme": "same_event",
@@ -567,12 +622,14 @@
     },
     {
       "from": "2kgs:10:11",
+      "fromEnd": 14,
       "to": "2ch:22:8",
       "theme": "same_event",
       "note": "Ииуй избивает братьев / родственников Охозии"
     },
     {
       "from": "2kgs:11:1",
+      "fromEnd": 3,
       "to": "2ch:22:10",
       "toEnd": 12,
       "theme": "same_event",
@@ -580,6 +637,7 @@
     },
     {
       "from": "2kgs:11:4",
+      "fromEnd": 20,
       "to": "2ch:23:1",
       "toEnd": 21,
       "theme": "same_event",
@@ -593,6 +651,7 @@
     },
     {
       "from": "2kgs:12:1",
+      "fromEnd": 3,
       "to": "2ch:24:1",
       "toEnd": 3,
       "theme": "same_event",
@@ -600,6 +659,7 @@
     },
     {
       "from": "2kgs:12:6",
+      "fromEnd": 16,
       "to": "2ch:24:4",
       "toEnd": 14,
       "theme": "same_event",
@@ -607,6 +667,7 @@
     },
     {
       "from": "2kgs:12:17",
+      "fromEnd": 18,
       "to": "2ch:24:23",
       "toEnd": 24,
       "theme": "same_event",
@@ -614,6 +675,7 @@
     },
     {
       "from": "2kgs:12:19",
+      "fromEnd": 21,
       "to": "2ch:24:25",
       "toEnd": 27,
       "theme": "same_event",
@@ -621,6 +683,7 @@
     },
     {
       "from": "2kgs:14:1",
+      "fromEnd": 6,
       "to": "2ch:25:1",
       "toEnd": 4,
       "theme": "same_event",
@@ -635,6 +698,7 @@
     },
     {
       "from": "2kgs:14:8",
+      "fromEnd": 14,
       "to": "2ch:25:17",
       "toEnd": 24,
       "theme": "same_event",
@@ -642,6 +706,7 @@
     },
     {
       "from": "2kgs:14:17",
+      "fromEnd": 20,
       "to": "2ch:25:25",
       "toEnd": 28,
       "theme": "same_event",
@@ -649,6 +714,7 @@
     },
     {
       "from": "2kgs:14:21",
+      "fromEnd": 22,
       "to": "2ch:26:1",
       "toEnd": 15,
       "theme": "same_event",
@@ -656,6 +722,7 @@
     },
     {
       "from": "2kgs:15:1",
+      "fromEnd": 4,
       "to": "2ch:26:1",
       "toEnd": 4,
       "theme": "same_event",
@@ -663,6 +730,7 @@
     },
     {
       "from": "2kgs:15:6",
+      "fromEnd": 7,
       "to": "2ch:26:22",
       "toEnd": 23,
       "theme": "same_event",
@@ -676,6 +744,7 @@
     },
     {
       "from": "2kgs:15:32",
+      "fromEnd": 35,
       "to": "2ch:27:1",
       "toEnd": 8,
       "theme": "same_event",
@@ -689,6 +758,7 @@
     },
     {
       "from": "2kgs:16:1",
+      "fromEnd": 2,
       "to": "2ch:28:1",
       "toEnd": 2,
       "theme": "same_event",
@@ -696,6 +766,7 @@
     },
     {
       "from": "2kgs:16:3",
+      "fromEnd": 4,
       "to": "2ch:28:3",
       "toEnd": 8,
       "theme": "same_event",
@@ -729,6 +800,7 @@
     },
     {
       "from": "2kgs:16:8",
+      "fromEnd": 18,
       "to": "2ch:28:21",
       "toEnd": 25,
       "theme": "same_event",
@@ -736,6 +808,7 @@
     },
     {
       "from": "2kgs:16:19",
+      "fromEnd": 20,
       "to": "2ch:28:26",
       "toEnd": 27,
       "theme": "same_event",
@@ -743,6 +816,7 @@
     },
     {
       "from": "2kgs:18:1",
+      "fromEnd": 3,
       "to": "2ch:29:1",
       "toEnd": 2,
       "theme": "same_event",
@@ -756,6 +830,7 @@
     },
     {
       "from": "2kgs:18:14",
+      "fromEnd": 16,
       "to": "2ch:32:2",
       "toEnd": 8,
       "theme": "same_event",
@@ -763,6 +838,7 @@
     },
     {
       "from": "2kgs:18:17",
+      "fromEnd": 37,
       "to": "is:36:2",
       "toEnd": 22,
       "theme": "same_event",
@@ -770,6 +846,7 @@
     },
     {
       "from": "2kgs:18:17",
+      "fromEnd": 37,
       "to": "2ch:32:9",
       "toEnd": 19,
       "theme": "same_event",
@@ -777,12 +854,14 @@
     },
     {
       "from": "2kgs:19:1",
+      "fromEnd": 5,
       "to": "2ch:32:20",
       "theme": "same_event",
       "note": "Молитва Езекии и Исаии — Паралипоменон"
     },
     {
       "from": "2kgs:19:1",
+      "fromEnd": 5,
       "to": "is:37:1",
       "toEnd": 4,
       "theme": "same_event",
@@ -790,6 +869,7 @@
     },
     {
       "from": "2kgs:19:6",
+      "fromEnd": 7,
       "to": "is:37:6",
       "toEnd": 7,
       "theme": "same_event",
@@ -797,12 +877,14 @@
     },
     {
       "from": "2kgs:19:8",
+      "fromEnd": 19,
       "to": "2ch:32:17",
       "theme": "same_event",
       "note": "Письмо Сеннахирима — Паралипоменон"
     },
     {
       "from": "2kgs:19:8",
+      "fromEnd": 19,
       "to": "is:37:8",
       "toEnd": 20,
       "theme": "same_event",
@@ -810,12 +892,14 @@
     },
     {
       "from": "2kgs:19:20",
+      "fromEnd": 37,
       "to": "2ch:32:21",
       "theme": "same_event",
       "note": "Поражение ассирийского войска — Паралипоменон"
     },
     {
       "from": "2kgs:19:20",
+      "fromEnd": 37,
       "to": "is:37:21",
       "toEnd": 38,
       "theme": "same_event",
@@ -823,18 +907,21 @@
     },
     {
       "from": "2kgs:20:1",
+      "fromEnd": 11,
       "to": "2ch:32:24",
       "theme": "same_event",
       "note": "Болезнь Езекии — Паралипоменон"
     },
     {
       "from": "2kgs:20:1",
+      "fromEnd": 11,
       "to": "is:38:1",
       "theme": "same_event",
       "note": "Болезнь и исцеление Езекии — параллельный текст у Исаии"
     },
     {
       "from": "2kgs:20:12",
+      "fromEnd": 19,
       "to": "is:39:1",
       "toEnd": 8,
       "theme": "same_event",
@@ -842,6 +929,7 @@
     },
     {
       "from": "2kgs:20:20",
+      "fromEnd": 21,
       "to": "2ch:32:32",
       "toEnd": 33,
       "theme": "same_event",
@@ -849,6 +937,7 @@
     },
     {
       "from": "2kgs:21:1",
+      "fromEnd": 16,
       "to": "2ch:33:1",
       "toEnd": 9,
       "theme": "same_event",
@@ -856,6 +945,7 @@
     },
     {
       "from": "2kgs:21:17",
+      "fromEnd": 18,
       "to": "2ch:33:18",
       "toEnd": 20,
       "theme": "same_event",
@@ -863,6 +953,7 @@
     },
     {
       "from": "2kgs:21:19",
+      "fromEnd": 26,
       "to": "2ch:33:21",
       "toEnd": 25,
       "theme": "same_event",
@@ -870,6 +961,7 @@
     },
     {
       "from": "2kgs:22:1",
+      "fromEnd": 2,
       "to": "2ch:34:1",
       "toEnd": 7,
       "theme": "same_event",
@@ -877,6 +969,7 @@
     },
     {
       "from": "2kgs:22:3",
+      "fromEnd": 20,
       "to": "2ch:34:8",
       "toEnd": 28,
       "theme": "same_event",
@@ -884,6 +977,7 @@
     },
     {
       "from": "2kgs:23:1",
+      "fromEnd": 3,
       "to": "2ch:34:29",
       "toEnd": 32,
       "theme": "same_event",
@@ -891,6 +985,7 @@
     },
     {
       "from": "2kgs:23:21",
+      "fromEnd": 23,
       "to": "2ch:35:1",
       "toEnd": 19,
       "theme": "same_event",
@@ -898,12 +993,14 @@
     },
     {
       "from": "2kgs:23:24",
+      "fromEnd": 26,
       "to": "2ch:34:33",
       "theme": "same_event",
       "note": "Иосия уничтожает идолов и мерзости во всей земле"
     },
     {
       "from": "2kgs:23:28",
+      "fromEnd": 30,
       "to": "2ch:35:20",
       "toEnd": 27,
       "theme": "same_event",
@@ -911,6 +1008,7 @@
     },
     {
       "from": "2kgs:23:30",
+      "fromEnd": 33,
       "to": "2ch:36:1",
       "toEnd": 3,
       "theme": "same_event",
@@ -918,6 +1016,7 @@
     },
     {
       "from": "2kgs:23:34",
+      "fromEnd": 37,
       "to": "2ch:36:4",
       "toEnd": 5,
       "theme": "same_event",
@@ -931,6 +1030,7 @@
     },
     {
       "from": "2kgs:24:8",
+      "fromEnd": 9,
       "to": "2ch:36:9",
       "theme": "same_event",
       "note": "Иехония / Иоакин воцарился"
@@ -943,12 +1043,14 @@
     },
     {
       "from": "2kgs:24:15",
+      "fromEnd": 17,
       "to": "2ch:36:10",
       "theme": "same_event",
       "note": "Переселение Иехонии в Вавилон; Седекия поставлен царём"
     },
     {
       "from": "2kgs:24:18",
+      "fromEnd": 19,
       "to": "2ch:36:11",
       "toEnd": 12,
       "theme": "same_event",
@@ -975,6 +1077,7 @@
     },
     {
       "from": "2kgs:25:8",
+      "fromEnd": 21,
       "to": "2ch:36:18",
       "toEnd": 21,
       "theme": "same_event",
@@ -1026,6 +1129,7 @@
     {
       "from": "1kgs:2:27",
       "to": "1sm:2:27",
+      "toEnd": 36,
       "theme": "fulfillment",
       "note": "Пророчество против дома Илия — Соломон отстраняет Авиафара от священства, исполняя слово Господне"
     },

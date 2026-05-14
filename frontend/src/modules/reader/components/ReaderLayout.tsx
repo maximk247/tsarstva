@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import type { Chapter, PrecomputedParallel } from "@tsarstva/data";
 import { useParallelPanelSnapshot } from "../hooks/useParallelPanelSnapshot";
 import { useHashVerseScroll } from "../hooks/useHashVerseScroll";
@@ -55,10 +55,6 @@ export default function ReaderLayout({
   useKeyboardScroll(scrollRef);
   useHashVerseScroll(setActiveVerse);
 
-  const versesWithParallels = useMemo(
-    () => new Set(Object.keys(parallelsMap).map(Number)),
-    [parallelsMap],
-  );
   const handleVerseClick = useCallback((v: number) => {
     setActiveVerse((prev) => (prev === v ? null : v));
   }, []);
@@ -79,7 +75,7 @@ export default function ReaderLayout({
         >
           <MainText
             verses={verses}
-            versesWithParallels={versesWithParallels}
+            parallelsMap={parallelsMap}
             activeVerse={activeVerse}
             selectedVerses={verseSelection.mainTextProps.selectedVerses}
             onVerseClick={handleVerseClick}
@@ -105,6 +101,7 @@ export default function ReaderLayout({
           <ParallelPanel
             refs={panelTransition.snapshot.refs}
             activeVerse={panelTransition.snapshot.activeVerse}
+            activeReferenceLabel={panelTransition.snapshot.activeReferenceLabel}
             bookName={panelTransition.snapshot.bookName}
             chapter={panelTransition.snapshot.chapter}
             isReferenceTransitionVisible={panelTransition.isVisible}

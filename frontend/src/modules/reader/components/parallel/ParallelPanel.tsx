@@ -12,6 +12,7 @@ const ReportButton = dynamic(
 interface Props {
   refs: PrecomputedParallel[];
   activeVerse: number | null;
+  activeReferenceLabel: string | null;
   bookName: string;
   chapter: number;
   isReferenceTransitionVisible: boolean;
@@ -50,6 +51,7 @@ function WindTransition({
 export default memo(function ParallelPanel({
   refs,
   activeVerse,
+  activeReferenceLabel,
   bookName,
   chapter,
   isReferenceTransitionVisible,
@@ -84,12 +86,14 @@ export default memo(function ParallelPanel({
             className="min-w-0 flex-1"
           >
             <p className="font-sans font-medium text-stone-600 dark:text-stone-200 text-sm">
-              {bookName} {chapter}:{activeVerse}
+              {activeReferenceLabel ?? `${bookName} ${chapter}:${activeVerse}`}
             </p>
           </WindTransition>
           <ReportButton
             type="verse"
-            reference={`${bookName} ${chapter}:${activeVerse}`}
+            reference={
+              activeReferenceLabel ?? `${bookName} ${chapter}:${activeVerse}`
+            }
           />
         </div>
       </div>
@@ -111,7 +115,10 @@ export default memo(function ParallelPanel({
                 reportAction={
                   <ReportButton
                     type="parallel"
-                    reference={`${bookName} ${chapter}:${activeVerse}`}
+                    reference={
+                      activeReferenceLabel ??
+                      `${bookName} ${chapter}:${activeVerse}`
+                    }
                     parallelRef={ref.label}
                     parallelText={ref.text}
                   />
