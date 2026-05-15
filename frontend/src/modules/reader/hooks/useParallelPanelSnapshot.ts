@@ -75,6 +75,23 @@ function getActiveReferenceLabel(
   return `${bookName} ${chapter}:${activeVerse}`;
 }
 
+function getSourceStartVerse(ref: PrecomputedParallel, currentVerse: number) {
+  return ref.sourceVerse ?? currentVerse;
+}
+
+function getPanelParallels(
+  activeVerse: number | null,
+  refs: PrecomputedParallel[],
+) {
+  if (activeVerse === null || refs.length === 0) return refs;
+
+  const directRefs = refs.filter(
+    (ref) => getSourceStartVerse(ref, activeVerse) === activeVerse,
+  );
+
+  return directRefs.length > 0 ? directRefs : refs;
+}
+
 interface Params {
   book: string;
   chapter: number;
@@ -104,14 +121,18 @@ export function useParallelPanelSnapshot({
         : EMPTY_PARALLELS,
     [activeVerse, parallelsMap],
   );
+  const panelParallels = useMemo(
+    () => getPanelParallels(activeVerse, activeParallels),
+    [activeParallels, activeVerse],
+  );
   const activeReferenceLabel = useMemo(
     () =>
-      getActiveReferenceLabel(bookName, chapter, activeVerse, activeParallels),
-    [activeParallels, activeVerse, bookName, chapter],
+      getActiveReferenceLabel(bookName, chapter, activeVerse, panelParallels),
+    [activeVerse, bookName, chapter, panelParallels],
   );
   const [parallelPanelSnapshot, setParallelPanelSnapshot] =
     useState<ParallelPanelSnapshot>(() => ({
-      refs: activeParallels,
+      refs: panelParallels,
       activeVerse,
       activeReferenceLabel,
       bookName,
@@ -145,7 +166,7 @@ export function useParallelPanelSnapshot({
     const nextKey = getPanelSnapshotKey(book, chapter, activeVerse);
     const nextContentKey = getPanelContentSnapshotKey(
       activeVerse,
-      activeParallels,
+      panelParallels,
     );
     const hadPreviousSnapshot = panelSnapshotKeyRef.current !== "";
     const hasSameContent =
@@ -157,7 +178,7 @@ export function useParallelPanelSnapshot({
     if (panelSnapshotKeyRef.current === nextKey) {
       panelContentSnapshotKeyRef.current = nextContentKey;
       setParallelPanelSnapshot({
-        refs: activeParallels,
+        refs: panelParallels,
         activeVerse,
         activeReferenceLabel,
         bookName,
@@ -185,7 +206,7 @@ export function useParallelPanelSnapshot({
         panelSnapshotKeyRef.current = nextKey;
         panelContentSnapshotKeyRef.current = nextContentKey;
         setParallelPanelSnapshot({
-          refs: activeParallels,
+          refs: panelParallels,
           activeVerse,
           activeReferenceLabel,
           bookName,
@@ -206,12 +227,12 @@ export function useParallelPanelSnapshot({
       cancelAnimationFrame(panelVisibilityRafRef.current!);
     };
   }, [
-    activeParallels,
     activeReferenceLabel,
     activeVerse,
     book,
     bookName,
     chapter,
+    panelParallels,
   ]);
 
   return {

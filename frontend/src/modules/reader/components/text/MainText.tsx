@@ -36,7 +36,21 @@ function getActiveParallelRange(
 ): ActiveParallelRange | null {
   if (activeVerse === null || activeParallels.length === 0) return null;
 
+  // Keep the source-range highlight intact even when the panel shows direct refs.
   const activeRef =
+    activeParallels.reduce<PrecomputedParallel | null>((bestRef, ref) => {
+      const start = getSourceStartVerse(ref, activeVerse);
+      const end = getSourceEndVerse(ref, activeVerse);
+      if (activeVerse < start || activeVerse > end || start === end) {
+        return bestRef;
+      }
+
+      if (!bestRef) return ref;
+
+      const bestStart = getSourceStartVerse(bestRef, activeVerse);
+      const bestEnd = getSourceEndVerse(bestRef, activeVerse);
+      return end - start > bestEnd - bestStart ? ref : bestRef;
+    }, null) ??
     activeParallels.find(
       (ref) => getSourceStartVerse(ref, activeVerse) === activeVerse,
     ) ??
