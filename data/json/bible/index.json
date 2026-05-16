@@ -68,5 +68,19 @@
     "nameShort": "Луки",
     "testament": "NT",
     "chapterCount": 24
+  },
+  "ex": {
+    "abbrev": "ex",
+    "nameRu": "Исход",
+    "nameShort": "Исх",
+    "testament": "OT",
+    "chapterCount": 40
+  },
+  "dt": {
+    "abbrev": "dt",
+    "nameRu": "Второзаконие",
+    "nameShort": "Втор",
+    "testament": "OT",
+    "chapterCount": 34
   }
 }

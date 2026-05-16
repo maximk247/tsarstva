@@ -16,6 +16,18 @@ const API_URL = "https://justbible.ru/api/bible";
 const TRANSLATION = "rst";
 
 const BOOKS = {
+  ex: {
+    justBibleBook: 2,
+    nameRu: "Исход",
+    nameShort: "Исх",
+    testament: "OT",
+  },
+  dt: {
+    justBibleBook: 5,
+    nameRu: "Второзаконие",
+    nameShort: "Втор",
+    testament: "OT",
+  },
   "1sm": {
     justBibleBook: 9,
     nameRu: "1 Царств",

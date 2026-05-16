@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Chapter, PrecomputedParallel } from "@tsarstva/data";
 import { useParallelPanelSnapshot } from "../hooks/useParallelPanelSnapshot";
 import { useKeyboardScroll } from "../hooks/useKeyboardScroll";
@@ -60,6 +60,18 @@ export default function ReaderLayout({
     activeVerse,
     setActiveVerse,
   });
+
+  useEffect(() => {
+    const panel = panelRef.current;
+    if (!panel) return;
+
+    panel.scrollTop = 0;
+  }, [
+    panelTransition.snapshot.activeReferenceLabel,
+    panelTransition.snapshot.activeVerse,
+    panelTransition.snapshot.bookName,
+    panelTransition.snapshot.chapter,
+  ]);
 
   const handleVerseClick = useCallback((v: number) => {
     setActiveVerse((prev) => (prev === v ? null : v));
