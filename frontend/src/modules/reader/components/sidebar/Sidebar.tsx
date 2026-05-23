@@ -16,6 +16,7 @@ import {
   type ChapterNavigationIntent,
 } from "@/features/navigate-chapter";
 import { FontSizeControl } from "@/features/font-size";
+import { FontFamilySelector } from "@/features/font-family";
 import { ThemeToggle } from "@/features/theme-toggle";
 import { SearchBox } from "@/features/word-search";
 import { useBookIndicator } from "../../hooks/useBookIndicator";
@@ -110,6 +111,10 @@ export default function Sidebar({ currentBook, currentChapter }: Props) {
           <FontSizeControl />
           <ThemeToggle />
         </div>
+      </div>
+
+      <div className="px-3 py-2.5 border-b border-[var(--sidebar-left-border)] dark:border-stone-700 shrink-0">
+        <FontFamilySelector />
       </div>
 
       <div className="px-3 py-3 border-b border-[var(--sidebar-left-border)] dark:border-stone-700 shrink-0">

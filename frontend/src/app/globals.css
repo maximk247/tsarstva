@@ -5,6 +5,7 @@
 @theme inline {
   --font-sans: var(--font-inter);
   --font-serif: var(--font-alegreya), Georgia, serif;
+  --bible-font-family: Calibri, "Segoe UI", sans-serif;
 }
 
 :root {
@@ -44,7 +45,7 @@
   --hover: #2a2827;
   --muted: #292524;
   --foreground: #fafaf7;
-  --reader-text: #fafaf7;
+  --reader-text: #eee6db;
   --muted-foreground: #a8a29e;
   --text-secondary: #78716c;
   --border: #44403c;
@@ -99,7 +100,7 @@ body::after {
 }
 
 .bible-text {
-  font-family: var(--font-serif);
+  font-family: var(--bible-font-family, var(--font-serif));
   font-size: var(--bible-font-size, 1.0625rem);
   line-height: 1.85;
   letter-spacing: 0.01em;

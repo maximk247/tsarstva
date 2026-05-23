@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { ChapterNav, BookSelector } from "@/features/navigate-chapter";
 import { ThemeToggle } from "@/features/theme-toggle";
 import { FontSizeControl } from "@/features/font-size";
+import { FontFamilySelector } from "@/features/font-family";
 import { SearchLink } from "@/features/word-search";
 import {
   getChapterCount,
@@ -98,6 +99,9 @@ export default async function ReaderPage({ params }: PageProps) {
               <FontSizeControl />
               <ThemeToggle />
             </div>
+          </div>
+          <div className="px-3 py-2 border-b border-[var(--border)] dark:border-stone-700">
+            <FontFamilySelector />
           </div>
           <ChapterNav
             book={book}
