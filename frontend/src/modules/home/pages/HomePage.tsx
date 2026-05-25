@@ -1,4 +1,5 @@
 import BookGrid from "../components/BookGrid";
+import { ContinueReadingLink } from "@/features/reading-progress";
 import { SearchBox } from "@/features/word-search";
 
 export default function HomePage() {
@@ -18,6 +19,8 @@ export default function HomePage() {
         <div className="mb-10 w-full">
           <SearchBox />
         </div>
+
+        <ContinueReadingLink className="mb-10" />
 
         <BookGrid />
 

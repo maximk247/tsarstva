@@ -5,6 +5,7 @@ import type { Chapter, PrecomputedParallel } from "@tsarstva/data";
 import { useParallelPanelSnapshot } from "../hooks/useParallelPanelSnapshot";
 import { useKeyboardScroll } from "../hooks/useKeyboardScroll";
 import { useRememberedActiveVerse } from "../hooks/useRememberedActiveVerse";
+import { useReadingProgressPersistence } from "../hooks/useReadingProgressPersistence";
 import { useReaderVisibility } from "../hooks/useReaderVisibility";
 import { useResizablePanel } from "../hooks/useResizablePanel";
 import { useVerseSelection } from "../hooks/useVerseSelection";
@@ -53,6 +54,11 @@ export default function ReaderLayout({
   });
 
   useKeyboardScroll(scrollRef);
+  useReadingProgressPersistence({
+    book,
+    chapter,
+    scrollRef,
+  });
   useRememberedActiveVerse({
     book,
     chapter,

@@ -1,9 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ChapterNav, BookSelector } from "@/features/navigate-chapter";
-import { ThemeToggle } from "@/features/theme-toggle";
-import { FontSizeControl } from "@/features/font-size";
-import { FontFamilySelector } from "@/features/font-family";
 import { SearchLink } from "@/features/word-search";
 import {
   getChapterCount,
@@ -15,6 +12,7 @@ import {
 } from "@tsarstva/data";
 import { getChapter, getVerseItems } from "@tsarstva/data/server";
 import ReaderLayout from "../components/ReaderLayout";
+import ReaderSettingsMenu from "../components/settings/ReaderSettingsMenu";
 import Sidebar from "../components/sidebar/Sidebar";
 
 interface PageProps {
@@ -96,12 +94,8 @@ export default async function ReaderPage({ params }: PageProps) {
             </div>
             <div className="shrink-0 flex items-center gap-1">
               <SearchLink />
-              <FontSizeControl />
-              <ThemeToggle />
+              <ReaderSettingsMenu />
             </div>
-          </div>
-          <div className="px-3 py-2 border-b border-[var(--border)] dark:border-stone-700">
-            <FontFamilySelector />
           </div>
           <ChapterNav
             book={book}

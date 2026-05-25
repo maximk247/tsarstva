@@ -15,11 +15,9 @@ import {
   useDeferredChapterNavigation,
   type ChapterNavigationIntent,
 } from "@/features/navigate-chapter";
-import { FontSizeControl } from "@/features/font-size";
-import { FontFamilySelector } from "@/features/font-family";
-import { ThemeToggle } from "@/features/theme-toggle";
 import { SearchBox } from "@/features/word-search";
 import { useBookIndicator } from "../../hooks/useBookIndicator";
+import ReaderSettingsMenu from "../settings/ReaderSettingsMenu";
 import SidebarBookNav from "./SidebarBookNav";
 import SidebarChapterGrid from "./SidebarChapterGrid";
 
@@ -107,14 +105,7 @@ export default function Sidebar({ currentBook, currentChapter }: Props) {
         <p className="font-sans text-sm font-semibold text-stone-800 dark:text-stone-200 tracking-wide">
           Настройки
         </p>
-        <div className="flex items-center gap-1">
-          <FontSizeControl />
-          <ThemeToggle />
-        </div>
-      </div>
-
-      <div className="px-3 py-2.5 border-b border-[var(--sidebar-left-border)] dark:border-stone-700 shrink-0">
-        <FontFamilySelector />
+        <ReaderSettingsMenu menuClassName="-right-3" />
       </div>
 
       <div className="px-3 py-3 border-b border-[var(--sidebar-left-border)] dark:border-stone-700 shrink-0">
