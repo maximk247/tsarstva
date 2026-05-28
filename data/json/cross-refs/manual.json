@@ -754,7 +754,7 @@
     },
     {
       "from": "2kgs:15:32",
-      "fromEnd": 35,
+      "fromEnd": 36,
       "to": "2ch:27:1",
       "toEnd": 8,
       "theme": "same_event",
