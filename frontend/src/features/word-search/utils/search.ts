@@ -18,6 +18,7 @@ export interface SearchResultSet {
 }
 
 const MIN_QUERY_LENGTH = 2;
+const WORD_BOUNDARY = String.raw`[\p{L}\p{N}]`;
 
 export function normalizeSearchText(value: string) {
   return value
@@ -42,13 +43,39 @@ export function getSearchTerms(query: string) {
   );
 }
 
-function countMatches(text: string, term: string) {
-  let count = 0;
-  let index = text.indexOf(term);
+function getSearchTokens(value: string) {
+  return normalizeSearchText(value).split(/\s+/).filter(Boolean);
+}
 
-  while (index !== -1) {
-    count++;
-    index = text.indexOf(term, index + term.length);
+function matchesTerm(token: string, term: string) {
+  if (term.length <= 2) return token === term;
+  return token.startsWith(term);
+}
+
+function countTermMatches(tokens: string[], term: string) {
+  return tokens.reduce(
+    (count, token) => count + (matchesTerm(token, term) ? 1 : 0),
+    0,
+  );
+}
+
+function findFirstTermIndex(tokens: string[], terms: string[]) {
+  const indexes = terms
+    .map((term) => tokens.findIndex((token) => matchesTerm(token, term)))
+    .filter((index) => index >= 0);
+
+  return indexes.length > 0 ? Math.min(...indexes) : 0;
+}
+
+function countPhraseMatches(tokens: string[], terms: string[]) {
+  if (terms.length < 2) return 0;
+
+  let count = 0;
+  for (let index = 0; index <= tokens.length - terms.length; index++) {
+    const isPhraseMatch = terms.every((term, termIndex) =>
+      matchesTerm(tokens[index + termIndex], term),
+    );
+    if (isPhraseMatch) count++;
   }
 
   return count;
@@ -59,7 +86,6 @@ export function searchVerses(
   query: string,
   limit = 80,
 ): SearchResultSet {
-  const normalizedQuery = normalizeSearchText(query);
   const terms = getSearchTerms(query);
 
   if (terms.length === 0) {
@@ -72,33 +98,45 @@ export function searchVerses(
   }
 
   const matches: SearchResult[] = [];
+  const looseMatches: SearchResult[] = [];
+  const shouldPreferPhrase = terms.length > 1;
 
   verses.forEach((verse, sourceIndex) => {
-    const normalizedText = normalizeSearchText(textWithReference(verse));
-    if (!terms.every((term) => normalizedText.includes(term))) return;
+    const tokens = getSearchTokens(textWithReference(verse));
+    if (
+      !terms.every((term) => tokens.some((token) => matchesTerm(token, term)))
+    )
+      return;
 
-    const phraseIndex = normalizedText.indexOf(normalizedQuery);
-    const firstTermIndex = Math.min(
-      ...terms.map((term) => normalizedText.indexOf(term)),
-    );
+    const phraseCount = countPhraseMatches(tokens, terms);
+    const firstTermIndex = findFirstTermIndex(tokens, terms);
     const matchCount = terms.reduce(
-      (count, term) => count + countMatches(normalizedText, term),
+      (count, term) => count + countTermMatches(tokens, term),
       0,
     );
     const score =
-      (phraseIndex >= 0 ? 1000 : 0) +
+      phraseCount * 1000 +
       matchCount * 24 -
-      Math.max(firstTermIndex, 0) * 0.2 -
+      firstTermIndex * 0.2 -
       sourceIndex * 0.0001;
 
-    matches.push({ ...verse, score, matchCount });
+    const result = { ...verse, score, matchCount };
+    if (shouldPreferPhrase && phraseCount > 0) {
+      matches.push(result);
+    } else if (!shouldPreferPhrase) {
+      matches.push(result);
+    } else {
+      looseMatches.push(result);
+    }
   });
 
-  matches.sort((a, b) => b.score - a.score);
+  const resultMatches = matches.length > 0 ? matches : looseMatches;
+  resultMatches.sort((a, b) => b.score - a.score);
+  const items = resultMatches.slice(0, limit);
 
   return {
-    items: matches.slice(0, limit),
-    total: matches.length,
+    items,
+    total: items.length,
     terms,
     isReady: true,
   };
@@ -113,7 +151,16 @@ function escapeRegExp(value: string) {
 }
 
 function termToPattern(term: string) {
-  return escapeRegExp(term).replace(/[её]/g, "[её]");
+  const pattern = escapeRegExp(term).replace(/[её]/g, "[её]");
+  return term.length <= 2 ? pattern : `${pattern}${WORD_BOUNDARY}*`;
+}
+
+function getHighlightPattern(terms: string[]) {
+  if (terms.length > 1) {
+    return terms.map(termToPattern).join(String.raw`[^\p{L}\p{N}]+`);
+  }
+
+  return termToPattern(terms[0]);
 }
 
 export function getHighlightedSegments(
@@ -122,11 +169,11 @@ export function getHighlightedSegments(
 ): HighlightSegment[] {
   if (terms.length === 0) return [{ text, isMatch: false }];
 
-  const pattern = [...terms]
-    .sort((a, b) => b.length - a.length)
-    .map(termToPattern)
-    .join("|");
-  const regex = new RegExp(pattern, "giu");
+  const pattern = getHighlightPattern(terms);
+  const regex = new RegExp(
+    String.raw`(?<!${WORD_BOUNDARY})(?:${pattern})(?!${WORD_BOUNDARY})`,
+    "giu",
+  );
   const segments: HighlightSegment[] = [];
   let lastIndex = 0;
   let match: RegExpExecArray | null;

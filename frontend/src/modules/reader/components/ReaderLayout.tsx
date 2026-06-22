@@ -1,7 +1,14 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type MouseEvent,
+} from "react";
 import type { Chapter, PrecomputedParallel } from "@tsarstva/data";
+import type { SearchResultSet } from "@/features/word-search";
 import { useParallelPanelSnapshot } from "../hooks/useParallelPanelSnapshot";
 import { useKeyboardScroll } from "../hooks/useKeyboardScroll";
 import { useRememberedActiveVerse } from "../hooks/useRememberedActiveVerse";
@@ -11,6 +18,7 @@ import { useResizablePanel } from "../hooks/useResizablePanel";
 import { useVerseSelection } from "../hooks/useVerseSelection";
 import ParallelPanel from "./parallel/ParallelPanel";
 import ParallelPanelResizeHandle from "./parallel/ParallelPanelResizeHandle";
+import ReaderSearchPanel from "./search/ReaderSearchPanel";
 import VerseSelectionToolbar from "./selection/VerseSelectionToolbar";
 import MainText from "./text/MainText";
 import { cn } from "@/shared/utils/cn";
@@ -21,6 +29,9 @@ interface Props {
   verses: Chapter;
   bookName: string;
   parallelsMap: Record<number, PrecomputedParallel[]>;
+  searchQuery: string | null;
+  onSearchQueryChange: (query: string) => void;
+  onSearchClose: () => void;
 }
 
 export default function ReaderLayout({
@@ -29,10 +40,14 @@ export default function ReaderLayout({
   verses,
   bookName,
   parallelsMap,
+  searchQuery,
+  onSearchQueryChange,
+  onSearchClose,
 }: Props) {
   const [activeVerse, setActiveVerse] = useState<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const isSearchOpen = searchQuery !== null;
 
   const { textTransition } = useReaderVisibility(book, chapter);
   const { panelTransition } = useParallelPanelSnapshot({
@@ -58,6 +73,7 @@ export default function ReaderLayout({
     book,
     chapter,
     scrollRef,
+    enabled: !isSearchOpen,
   });
   useRememberedActiveVerse({
     book,
@@ -79,9 +95,35 @@ export default function ReaderLayout({
     panelTransition.snapshot.chapter,
   ]);
 
+  useEffect(() => {
+    if (!isSearchOpen) return;
+
+    scrollRef.current?.scrollTo({ top: 0 });
+  }, [isSearchOpen]);
+
   const handleVerseClick = useCallback((v: number) => {
     setActiveVerse((prev) => (prev === v ? null : v));
   }, []);
+
+  const handleSearchResultClick = useCallback(
+    (
+      result: SearchResultSet["items"][number],
+      event: MouseEvent<HTMLAnchorElement>,
+    ) => {
+      if (result.book !== book || result.chapter !== chapter) return;
+
+      event.preventDefault();
+      onSearchClose();
+      setActiveVerse(result.verse);
+
+      window.setTimeout(() => {
+        document
+          .getElementById(`v${result.verse}`)
+          ?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 0);
+    },
+    [book, chapter, onSearchClose],
+  );
 
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden lg:flex-row">
@@ -97,14 +139,23 @@ export default function ReaderLayout({
           data-visible={textTransition.isVisible ? "true" : "false"}
           style={{ transitionDuration: `${textTransition.durationMs}ms` }}
         >
-          <MainText
-            verses={verses}
-            parallelsMap={parallelsMap}
-            activeVerse={activeVerse}
-            selectedVerses={verseSelection.mainTextProps.selectedVerses}
-            onVerseClick={handleVerseClick}
-            onCheckStart={verseSelection.mainTextProps.onCheckStart}
-          />
+          {isSearchOpen ? (
+            <ReaderSearchPanel
+              query={searchQuery}
+              onQueryChange={onSearchQueryChange}
+              onClose={onSearchClose}
+              onResultClick={handleSearchResultClick}
+            />
+          ) : (
+            <MainText
+              verses={verses}
+              parallelsMap={parallelsMap}
+              activeVerse={activeVerse}
+              selectedVerses={verseSelection.mainTextProps.selectedVerses}
+              onVerseClick={handleVerseClick}
+              onCheckStart={verseSelection.mainTextProps.onCheckStart}
+            />
+          )}
         </div>
       </div>
 
@@ -135,7 +186,9 @@ export default function ReaderLayout({
         </div>
       </div>
 
-      <VerseSelectionToolbar {...verseSelection.toolbarProps} />
+      {!isSearchOpen && (
+        <VerseSelectionToolbar {...verseSelection.toolbarProps} />
+      )}
     </div>
   );
 }

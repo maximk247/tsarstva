@@ -1,7 +1,5 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { ChapterNav, BookSelector } from "@/features/navigate-chapter";
-import { SearchLink } from "@/features/word-search";
 import {
   getChapterCount,
   getBookName,
@@ -11,9 +9,7 @@ import {
   type PrecomputedParallel,
 } from "@tsarstva/data";
 import { getChapter, getVerseItems } from "@tsarstva/data/server";
-import ReaderLayout from "../components/ReaderLayout";
-import ReaderSettingsMenu from "../components/settings/ReaderSettingsMenu";
-import Sidebar from "../components/sidebar/Sidebar";
+import ReaderShell from "../components/ReaderShell";
 
 interface PageProps {
   params: Promise<{ book: string; chapter: string }>;
@@ -83,38 +79,13 @@ export default async function ReaderPage({ params }: PageProps) {
   }
 
   return (
-    <div className="reader-viewport flex overflow-hidden">
-      <Sidebar currentBook={book} currentChapter={chapter} />
-
-      <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-        <header className="lg:hidden shrink-0 z-10 bg-[var(--background-overlay)] dark:bg-stone-950/90 backdrop-blur border-b border-[var(--border)] dark:border-stone-700">
-          <div className="px-3 flex items-center h-10 gap-2 border-b border-[var(--border)] dark:border-stone-700">
-            <div className="min-w-0 flex-1 overflow-x-auto">
-              <BookSelector currentBook={book} />
-            </div>
-            <div className="shrink-0 flex items-center gap-1">
-              <SearchLink />
-              <ReaderSettingsMenu />
-            </div>
-          </div>
-          <ChapterNav
-            book={book}
-            chapter={chapter}
-            totalChapters={totalChapters}
-            bookName={bookName}
-          />
-        </header>
-
-        <main className="flex min-h-0 flex-1 overflow-hidden">
-          <ReaderLayout
-            book={book}
-            chapter={chapter}
-            verses={verses}
-            bookName={bookName}
-            parallelsMap={parallelsMap}
-          />
-        </main>
-      </div>
-    </div>
+    <ReaderShell
+      book={book}
+      chapter={chapter}
+      verses={verses}
+      bookName={bookName}
+      totalChapters={totalChapters}
+      parallelsMap={parallelsMap}
+    />
   );
 }

@@ -1,6 +1,7 @@
 import {
   READER_BOOKS,
   type CrossRef,
+  type CrossRefTheme,
   type ManualEntry,
   type VerseRef,
 } from "./types";
@@ -95,9 +96,16 @@ function addToIndex(key: string, ref: CrossRef) {
   manualIndex[key].push(ref);
 }
 
-function shouldAddReciprocal(fromBook: string, toBook: string): boolean {
+function shouldAddReciprocal(
+  fromBook: string,
+  toBook: string,
+  theme: CrossRefTheme,
+): boolean {
   return (
-    fromBook !== toBook && readerBooks.has(fromBook) && readerBooks.has(toBook)
+    theme !== "fulfillment" &&
+    fromBook !== toBook &&
+    readerBooks.has(fromBook) &&
+    readerBooks.has(toBook)
   );
 }
 
@@ -122,7 +130,7 @@ for (const entry of manualData.refs) {
 
   addRangeToIndex(fromRange, forwardRef);
 
-  if (shouldAddReciprocal(fromRange.book, forwardRef.book)) {
+  if (shouldAddReciprocal(fromRange.book, forwardRef.book, entry.theme)) {
     addRangeToIndex(toRange, {
       book: fromRange.book,
       chapter: fromRange.chapter,

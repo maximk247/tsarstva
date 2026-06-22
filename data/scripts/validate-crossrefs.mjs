@@ -298,7 +298,7 @@ function validateEntry(entry, source, index, seenGlobal, seenBySource) {
   }
 
   const reverse = reciprocalKey(entry);
-  if (reverse && seenGlobal.has(reverse)) {
+  if (entry.theme !== "fulfillment" && reverse && seenGlobal.has(reverse)) {
     addIssue(
       warnings,
       source,

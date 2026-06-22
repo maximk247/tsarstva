@@ -24,9 +24,18 @@ import SidebarChapterGrid from "./SidebarChapterGrid";
 interface Props {
   currentBook: string;
   currentChapter: number;
+  searchQuery?: string;
+  onSearchQueryChange?: (query: string) => void;
+  onSearchSubmit?: (query: string) => void;
 }
 
-export default function Sidebar({ currentBook, currentChapter }: Props) {
+export default function Sidebar({
+  currentBook,
+  currentChapter,
+  searchQuery,
+  onSearchQueryChange,
+  onSearchSubmit,
+}: Props) {
   const [activeTarget, setActiveTarget] = useState({
     book: currentBook,
     chapter: currentChapter,
@@ -109,7 +118,12 @@ export default function Sidebar({ currentBook, currentChapter }: Props) {
       </div>
 
       <div className="px-3 py-3 border-b border-[var(--sidebar-left-border)] dark:border-stone-700 shrink-0">
-        <SearchBox size="compact" />
+        <SearchBox
+          size="compact"
+          value={searchQuery}
+          onValueChange={onSearchQueryChange}
+          onSubmit={onSearchSubmit}
+        />
       </div>
 
       <div className="px-3 py-3 border-b border-[var(--sidebar-left-border)] dark:border-stone-700 shrink-0">

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useDeferredValue, useEffect, useMemo, useState } from "react";
@@ -8,8 +7,8 @@ import type { SearchVerse } from "@tsarstva/data";
 import { ThemeToggle } from "@/features/theme-toggle";
 import {
   SearchBox,
+  SearchResultList,
   finishSearchTransition,
-  getHighlightedSegments,
   searchVerses,
 } from "@/features/word-search";
 
@@ -56,7 +55,6 @@ export default function SearchResults({ verses }: Props) {
   const trimmedQuery = query.trim();
   const hasQuery = trimmedQuery.length > 0;
   const isShortQuery = hasQuery && !resultSet.isReady;
-  const shownCount = resultSet.items.length;
 
   const handleBack = () => {
     if (window.history.length > 1) {
@@ -100,48 +98,12 @@ export default function SearchResults({ verses }: Props) {
           <div className="min-h-5 font-sans text-sm text-[var(--muted-foreground)] dark:text-stone-500">
             {resultSet.isReady &&
               (resultSet.total > 0
-                ? `${resultSet.total} совпадений${
-                    resultSet.total > shownCount
-                      ? `, показано ${shownCount}`
-                      : ""
-                  }`
+                ? `${resultSet.total} совпадений`
                 : "Ничего не найдено")}
             {isShortQuery && "Нужно хотя бы 2 буквы"}
           </div>
 
-          <div className="flex flex-col gap-3">
-            {resultSet.items.map((result) => (
-              <Link
-                key={`${result.book}:${result.chapter}:${result.verse}`}
-                href={`/read/${result.book}/${result.chapter}#v${result.verse}`}
-                className="group rounded-lg border border-[var(--border)] bg-[var(--card)] p-4 transition-colors hover:border-amber-400 hover:bg-[var(--hover)] dark:bg-stone-900 dark:hover:bg-stone-800"
-              >
-                <div className="mb-2 flex items-center justify-between gap-3">
-                  <p className="font-sans text-sm font-semibold text-amber-900 dark:text-amber-400">
-                    {result.label}
-                  </p>
-                  <span className="shrink-0 rounded-md bg-[var(--accent-wash)] px-2 py-0.5 font-sans text-[11px] font-semibold text-[var(--accent)] dark:text-stone-300">
-                    {result.bookShortName}
-                  </span>
-                </div>
-                <p className="font-serif text-lg leading-relaxed text-[var(--reader-text)]">
-                  {getHighlightedSegments(result.text, resultSet.terms).map(
-                    (segment, index) =>
-                      segment.isMatch ? (
-                        <mark
-                          key={index}
-                          className="rounded-sm bg-amber-200 px-0.5 text-inherit dark:bg-amber-700/45"
-                        >
-                          {segment.text}
-                        </mark>
-                      ) : (
-                        <span key={index}>{segment.text}</span>
-                      ),
-                  )}
-                </p>
-              </Link>
-            ))}
-          </div>
+          <SearchResultList resultSet={resultSet} />
         </main>
       </div>
     </div>

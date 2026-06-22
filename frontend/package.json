@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "build:search-index": "bun run scripts/build-search-index.mjs",
+    "dev": "bun run build:search-index && next dev",
+    "build": "bun run build:search-index && next build",
     "start": "next start"
   },
   "dependencies": {

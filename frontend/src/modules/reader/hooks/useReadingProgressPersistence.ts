@@ -12,6 +12,7 @@ interface Params {
   book: string;
   chapter: number;
   scrollRef: RefObject<HTMLDivElement | null>;
+  enabled?: boolean;
 }
 
 function hasVerseHash() {
@@ -40,8 +41,11 @@ export function useReadingProgressPersistence({
   book,
   chapter,
   scrollRef,
+  enabled = true,
 }: Params) {
   useEffect(() => {
+    if (!enabled) return;
+
     const container = scrollRef.current;
     if (!container) return;
 
@@ -106,5 +110,5 @@ export function useReadingProgressPersistence({
       window.removeEventListener("pagehide", persist);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [book, chapter, scrollRef]);
+  }, [book, chapter, enabled, scrollRef]);
 }
