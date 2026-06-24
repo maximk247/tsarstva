@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build:search-index": "bun run scripts/build-search-index.mjs",
-    "dev": "bun run build:search-index && next dev",
+    "dev": "bun run build:search-index && bun run scripts/dev.mjs",
     "build": "bun run build:search-index && next build",
     "start": "next start"
   },

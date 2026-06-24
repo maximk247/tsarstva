@@ -34,13 +34,13 @@ export function getSearchTerms(query: string) {
   const normalizedQuery = normalizeSearchText(query);
   if (normalizedQuery.length < MIN_QUERY_LENGTH) return [];
 
-  return Array.from(
-    new Set(
-      normalizedQuery
-        .split(/\s+/)
-        .filter((term) => term.length >= MIN_QUERY_LENGTH),
-    ),
+  const terms = normalizedQuery.split(/\s+/).filter(Boolean);
+  const hasSearchableTerm = terms.some(
+    (term) => term.length >= MIN_QUERY_LENGTH,
   );
+  if (!hasSearchableTerm) return [];
+
+  return Array.from(new Set(terms));
 }
 
 function getSearchTokens(value: string) {

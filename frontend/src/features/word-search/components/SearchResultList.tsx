@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { memo } from "react";
 import type { MouseEvent } from "react";
 import { cn } from "@/shared/utils/cn";
 import { getHighlightedSegments, type SearchResultSet } from "../utils/search";
@@ -14,7 +15,7 @@ interface Props {
   ) => void;
 }
 
-export default function SearchResultList({
+function SearchResultList({
   resultSet,
   className,
   onResultClick,
@@ -51,3 +52,5 @@ export default function SearchResultList({
     </div>
   );
 }
+
+export default memo(SearchResultList);

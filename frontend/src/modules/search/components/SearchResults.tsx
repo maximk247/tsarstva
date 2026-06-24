@@ -2,7 +2,7 @@
 
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useDeferredValue, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { SearchVerse } from "@tsarstva/data";
 import { ThemeToggle } from "@/features/theme-toggle";
 import {
@@ -10,19 +10,28 @@ import {
   SearchResultList,
   finishSearchTransition,
   searchVerses,
+  type SearchResultSet,
 } from "@/features/word-search";
+import { useDebouncedValue } from "@/features/word-search/hooks/useDebouncedValue";
 
 interface Props {
   verses: SearchVerse[];
 }
 
 const RESULT_LIMIT = 80;
+const SEARCH_DEBOUNCE_MS = 220;
+const EMPTY_RESULT_SET: SearchResultSet = {
+  items: [],
+  total: 0,
+  terms: [],
+  isReady: false,
+};
 
 export default function SearchResults({ verses }: Props) {
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [isReady, setIsReady] = useState(false);
-  const deferredQuery = useDeferredValue(query);
+  const debouncedQuery = useDebouncedValue(query, SEARCH_DEBOUNCE_MS);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -35,7 +44,7 @@ export default function SearchResults({ verses }: Props) {
     if (!isReady) return;
 
     const params = new URLSearchParams(window.location.search);
-    const nextQuery = query.trim();
+    const nextQuery = debouncedQuery.trim();
 
     if (nextQuery) params.set("q", nextQuery);
     else params.delete("q");
@@ -46,15 +55,19 @@ export default function SearchResults({ verses }: Props) {
       "",
       `${window.location.pathname}${search ? `?${search}` : ""}`,
     );
-  }, [isReady, query]);
+  }, [debouncedQuery, isReady]);
 
-  const resultSet = useMemo(
-    () => searchVerses(verses, deferredQuery, RESULT_LIMIT),
-    [deferredQuery, verses],
-  );
   const trimmedQuery = query.trim();
   const hasQuery = trimmedQuery.length > 0;
+  const resultSet = useMemo(
+    () =>
+      hasQuery
+        ? searchVerses(verses, debouncedQuery, RESULT_LIMIT)
+        : EMPTY_RESULT_SET,
+    [debouncedQuery, hasQuery, verses],
+  );
   const isShortQuery = hasQuery && !resultSet.isReady;
+  const isSearchSettling = hasQuery && debouncedQuery !== query;
 
   const handleBack = () => {
     if (window.history.length > 1) {
@@ -96,11 +109,13 @@ export default function SearchResults({ verses }: Props) {
           />
 
           <div className="min-h-5 font-sans text-sm text-[var(--muted-foreground)] dark:text-stone-500">
-            {resultSet.isReady &&
+            {isSearchSettling && "Ищу..."}
+            {!isSearchSettling &&
+              resultSet.isReady &&
               (resultSet.total > 0
                 ? `${resultSet.total} совпадений`
                 : "Ничего не найдено")}
-            {isShortQuery && "Нужно хотя бы 2 буквы"}
+            {!isSearchSettling && isShortQuery && "Нужно хотя бы 2 буквы"}
           </div>
 
           <SearchResultList resultSet={resultSet} />

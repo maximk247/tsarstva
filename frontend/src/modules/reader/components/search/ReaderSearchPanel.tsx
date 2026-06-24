@@ -2,16 +2,18 @@
 
 import { MoveLeft } from "lucide-react";
 import type { MouseEvent } from "react";
-import { useDeferredValue, useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import {
   SearchBox,
   SearchResultList,
   searchVerses,
 } from "@/features/word-search";
+import { useDebouncedValue } from "@/features/word-search/hooks/useDebouncedValue";
 import { useSearchIndex } from "@/features/word-search/hooks/useSearchIndex";
 import type { SearchResultSet } from "@/features/word-search";
 
 const RESULT_LIMIT = 80;
+const SEARCH_DEBOUNCE_MS = 220;
 const EMPTY_RESULT_SET: SearchResultSet = {
   items: [],
   total: 0,
@@ -35,17 +37,18 @@ export default function ReaderSearchPanel({
   onClose,
   onResultClick,
 }: Props) {
-  const deferredQuery = useDeferredValue(query);
+  const debouncedQuery = useDebouncedValue(query, SEARCH_DEBOUNCE_MS);
   const searchIndex = useSearchIndex(true);
-  const resultSet = useMemo(
-    () =>
-      searchIndex.verses
-        ? searchVerses(searchIndex.verses, deferredQuery, RESULT_LIMIT)
-        : EMPTY_RESULT_SET,
-    [deferredQuery, searchIndex.verses],
-  );
   const trimmedQuery = query.trim();
   const hasQuery = trimmedQuery.length > 0;
+  const isSearchSettling = hasQuery && debouncedQuery !== query;
+  const resultSet = useMemo(
+    () =>
+      hasQuery && searchIndex.verses
+        ? searchVerses(searchIndex.verses, debouncedQuery, RESULT_LIMIT)
+        : EMPTY_RESULT_SET,
+    [debouncedQuery, hasQuery, searchIndex.verses],
+  );
   const isShortQuery = hasQuery && !resultSet.isReady && !searchIndex.isLoading;
   const statusText = !hasQuery
     ? "Введите слово или фразу"
@@ -53,6 +56,8 @@ export default function ReaderSearchPanel({
       ? "Загружаю поиск..."
       : searchIndex.error
         ? "Не удалось загрузить поиск"
+        : isSearchSettling
+          ? "Ищу..."
         : resultSet.isReady
           ? resultSet.total > 0
             ? `${resultSet.total} совпадений`
