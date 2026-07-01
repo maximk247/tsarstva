@@ -148,6 +148,7 @@ export default function ReaderLayout({
             />
           ) : (
             <MainText
+              chapter={chapter}
               verses={verses}
               parallelsMap={parallelsMap}
               activeVerse={activeVerse}

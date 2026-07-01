@@ -9,62 +9,120 @@ type ParallelRangePosition = "single" | "start" | "middle" | "end";
 interface ActiveParallelRange {
   start: number;
   end: number;
+  continuesBefore: boolean;
+  continuesAfter: boolean;
 }
 
-function getSourceStartVerse(ref: PrecomputedParallel, currentVerse: number) {
-  return ref.sourceVerse ?? currentVerse;
+function getSourceStartChapter(ref: PrecomputedParallel, currentChapter: number) {
+  return ref.sourceChapter ?? currentChapter;
 }
 
-function getSourceEndVerse(ref: PrecomputedParallel, currentVerse: number) {
-  const startVerse = getSourceStartVerse(ref, currentVerse);
-  const startChapter = ref.sourceChapter ?? ref.chapter;
-  const endChapter = ref.sourceChapterEnd ?? startChapter;
-
-  if (endChapter !== startChapter) return startVerse;
-  return ref.sourceVerseEnd ?? startVerse;
+function getSourceEndChapter(ref: PrecomputedParallel, currentChapter: number) {
+  return ref.sourceChapterEnd ?? getSourceStartChapter(ref, currentChapter);
 }
 
-function hasParallelMarker(verseNum: number, parallels: PrecomputedParallel[]) {
-  return parallels.some(
-    (ref) => getSourceStartVerse(ref, verseNum) === verseNum,
+function getLocalSourceRange(
+  ref: PrecomputedParallel,
+  currentVerse: number,
+  currentChapter: number,
+  chapterFirstVerse: number,
+  chapterLastVerse: number,
+): ActiveParallelRange | null {
+  const startChapter = getSourceStartChapter(ref, currentChapter);
+  const endChapter = getSourceEndChapter(ref, currentChapter);
+
+  if (currentChapter < startChapter || currentChapter > endChapter) {
+    return null;
+  }
+
+  const continuesBefore = currentChapter > startChapter;
+  const continuesAfter = currentChapter < endChapter;
+  const start = continuesBefore
+    ? chapterFirstVerse
+    : (ref.sourceVerse ?? currentVerse);
+  const end = continuesAfter
+    ? chapterLastVerse
+    : (ref.sourceVerseEnd ?? start);
+
+  return { start, end, continuesBefore, continuesAfter };
+}
+
+function hasParallelMarker(
+  verseNum: number,
+  chapter: number,
+  chapterFirstVerse: number,
+  chapterLastVerse: number,
+  parallels: PrecomputedParallel[],
+) {
+  return parallels.some((ref) => {
+    const range = getLocalSourceRange(
+      ref,
+      verseNum,
+      chapter,
+      chapterFirstVerse,
+      chapterLastVerse,
+    );
+    return range?.start === verseNum;
+  });
+}
+
+function getRangeLength(range: ActiveParallelRange) {
+  return range.end - range.start;
+}
+
+function isVerseInRange(verseNum: number, range: ActiveParallelRange) {
+  return verseNum >= range.start && verseNum <= range.end;
+}
+
+function pickLongerRange(
+  bestRange: ActiveParallelRange | null,
+  nextRange: ActiveParallelRange,
+) {
+  return !bestRange || getRangeLength(nextRange) > getRangeLength(bestRange)
+    ? nextRange
+    : bestRange;
+}
+
+function getBestActiveRange(
+  activeVerse: number,
+  currentChapter: number,
+  activeParallels: PrecomputedParallel[],
+  chapterFirstVerse: number,
+  chapterLastVerse: number,
+) {
+  return activeParallels.reduce<ActiveParallelRange | null>(
+    (bestRange, ref) => {
+      const range = getLocalSourceRange(
+        ref,
+        activeVerse,
+        currentChapter,
+        chapterFirstVerse,
+        chapterLastVerse,
+      );
+      if (!range || !isVerseInRange(activeVerse, range)) return bestRange;
+      return pickLongerRange(bestRange, range);
+    },
+    null,
   );
 }
 
 function getActiveParallelRange(
   activeVerse: number | null,
+  currentChapter: number,
   activeParallels: PrecomputedParallel[],
+  chapterFirstVerse: number,
+  chapterLastVerse: number,
 ): ActiveParallelRange | null {
   if (activeVerse === null || activeParallels.length === 0) return null;
 
   // Keep the source-range highlight intact even when the panel shows direct refs.
-  const activeRef =
-    activeParallels.reduce<PrecomputedParallel | null>((bestRef, ref) => {
-      const start = getSourceStartVerse(ref, activeVerse);
-      const end = getSourceEndVerse(ref, activeVerse);
-      if (activeVerse < start || activeVerse > end || start === end) {
-        return bestRef;
-      }
-
-      if (!bestRef) return ref;
-
-      const bestStart = getSourceStartVerse(bestRef, activeVerse);
-      const bestEnd = getSourceEndVerse(bestRef, activeVerse);
-      return end - start > bestEnd - bestStart ? ref : bestRef;
-    }, null) ??
-    activeParallels.find(
-      (ref) => getSourceStartVerse(ref, activeVerse) === activeVerse,
-    ) ??
-    activeParallels.find((ref) => {
-      const start = getSourceStartVerse(ref, activeVerse);
-      const end = getSourceEndVerse(ref, activeVerse);
-      return start <= activeVerse && activeVerse <= end;
-    }) ??
-    activeParallels[0];
-
-  return {
-    start: getSourceStartVerse(activeRef, activeVerse),
-    end: getSourceEndVerse(activeRef, activeVerse),
-  };
+  return getBestActiveRange(
+    activeVerse,
+    currentChapter,
+    activeParallels,
+    chapterFirstVerse,
+    chapterLastVerse,
+  );
 }
 
 function getParallelRangePosition(
@@ -73,13 +131,22 @@ function getParallelRangePosition(
 ): ParallelRangePosition | null {
   if (!range || verseNum < range.start || verseNum > range.end) return null;
 
-  if (range.start === range.end) return "single";
+  if (range.start === range.end) {
+    if (range.continuesBefore && range.continuesAfter) return "middle";
+    if (range.continuesBefore) return "end";
+    if (range.continuesAfter) return "start";
+    return "single";
+  }
+
+  if (verseNum === range.start && range.continuesBefore) return "middle";
   if (verseNum === range.start) return "start";
+  if (verseNum === range.end && range.continuesAfter) return "middle";
   if (verseNum === range.end) return "end";
   return "middle";
 }
 
 interface Props {
+  chapter: number;
   verses: Chapter;
   parallelsMap: Record<number, PrecomputedParallel[]>;
   activeVerse: number | null;
@@ -89,6 +156,7 @@ interface Props {
 }
 
 export default memo(function MainText({
+  chapter,
   verses,
   parallelsMap,
   activeVerse,
@@ -96,13 +164,24 @@ export default memo(function MainText({
   onVerseClick,
   onCheckStart,
 }: Props) {
+  const chapterFirstVerse = useMemo(
+    () => Math.min(...Object.keys(verses).map(Number)),
+    [verses],
+  );
+  const chapterLastVerse = useMemo(
+    () => Math.max(...Object.keys(verses).map(Number)),
+    [verses],
+  );
   const activeRange = useMemo(
     () =>
       getActiveParallelRange(
         activeVerse,
+        chapter,
         activeVerse === null ? [] : (parallelsMap[activeVerse] ?? []),
+        chapterFirstVerse,
+        chapterLastVerse,
       ),
-    [activeVerse, parallelsMap],
+    [activeVerse, chapter, chapterFirstVerse, chapterLastVerse, parallelsMap],
   );
 
   return (
@@ -115,7 +194,13 @@ export default memo(function MainText({
             key={verseNum}
             verseNum={verseNum}
             text={text}
-            hasParallels={hasParallelMarker(verseNum, parallels)}
+            hasParallels={hasParallelMarker(
+              verseNum,
+              chapter,
+              chapterFirstVerse,
+              chapterLastVerse,
+              parallels,
+            )}
             parallelRangePosition={getParallelRangePosition(
               verseNum,
               activeRange,

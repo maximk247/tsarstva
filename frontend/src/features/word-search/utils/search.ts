@@ -20,6 +20,11 @@ export interface SearchResultSet {
 const MIN_QUERY_LENGTH = 2;
 const WORD_BOUNDARY = String.raw`[\p{L}\p{N}]`;
 
+interface SearchTermMatcher {
+  value: string;
+  allowPrefix: boolean;
+}
+
 export function normalizeSearchText(value: string) {
   return value
     .toLocaleLowerCase("ru-RU")
@@ -47,19 +52,27 @@ function getSearchTokens(value: string) {
   return normalizeSearchText(value).split(/\s+/).filter(Boolean);
 }
 
-function matchesTerm(token: string, term: string) {
-  if (term.length <= 2) return token === term;
-  return token.startsWith(term);
+function getSearchTermMatchers(terms: string[]): SearchTermMatcher[] {
+  const lastIndex = terms.length - 1;
+
+  return terms.map((term, index) => ({
+    value: term,
+    allowPrefix: term.length > 2 || (terms.length > 1 && index === lastIndex),
+  }));
 }
 
-function countTermMatches(tokens: string[], term: string) {
+function matchesTerm(token: string, term: SearchTermMatcher) {
+  return term.allowPrefix ? token.startsWith(term.value) : token === term.value;
+}
+
+function countTermMatches(tokens: string[], term: SearchTermMatcher) {
   return tokens.reduce(
     (count, token) => count + (matchesTerm(token, term) ? 1 : 0),
     0,
   );
 }
 
-function findFirstTermIndex(tokens: string[], terms: string[]) {
+function findFirstTermIndex(tokens: string[], terms: SearchTermMatcher[]) {
   const indexes = terms
     .map((term) => tokens.findIndex((token) => matchesTerm(token, term)))
     .filter((index) => index >= 0);
@@ -67,7 +80,7 @@ function findFirstTermIndex(tokens: string[], terms: string[]) {
   return indexes.length > 0 ? Math.min(...indexes) : 0;
 }
 
-function countPhraseMatches(tokens: string[], terms: string[]) {
+function countPhraseMatches(tokens: string[], terms: SearchTermMatcher[]) {
   if (terms.length < 2) return 0;
 
   let count = 0;
@@ -87,6 +100,7 @@ export function searchVerses(
   limit = 80,
 ): SearchResultSet {
   const terms = getSearchTerms(query);
+  const termMatchers = getSearchTermMatchers(terms);
 
   if (terms.length === 0) {
     return {
@@ -104,13 +118,15 @@ export function searchVerses(
   verses.forEach((verse, sourceIndex) => {
     const tokens = getSearchTokens(textWithReference(verse));
     if (
-      !terms.every((term) => tokens.some((token) => matchesTerm(token, term)))
+      !termMatchers.every((term) =>
+        tokens.some((token) => matchesTerm(token, term)),
+      )
     )
       return;
 
-    const phraseCount = countPhraseMatches(tokens, terms);
-    const firstTermIndex = findFirstTermIndex(tokens, terms);
-    const matchCount = terms.reduce(
+    const phraseCount = countPhraseMatches(tokens, termMatchers);
+    const firstTermIndex = findFirstTermIndex(tokens, termMatchers);
+    const matchCount = termMatchers.reduce(
       (count, term) => count + countTermMatches(tokens, term),
       0,
     );
@@ -150,14 +166,20 @@ function escapeRegExp(value: string) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-function termToPattern(term: string) {
+function termToPattern(term: string, allowShortPrefix = false) {
   const pattern = escapeRegExp(term).replace(/[её]/g, "[её]");
-  return term.length <= 2 ? pattern : `${pattern}${WORD_BOUNDARY}*`;
+  return term.length <= 2 && !allowShortPrefix
+    ? pattern
+    : `${pattern}${WORD_BOUNDARY}*`;
 }
 
 function getHighlightPattern(terms: string[]) {
   if (terms.length > 1) {
-    return terms.map(termToPattern).join(String.raw`[^\p{L}\p{N}]+`);
+    const lastIndex = terms.length - 1;
+
+    return terms
+      .map((term, index) => termToPattern(term, index === lastIndex))
+      .join(String.raw`[^\p{L}\p{N}]+`);
   }
 
   return termToPattern(terms[0]);

@@ -60,7 +60,11 @@ function getRangeKeys(range: VerseRange): string[] {
   const endVerse = range.verseEnd ?? range.verse;
 
   if (endChapter !== range.chapter) {
-    return [`${range.book}:${range.chapter}:${range.verse}`];
+    const keys = [`${range.book}:${range.chapter}:${range.verse}`];
+    for (let verse = 1; verse <= endVerse; verse++) {
+      keys.push(`${range.book}:${endChapter}:${verse}`);
+    }
+    return keys;
   }
 
   const keys: string[] = [];
